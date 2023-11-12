@@ -22,6 +22,7 @@ class GameMain:
 
         states = {
             'start': StartState(self.g_state_manager),
+            'rest': RestState(self.g_state_manager)
 
         }
 
