@@ -17,4 +17,5 @@ gFonts = {
 }
 
 from src.states.game.StartState import StartState
+from src.states.game.RestState import RestState
 from src.StateMachine import StateMachine

@@ -25,7 +25,7 @@ class StartState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    self.state_machine.Change('play')
+                    self.state_machine.Change('rest')
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))
