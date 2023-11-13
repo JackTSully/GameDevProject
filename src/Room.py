@@ -2,24 +2,22 @@
 #from src.Dependencies import *
 
 class Room():
-    def __init__(self, room_id, floor, room_event=None):
+    def __init__(self, room_id, floor, prev_room=None, event_deck=None):
         self.room_id = room_id
-        self.next_room = []
-        self.room_event = room_event
+        self.prev_room = prev_room
+        self.event_deck = event_deck
         self.floor = floor
         
     def get_room_id(self):
         return self.room_id
+       
+    def get_prev_rooms(self):
+        return self.prev_room
     
-    def append_next_room(self, room):
-        self.next_room.append(room)
-        
-    def get_next_rooms(self):
-        room_id_list = []
-        for room in self.next_room:
-            room_id = room.get_room_id()
-            room_id_list.append(room_id)
-        return room_id_list
+    def choose_event():
+        #shows 5 cards and player discards 2
+        #choose event randomly from the 3 cards left
+        pass
     
     def update(self, dt, events):
         pass
