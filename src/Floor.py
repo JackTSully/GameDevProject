@@ -20,8 +20,8 @@ class Floor():
             'room3' : Room(int(str(self.floor_lvl)+"3"), self.floor_lvl, self.start_room, None),
         }
         
-        self.room = rooms
-        self.curr_room = self.room['start']
+        self.rooms = rooms
+        self.curr_room = self.rooms['start']
             
     
     def generate(self):

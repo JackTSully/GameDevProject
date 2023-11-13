@@ -9,7 +9,7 @@ class MapState(BaseState):
     def __init__(self, state_machine):
         super(MapState, self).__init__(state_machine)
 
-        self.bg_image = pygame.image.load("graphics/dungeon_campfire2.jpg")
+        self.bg_image = pygame.image.load("graphics/dungeon_wall_bg.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
         
         self.time_interval = 3
@@ -43,7 +43,7 @@ class MapState(BaseState):
 
 
     def render(self, screen):
-        #screen.blit(self.bg_image, (0, 0)) 
+        screen.blit(self.bg_image, (0, 0)) 
 
         
         

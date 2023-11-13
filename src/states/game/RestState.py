@@ -4,6 +4,7 @@ from src.Dependencies import *
 from src.constants import *
 from src.StateMachine import StateMachine
 from src.Player import Player
+from src.Floor import Floor
 
 class RestState(BaseState):
     def __init__(self, state_machine):
@@ -12,15 +13,23 @@ class RestState(BaseState):
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
         self.time_interval = 3
         self.timer = 0
+        
+        self.player = Player(30)
+        self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
+
+        floor1_event_deck = None #placeholder
+        
+        floors = {
+        "mines": Floor(1, floor1_event_deck),
+        }
+        
+        self.floors = floors
+        self.curr_floor = self.floors['mines']
+        
+        
 
     def Enter(self,params):
-        if params == None:
-            self.player = Player(30)
-            self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
-            #floors = {
-            #   "The Mines": Floor(1, floor1_monster_deck)
-            # }
-        #self.floor = floors[0]
+        pass
 
     def Exit(self):
         pass
@@ -36,7 +45,7 @@ class RestState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    self.state_machine.Change('map',[self.player])
+                    self.state_machine.Change('map',[self.player,self.curr_floor])
         
         self.timer = self.timer + dt
 
