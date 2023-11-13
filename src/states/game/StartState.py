@@ -8,8 +8,7 @@ class StartState(BaseState):
     def __init__(self, state_machine):
         super(StartState, self).__init__(state_machine)
         self.bg_image = pygame.image.load("./graphics/background.png")
-        self.bg_image = pygame.transform.scale(
-            self.bg_image, (WIDTH + 5, HEIGHT + 5))
+        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
     def Enter(self, params):
         #print(self.bg_image)
@@ -30,10 +29,10 @@ class StartState(BaseState):
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))
 
-        t_title = gFonts['zelda'].render("Deck of Dungeons", False, (34, 34, 34))
+        t_title = gFonts['dungeon'].render("Deck of Dungeons", False, (34, 34, 34))
         rect = t_title.get_rect(center=(WIDTH / 2 + 6, HEIGHT / 2 - 90))
         screen.blit(t_title, rect)
-        t_title = gFonts['zelda'].render("Deck of Dungeons", False, (175, 53, 42))
+        t_title = gFonts['dungeon'].render("Deck of Dungeons", False, (175, 53, 42))
         rect = t_title.get_rect(center=(WIDTH / 2 , HEIGHT / 2 - 96))
         screen.blit(t_title, rect)
 

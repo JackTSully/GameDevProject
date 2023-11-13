@@ -10,6 +10,7 @@ class Player():
         self.cur_health = self.max_health
         #ablity_deck = Deck("ability")
         self.sprite = pygame.image.load("graphics/char/paladin.png")
+        self.sprite = pygame.transform.scale(self.sprite, (165,315))
 
     def attack(self, monster, DN):
         pass
