@@ -5,22 +5,25 @@ from src.constants import *
 from src.StateMachine import StateMachine
 from src.Player import Player
 
-class RestState(BaseState):
+class CombatState(BaseState):
     def __init__(self, state_machine):
-        super(RestState, self).__init__(state_machine)
-        self.bg_image = pygame.image.load("graphics/dungeon_campfire.png")
+        super(CombatState, self).__init__(state_machine)
+
+        self.bg_image = pygame.image.load("graphics/stages/mines.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
+        
         self.time_interval = 3
         self.timer = 0
+        
+        self.player = None
+        self.floor = None
 
     def Enter(self,params):
-        if params == None:
-            self.player = Player(30)
-            self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
-            #floors = {
-            #   "The Mines": Floor(1, floor1_monster_deck)
-            # }
-        #self.floor = floors[0]
+        self.player = params[0]
+        self.player.setXY(WIDTH/11,None )
+
+        #self.floor = params[1]
+
 
     def Exit(self):
         pass
@@ -36,7 +39,7 @@ class RestState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    self.state_machine.Change('map',[self.player])
+                    self.state_machine.Change('combat',[self.player])
         
         self.timer = self.timer + dt
 
@@ -46,12 +49,7 @@ class RestState(BaseState):
 
         
         if self.timer < self.time_interval:
-            t_press_enter = gFonts['minecraft'].render("Rest Area, Floor 1", False, (255, 255, 255))
-            rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
-            screen.blit(t_press_enter, rect)
-
-        if self.timer > self.time_interval and self.timer < self.time_interval*2:
-            t_press_enter = gFonts['minecraft'].render("Discard 2 Cards", False, (255, 255, 255))
+            t_press_enter = gFonts['minecraft'].render("Combat Event", False, (255, 255, 255))
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 

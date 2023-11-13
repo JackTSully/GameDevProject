@@ -1,7 +1,7 @@
 import math
 
-WIDTH = 1152 #1280
-HEIGHT = 648 #720
+WIDTH = 1280 #1280
+HEIGHT = 720 #720
 
 TILE_SIZE = 48
 
