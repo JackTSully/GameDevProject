@@ -44,13 +44,13 @@ class Player:
             print(f"Card ID: {card.card_id}, Name: {card.name}, Description: {card.description}")
 
     def render(self, frame_image, item_image, position):
-        final_surface = pygame.Surface((frame_image.get_width(), frame_image.get_height()))
-        final_surface.blit(frame_image, (0, 0))
+        final_surface = pygame.Surface((frame_image.get_width(), frame_image.get_height())) #Create a surface (rectangle) same size as the frame_image (Just to combine the item and the frame as one)
+        final_surface.blit(frame_image, (0, 0))  #put frame on to the surface at pos (0,0)
 
-        item_x = max(0, (frame_image.get_width() - item_image.get_width()) // 2)
+        item_x = max(0, (frame_image.get_width() - item_image.get_width()) // 2) #pos of item on surface
         item_y = max(0, (frame_image.get_height() - item_image.get_height()) //6)
 
-        final_surface.blit(item_image,(item_x, item_y))
+        final_surface.blit(item_image,(item_x, item_y)) #put item on to the surface
 
         return final_surface
     
@@ -116,7 +116,7 @@ for card in list_of_cards:
 
 floor_deck = enemy_deck + event_deck
 
-random.shuffle(floor_deck)
+random.shuffle(floor_deck) 
 
 print("\nFloor Deck list:")
 for card in floor_deck:
@@ -146,30 +146,34 @@ while running:
 
     screen.fill((0, 0, 0))
 
-    x_offset = 100
+    x_offset = 100 #initial position for the fist line of cards
     y_offset = 200
 
     for ability_card in ability_deck:
-        ability_index = ability_deck.index(ability_card)
-        item_image = gAbilities_image_list[ability_index]
+        ability_index = ability_deck.index(ability_card) #find the index of the ability card
+        item_image = gAbilities_image_list[ability_index] 
         frame_image = gFrames_image_list[0]
         position = (x_offset, y_offset)
-        final_rendered_item = player.render(frame_image, item_image, position)
-        screen.blit(final_rendered_item, position)
-        x_offset += 100
+        final_card = player.render(frame_image, item_image, position) #put in the frame you want, the item you want to merge and the on-screen pos
+        screen.blit(final_card, position)
+        x_offset += 200 #render the next card to the right
 
-    x_offset = 100
+    x_offset = 100 #reset the position for the second line of cards
     y_offset = 450  
 
     for item_card in player.item_deck:
-        item_index = item_card.card_id
-        item_image = gItems_image_list[item_index-1]
+        item_index = item_card.card_id 
+        item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
         frame_image = gFrames_image_list[2]
         position = (x_offset, y_offset)
-        final_rendered_item = player.render(frame_image, item_image, position)
-        screen.blit(final_rendered_item, position)
-        x_offset += 100
+        final_card = player.render(frame_image, item_image, position) 
+        screen.blit(final_card, position)
+        x_offset += 200
 
-    pygame.display.flip()
+    pygame.display.flip() #update the display after rendering
+
+
+    #all the attributes are in constant.py
+    #careful on the subclasses of class card the attributes varies
 
 pygame.quit()
