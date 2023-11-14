@@ -2,9 +2,10 @@ import pygame, random
 from src.Dependencies import *
 from src.constants import *
 from src.Room import Room
+from src.Deck import Deck
 
 class Floor():
-    def __init__(self, level, name, event_deck):
+    def __init__(self, level, name, event_deck: Deck):
         self.floor_lvl = level
         self.name = name
         #self.description = to be written in constants.py
@@ -13,15 +14,27 @@ class Floor():
         start_room_id = int(str(self.floor_lvl)+'0')
         self.start_room = Room(start_room_id, self.floor_lvl, None, None)
         
+        self.event_deck.shuffle_deck()
+        
+        room1_cards = self.event_deck.draw_card(5)
+        room2_cards = self.event_deck.draw_card(5)
+        room3_cards = self.event_deck.draw_card(5)
+        
+        room1_deck = Deck('1', 'mixed', room1_cards)
+        room2_deck = Deck('2', 'mixed', room2_cards)
+        room3_deck = Deck('3', 'mixed', room3_cards)
+        
         rooms = {
             'start' : self.start_room,
-            'room1' : Room(int(str(self.floor_lvl)+"1"), self.floor_lvl, self.start_room, None),
-            'room2' : Room(int(str(self.floor_lvl)+"2"), self.floor_lvl, self.start_room, None),
-            'room3' : Room(int(str(self.floor_lvl)+"3"), self.floor_lvl, self.start_room, None),
+            'room1' : Room(int(str(self.floor_lvl)+"1"), self.floor_lvl, self.start_room, room1_deck),
+            'room2' : Room(int(str(self.floor_lvl)+"2"), self.floor_lvl, self.start_room, room2_deck),
+            'room3' : Room(int(str(self.floor_lvl)+"3"), self.floor_lvl, self.start_room, room3_deck),
             'boss'  : Room(int(str(self.floor_lvl)+"4"), self.floor_lvl, self.start_room, None),
         }
         
         self.rooms = rooms
+        
+        print(rooms['room1'].event_deck)
         
         for room in self.rooms:
             if room == 'start':
@@ -76,9 +89,6 @@ class Floor():
         elif self.curr_room == self.rooms['boss']:
             boss_color = 'blue'
             
-                
-        
-        
         #start room
         pygame.draw.rect(screen, start_color, pygame.Rect((1/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
 
@@ -97,4 +107,25 @@ class Floor():
         pygame.draw.line(screen, 'white', ((2/3)*(WIDTH/2)+30, HEIGHT/2), ((WIDTH/2)-30, HEIGHT/2), width= 5)
         pygame.draw.line(screen, 'white', ((WIDTH/2)+30, HEIGHT/2), ((4/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)
         pygame.draw.line(screen, 'white', ((4/3)*(WIDTH/2)+30, HEIGHT/2), ((5/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)
+        
+        if self.curr_room != self.rooms['start'] and self.curr_room != self.rooms['boss']:
+            x_offset = 100 #reset the position for the second line of cards
+            y_offset = 450 
+        
+            i=0
+            for card in self.curr_room.event_deck.cards:
+                index = self.curr_room.event_deck.curr_card_index
+                #print(index)
+        
+                item_index = card.card_id 
+                item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
+                frame_image = gFrames_image_list[2]
+                position = (x_offset, y_offset)
+                final_card = self.player.player_item_deck.render(frame_image, item_image) 
+                screen.blit(final_card, position)
+        
+                if index == i:
+                    pygame.draw.rect(screen, 'red', pygame.Rect(x_offset, y_offset,50,50))
+                x_offset += 200   
+                i+=1
     

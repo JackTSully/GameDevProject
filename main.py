@@ -39,7 +39,7 @@ class GameMain:
         self.g_state_manager.Change("start")
 
         while True:
-            pygame.display.set_caption("Zelda game running with {:d} FPS".format(int(clock.get_fps())))
+            pygame.display.set_caption("D&D running with {:d} FPS".format(int(clock.get_fps())))
             dt = clock.tick(self.max_frame_rate) / 1000.0
 
             events = pygame.event.get()

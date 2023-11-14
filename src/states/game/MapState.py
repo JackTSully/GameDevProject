@@ -37,8 +37,8 @@ class MapState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    self.state_machine.Change('combat',[self.player])
-                    #self.floor.next_room()
+                    #self.state_machine.Change('combat',[self.player])
+                    self.floor.next_room()
         
         self.timer = self.timer + dt
         
