@@ -52,16 +52,17 @@ class Deck():
         for i in range(amount):
             drawn_card = random.choice(self.cards)
             card_list.append(drawn_card)
+            self.cards.remove(drawn_card)
         return card_list   
     
     
-    def render(self,frame_image, item_image):
+    def render(self,frame_image, card_image):
         final_surface = pygame.Surface((frame_image.get_width(), frame_image.get_height())) #Create a surface (rectangle) same size as the frame_image (Just to combine the item and the frame as one)
         final_surface.blit(frame_image, (0, 0))  #put frame on to the surface at pos (0,0)
 
-        item_x = max(0, (frame_image.get_width() - item_image.get_width()) // 2) #pos of item on surface
-        item_y = max(0, (frame_image.get_height() - item_image.get_height()) //6)
+        item_x = max(0, (frame_image.get_width() - card_image.get_width()) // 2) #pos of item on surface
+        item_y = max(0, (frame_image.get_height() - card_image.get_height()) //6)
 
-        final_surface.blit(item_image,(item_x, item_y)) #put item on to the surface
+        final_surface.blit(card_image,(item_x, item_y)) #put item on to the surface
 
         return final_surface

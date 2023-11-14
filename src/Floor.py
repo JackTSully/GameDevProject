@@ -11,13 +11,18 @@ class Floor():
         #self.description = to be written in constants.py
         self.event_deck = event_deck
         
+        self.cursor_position = (0, 0)
+        self.pause = False
+        
         start_room_id = int(str(self.floor_lvl)+'0')
         self.start_room = Room(start_room_id, self.floor_lvl, None, None)
         
-        self.event_deck.shuffle_deck()
+        #self.event_deck.shuffle_deck()
         
         room1_cards = self.event_deck.draw_card(5)
+        
         room2_cards = self.event_deck.draw_card(5)
+        
         room3_cards = self.event_deck.draw_card(5)
         
         room1_deck = Deck('1', 'mixed', room1_cards)
@@ -34,7 +39,7 @@ class Floor():
         
         self.rooms = rooms
         
-        print(rooms['room1'].event_deck)
+        #print(rooms['room1'].event_deck)
         
         for room in self.rooms:
             if room == 'start':
@@ -72,7 +77,23 @@ class Floor():
                 
     
     def update(self, dt, events):
-        pass
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # 1 corresponds to the left mouse button
+
+                for i, card in enumerate(self.curr_room.event_deck.cards):
+                    x_offset, y_offset = 100 + i * 200, 450
+                    frame_size = (140,200)
+                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+
+                    if card_rect.collidepoint(self.cursor_position):
+                        self.card_index = i
+                        self.selected_card = card
+                        self.curr_room.event_deck.remove_card(self.card_index)
+                        break
+                else:
+                    self.item_card_index = None
+            
+        self.cursor_position = pygame.mouse.get_pos()
     
     def render(self, screen):
         
@@ -110,13 +131,33 @@ class Floor():
         
         if self.curr_room != self.rooms['start'] and self.curr_room != self.rooms['boss']:
             x_offset = 100 #reset the position for the second line of cards
-            y_offset = 450 
+            y_offset = HEIGHT - 225
         
+            i=0
             for card in self.curr_room.event_deck.cards:
+        
                 item_index = card.card_id 
-                item_image = gsEnemies_Image_list[item_index-1] #-1 since the item index starts from 1 (line above)
+                
+
+                item_image = gsEnemies_Image_list[item_index-12] #-1 since the item index starts from 1 (line above)
+                
                 frame_image = gFrames_image_list[3]
                 position = (x_offset, y_offset)
                 final_card = self.curr_room.event_deck.render(frame_image, item_image) 
                 screen.blit(final_card, position)
+        
+                x_offset += 200   
+                i+=1
+                
+            if len(self.curr_room.event_deck.cards) == 3:
+                for i in range(len(self.curr_room.event_deck.cards)-1):
+                    card = random.choice(self.curr_room.event_deck.cards)
+                    self.curr_room.event_deck.cards.remove(card)
+                    
+            if  len(self.curr_room.event_deck.cards) == 1:
+                txt = self.curr_room.event_deck.cards[0].name
+                text = gFonts['minecraft_small'].render(txt, False, (255, 255, 255))
+                rect = text.get_rect(center=(WIDTH/2, HEIGHT -225))
+                screen.blit(text, rect)
+        
     

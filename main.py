@@ -28,6 +28,7 @@ class GameMain:
             'game_over': GameOverState(self.g_state_manager)
         }
 
+
         self.g_state_manager.SetStates(states)
 
 
@@ -37,6 +38,7 @@ class GameMain:
         clock = pygame.time.Clock()
 
         self.g_state_manager.Change("start")
+        
 
         while True:
             pygame.display.set_caption("D&D running with {:d} FPS".format(int(clock.get_fps())))

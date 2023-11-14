@@ -45,28 +45,30 @@ gEnemies_Image_list = [sprite_collection["Slime"].image,
                        sprite_collection["Cult_Leader"].image,
                        sprite_collection["Emperor_Gorilla"].image]
 
-gsEnemies_Image_list = [sprite_collection["sSlime"].image, 
-                        sprite_collection["sStone_Golem"].image, 
-                        sprite_collection["sDiamond_Golem"].image,
-                        sprite_collection["sSkeleton"].image,
-                        sprite_collection["sSkeleton_Mage"].image,
-                        sprite_collection["sSkeleton_Juggernaut"].image,
-                        sprite_collection["sTemple_Guardian"].image, 
-                        sprite_collection["sFanatic_Cultist"].image,
-                        sprite_collection["sVampire_Bat"].image,
-                        sprite_collection["sFeral_Monkey"].image,
-                        sprite_collection["sKing_Ape"].image,
-                        sprite_collection["sUnderminer"].image,
-                        sprite_collection["sNecromancer"].image,
-                        sprite_collection["sCult_Leader"].image,
-                        sprite_collection["sEmperor_Gorilla"].image,
-                        sprite_collection["Boulder_Trap"].image, 
-                        sprite_collection["Dart_Trap"].image,
-                        sprite_collection["Fountain_of_Healing"].image,
-                        sprite_collection["Pitfall_Trap"].image,
+gsEnemies_Image_list = [
                         sprite_collection["Secret_Room"].image,
+                        sprite_collection["Fountain_of_Healing"].image,
+                        sprite_collection["Heroes_Monument"].image,
                         sprite_collection["Wounded_Adventurer"].image,
-                        sprite_collection["Heroes_Monument"].image]
+                        sprite_collection["Pitfall_Trap"].image,
+                        sprite_collection["Dart_Trap"].image,
+                        sprite_collection["Boulder_Trap"].image, 
+                        sprite_collection["Slime"].image, 
+                        sprite_collection["Stone_Golem"].image, 
+                        sprite_collection["Diamond_Golem"].image,
+                        sprite_collection["Skeleton"].image,
+                        sprite_collection["Skeleton_Mage"].image,
+                        sprite_collection["Skeleton_Juggernaut"].image,
+                        sprite_collection["Temple_Guardian"].image, 
+                        sprite_collection["Fanatic_Cultist"].image,
+                        sprite_collection["Vampire_Bat"].image,
+                        sprite_collection["Feral_Monkey"].image,
+                        sprite_collection["King_Ape"].image,
+                        sprite_collection["Underminer"].image,
+                        sprite_collection["Necromancer"].image,
+                        sprite_collection["Cult_Leader"].image,
+                        sprite_collection["Emperor_Gorilla"].image
+                      ]
 
 
 
@@ -78,8 +80,8 @@ gFonts = {
     'zelda': pygame.font.Font('fonts/zelda.otf', 128),
     'gothic_medium': pygame.font.Font('fonts/GothicPixels.ttf', 48),
     'gothic_large': pygame.font.Font('fonts/GothicPixels.ttf', 96),
-    'minecraft': pygame.font.Font('fonts/The dark.ttf', 96),
-    'minecraft_small': pygame.font.Font('fonts/The dark.ttf', 40), 
+    'minecraft': pygame.font.Font('fonts/Minecraft.ttf', 96),
+    'minecraft_small': pygame.font.Font('fonts/Minecraft.ttf', 50),
     'dungeon': pygame.font.Font('fonts/DUNGRG__.TTF', 200),
 
 }

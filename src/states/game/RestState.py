@@ -84,13 +84,13 @@ class RestState(BaseState):
                     #self.player.player_item_deck.remove_card(index)
 
             if len(self.player.player_item_deck.cards) == 3:
-                self.state_machine.Change('combat',[self.player,self.curr_floor])
+                self.state_machine.Change('map',[self.player,self.curr_floor])
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # 1 corresponds to the left mouse button
 
                 for i, item_card in enumerate(self.player.player_item_deck.cards):
                     x_offset, y_offset = 100 + i * 200, 450
-                    frame_size = (200, 200)
+                    frame_size = (140,200)
                     card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
 
                     if card_rect.collidepoint(self.cursor_position):
@@ -126,7 +126,7 @@ class RestState(BaseState):
 
         self.player.render(screen)
         x_offset = 100 #reset the position for the second line of cards
-        y_offset = 450 
+        y_offset = HEIGHT-225
         
         for item_card in self.player.player_item_deck.cards:
 
