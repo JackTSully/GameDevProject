@@ -16,7 +16,7 @@ class RestState(BaseState):
         self.time_interval = 3
         self.timer = 0
         
-        self.player = Player(30)
+        self.player = Player(30, 3, 0)
         self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
 
         floor1_event_deck = None #placeholder
