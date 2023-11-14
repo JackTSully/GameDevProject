@@ -40,7 +40,7 @@ class RestState(BaseState):
         
         #item_deck.print_cards()
         
-        drawn_cards = item_deck.draw_card(3)
+        drawn_cards = item_deck.draw_card(5)
         #print(drawn_cards)
         self.player.player_item_deck.add_cards(drawn_cards)
         
@@ -63,9 +63,24 @@ class RestState(BaseState):
                     sys.exit()
                 if event.key == pygame.K_RETURN:
                     self.state_machine.Change('map',[self.player,self.curr_floor])
+                    
+                if event.key == pygame.K_RIGHT:
+                    self.player.player_item_deck.next_card()
+                    index = self.player.player_item_deck.curr_card_index
+                    print(self.player.player_item_deck.cards[index])
+                if event.key == pygame.K_LEFT:
+                    self.player.player_item_deck.prev_card()
+                
+                if event.key == pygame.K_SPACE:
+                    index = self.player.player_item_deck.curr_card_index
+                    self.player.player_item_deck.remove_card(index)
+            if len(self.player.player_item_deck.cards) == 3:
+                self.state_machine.Change('map',[self.player,self.curr_floor])
         
         self.timer = self.timer + dt
 
+    def check_for_pos(self, position):
+        pass
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0)) 
@@ -81,17 +96,24 @@ class RestState(BaseState):
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 
-        #self.player.render(screen)
+        self.player.render(screen)
         x_offset = 100 #reset the position for the second line of cards
         y_offset = 450 
         
+        i=0
         for item_card in self.player.player_item_deck.cards:
+            index = self.player.player_item_deck.curr_card_index
+            #print(index)
+            
             item_index = item_card.card_id 
             item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
             frame_image = gFrames_image_list[2]
             position = (x_offset, y_offset)
-            final_card = self.player.render(screen, frame_image, item_image, position) 
+            final_card = self.player.player_item_deck.render(frame_image, item_image) 
             screen.blit(final_card, position)
-            x_offset += 200
-
-        
+            
+            if index == i:
+                pygame.draw.rect(screen, 'red', pygame.Rect(x_offset, y_offset,50,50))
+                print(x_offset,y_offset)
+            x_offset += 200   
+            i+=1
