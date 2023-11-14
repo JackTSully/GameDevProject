@@ -1,5 +1,5 @@
 {
-    "spriteSheetURL": "./graphics/event/spritesheet_compact.png",
+    "spriteSheetURL": "./graphics/event/event_spritesheet_compact.png",
     "type":"none",
     "size":[32,32],
     "sprites":[

@@ -82,7 +82,7 @@ class RestState(BaseState):
                     index = self.player.player_item_deck.curr_card_index
                     self.player.player_item_deck.remove_card(index)
             if len(self.player.player_item_deck.cards) == 3:
-                self.state_machine.Change('combat',[self.player,self.curr_floor])
+                self.state_machine.Change('map',[self.player,self.curr_floor])
         
         self.timer = self.timer + dt
 

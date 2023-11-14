@@ -44,25 +44,25 @@ gEnemies_Image_list = [sprite_collection["Slime"].image,
                        sprite_collection["Emperor_Gorilla"].image]
 
 gsEnemies_Image_list = [sprite_collection["sSlime"].image, 
-                       sprite_collection["sStone_Golem"].image, 
-                       sprite_collection["sDiamond_Golem"].image,
-                       sprite_collection["sSkeleton"].image,
-                       sprite_collection["sSkeleton_Mage"].image,
-                       sprite_collection["sSkeleton_Juggernaut"].image,
-                       sprite_collection["sTemple_Guardian"].image, 
-                       sprite_collection["sFanatic_Cultist"].image,
-                       sprite_collection["sVampire_Bat"].image,
-                       sprite_collection["sFeral_Monkey"].image,
-                       sprite_collection["sKing_Ape"].image,
-                       sprite_collection["sUnderminer"].image,
-                       sprite_collection["sNecromancer"].image,
-                       sprite_collection["sCult_Leader"].image,
-                       sprite_collection["sEmperor_Gorilla"].image]
+                        sprite_collection["sStone_Golem"].image, 
+                        sprite_collection["sDiamond_Golem"].image,
+                        sprite_collection["sSkeleton"].image,
+                        sprite_collection["sSkeleton_Mage"].image,
+                        sprite_collection["sSkeleton_Juggernaut"].image,
+                        sprite_collection["sTemple_Guardian"].image, 
+                        sprite_collection["sFanatic_Cultist"].image,
+                        sprite_collection["sVampire_Bat"].image,
+                        sprite_collection["sFeral_Monkey"].image,
+                        sprite_collection["sKing_Ape"].image,
+                        sprite_collection["sUnderminer"].image,
+                        sprite_collection["sNecromancer"].image,
+                        sprite_collection["sCult_Leader"].image,
+                        sprite_collection["sEmperor_Gorilla"].image,
+                        sprite_collection["Boulder_Trap"].image, sprite_collection["Dart_Trap"],
+                        sprite_collection["Fountain_of_Healing"].image, sprite_collection["Pitfall_Trap"],
+                        sprite_collection["Secret_Room"].image, sprite_collection["Wounded_Adventurer"],
+                        sprite_collection["Heroes_Monument"].image]
 
-gEvent_Image_list = [sprite_collection["Boulder_Trap"].image, sprite_collection["Dart_Trap"],
-                     sprite_collection["Fountain_of_Healing"].image, sprite_collection["Pitfall_Trap"],
-                     sprite_collection["Secret_Room"].image, sprite_collection["Wounded_Adventurer"],
-                     sprite_collection["Heroes_Monument"].image]
 
 
 gFonts = {
