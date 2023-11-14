@@ -1,0 +1,114 @@
+{
+    "spriteSheetURL": "./graphics/enemies/spritesheet_compact.png",
+    "type":"none",
+    "size":[165,315],
+    "sprites":[
+        {
+            "name":"Slime",
+            "x":0,
+            "y":165,
+            "scalefactor":3,
+            "colorKey":-1
+	   },
+        {
+            "name":"Stone Golem",
+            "x":0,
+            "y":330,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Diamond Golem",
+            "x":0,
+            "y":495,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Skeleton",
+            "x":0,
+            "y":660,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Skeleton Mage",
+            "x":0,
+            "y":825,
+            "scalefactor":3,
+            "colorKey":-1
+	   },
+        {
+            "name":"Skeleton Juggernaut",
+            "x":0,
+            "y":990,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Temple Gaurdian",
+            "x":0,
+            "y":1155,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Fnatic Cultist",
+            "x":0,
+            "y":1320,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Vampire Bat",
+            "x":0,
+            "y":1485,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Feral Monkey",
+            "x":0,
+            "y":1650,
+            "scalefactor":3,
+            "colorKey":-1
+	   },
+        {
+            "name":"King Ape",
+            "x":0,
+            "y":1815,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Underminer",
+            "x":0,
+            "y":1980,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Necromancer",
+            "x":0,
+            "y":2145,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Cult Leader",
+            "x":0,
+            "y":2310,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Emperor Gorilla",
+            "x":0,
+            "y":1475,
+            "scalefactor":3,
+            "colorKey":-1
+        }
+]
+}
+
+
