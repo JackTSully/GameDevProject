@@ -8,7 +8,7 @@ class Floor():
         self.floor_lvl = level
         self.name = name
         #self.description = to be written in constants.py
-        self.event_deck = event_deck # no deck class yet
+        self.event_deck = event_deck
         
         start_room_id = int(str(self.floor_lvl)+'0')
         self.start_room = Room(start_room_id, self.floor_lvl, None, None)
