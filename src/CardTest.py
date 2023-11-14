@@ -1,6 +1,6 @@
 import pygame, random, sys, os
-from constants import *
-from Dependencies import *
+from src.constants import *
+from src.Dependencies import *
 
 pygame.init()
 
@@ -149,14 +149,14 @@ while running:
     x_offset = 100 #initial position for the fist line of cards
     y_offset = 200
 
-    for ability_card in ability_deck:
-        ability_index = ability_deck.index(ability_card) #find the index of the ability card
-        item_image = gAbilities_image_list[ability_index] 
-        frame_image = gFrames_image_list[0]
+    for enemy_card in enemy_deck:
+        enemy_index = enemy_deck.index(enemy_card) #find the index of the ability card
+        item_image = gsEnemies_Image_list[enemy_index] 
+        frame_image = gFrames_image_list[2]
         position = (x_offset, y_offset)
         final_card = player.render(frame_image, item_image, position) #put in the frame you want, the item you want to merge and the on-screen pos
         screen.blit(final_card, position)
-        x_offset += 200 #render the next card to the right
+        x_offset += 100 #render the next card to the right
 
     x_offset = 100 #reset the position for the second line of cards
     y_offset = 450  
@@ -164,7 +164,7 @@ while running:
     for item_card in player.item_deck:
         item_index = item_card.card_id 
         item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
-        frame_image = gFrames_image_list[2]
+        frame_image = gFrames_image_list[3]
         position = (x_offset, y_offset)
         final_card = player.render(frame_image, item_image, position) 
         screen.blit(final_card, position)

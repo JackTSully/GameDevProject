@@ -43,6 +43,22 @@ gEnemies_Image_list = [sprite_collection["Slime"].image,
                        sprite_collection["Cult_Leader"].image,
                        sprite_collection["Emperor_Gorilla"].image]
 
+gsEnemies_Image_list = [sprite_collection["sSlime"].image, 
+                       sprite_collection["sStone_Golem"].image, 
+                       sprite_collection["sDiamond_Golem"].image,
+                       sprite_collection["sSkeleton"].image,
+                       sprite_collection["sSkeleton_Mage"].image,
+                       sprite_collection["sSkeleton_Juggernaut"].image,
+                       sprite_collection["sTemple_Guardian"].image, 
+                       sprite_collection["sFanatic_Cultist"].image,
+                       sprite_collection["sVampire_Bat"].image,
+                       sprite_collection["sFeral_Monkey"].image,
+                       sprite_collection["sKing_Ape"].image,
+                       sprite_collection["sUnderminer"].image,
+                       sprite_collection["sNecromancer"].image,
+                       sprite_collection["sCult_Leader"].image,
+                       sprite_collection["sEmperor_Gorilla"].image]
+
 gFonts = {
     'small': pygame.font.Font('fonts/font.ttf', 24),
     'medium': pygame.font.Font('fonts/font.ttf', 48),

@@ -1,110 +1,110 @@
 {
-    "spriteSheetURL": "./graphics/enemies/spritesheet_compact.png",
+    "spriteSheetURL": "./graphics/enemies/icon_spritesheet.png",
     "type":"none",
     "size":[32,32],
     "sprites":[
         {
-            "name":"Feral_Monkey",
+            "name":"sFeral_Monkey",
             "x":0,
             "y":0,
             "scalefactor":3,
             "colorKey":-1
 	    },
         {
-            "name":"King_Ape",
-            "x":32,
-            "y":0,
-            "scalefactor":3,
-            "colorKey":-1
-        },
-        {
-            "name":"Underminer",
-            "x":64,
-            "y":0,
-            "scalefactor":3,
-            "colorKey":-1
-        },
-        {
-            "name":"Skeleton",
-            "x":96,
-            "y":0,
-            "scalefactor":3,
-            "colorKey":-1
-        },
-        {
-            "name":"Necromancer",
+            "name":"sKing_Ape",
             "x":0,
             "y":32,
             "scalefactor":3,
             "colorKey":-1
         },
         {
-            "name":"Cult_Leader",
-            "x":32,
-            "y":32,
-            "scalefactor":3,
-            "colorkey": -1
-        },
-        {
-            "name":"Emperor_Gorilla",
-            "x":64,
-            "y":32,
-            "scalefactor":3,
-            "colorkey": -1
-        },
-        {
-            "name":"Skeleton_Mage",
-            "x":96,
-            "y":32,
-            "scalefactor":3,
-            "colorkey": -1
-        },
-        {
-            "name":"Slime",
+            "name":"sUnderminer",
             "x":0,
             "y":64,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"sSkeleton",
+            "x":0,
+            "y":96,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"sNecromancer",
+            "x":0,
+            "y":128,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"sCult_Leader",
+            "x":0,
+            "y":160,
+            "scalefactor":3,
+            "colorkey": -1
+        },
+        {
+            "name":"sEmperor_Gorilla",
+            "x":0,
+            "y":192,
+            "scalefactor":3,
+            "colorkey": -1
+        },
+        {
+            "name":"sSkeleton_Mage",
+            "x":0,
+            "y":224,
+            "scalefactor":3,
+            "colorkey": -1
+        },
+        {
+            "name":"sSlime",
+            "x":0,
+            "y":256,
             "scalefactor":3,
             "colorKey":-1
 	    },
         {
-            "name":"Stone_Golem",
-            "x":32,
-            "y":64,
-            "scalefactor":3,
-            "colorKey":-1
-        },
-        {
-            "name":"Diamond_Golem",
-            "x":64,
-            "y":64,
-            "scalefactor":3,
-            "colorKey":-1
-        },
-        {
-            "name":"Skeleton_Juggernaut",
-            "x":96,
-            "y":64,
-            "scalefactor":3,
-            "colorKey":-1
-        },
-        {
-            "name":"Temple_Guardian",
+            "name":"sStone_Golem",
             "x":0,
-            "y":96,
+            "y":288,
             "scalefactor":3,
             "colorKey":-1
         },
         {
-            "name":"Fanatic_Cultist",
-            "x":32,
-            "y":96,
+            "name":"sDiamond_Golem",
+            "x":0,
+            "y":320,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"sSkeleton_Juggernaut",
+            "x":0,
+            "y":352,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"sTemple_Guardian",
+            "x":0,
+            "y":384,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"sFanatic_Cultist",
+            "x":0,
+            "y":416,
             "scalefactor":3,
             "colorkey": -1
         },
         {
-            "name":"Vampire_Bat",
-            "x":64,
-            "y":96,
+            "name":"sVampire_Bat",
+            "x":0,
+            "y":448,
             "scalefactor":3,
             "colorkey": -1
         }

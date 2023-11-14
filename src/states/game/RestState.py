@@ -75,7 +75,7 @@ class RestState(BaseState):
                     index = self.player.player_item_deck.curr_card_index
                     self.player.player_item_deck.remove_card(index)
             if len(self.player.player_item_deck.cards) == 3:
-                self.state_machine.Change('map',[self.player,self.curr_floor])
+                self.state_machine.Change('combat',[self.player,self.curr_floor])
         
         self.timer = self.timer + dt
 
@@ -107,7 +107,7 @@ class RestState(BaseState):
             
             item_index = item_card.card_id 
             item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
-            frame_image = gFrames_image_list[2]
+            frame_image = gFrames_image_list[3]
             position = (x_offset, y_offset)
             final_card = self.player.player_item_deck.render(frame_image, item_image) 
             screen.blit(final_card, position)
