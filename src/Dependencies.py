@@ -19,29 +19,27 @@ gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
 
 gFrames_image_list = [sprite_collection["Abilities_Frames"].image,
                       sprite_collection["Boss_Frames"].image,
-                      sprite_collection["Enemies_Frames"].image,
-                      sprite_collection["Item_Frames"].image]
+                    sprite_collection["Enemies_Frames"].image,
+                    sprite_collection["Item_Frames"].image]
 
 gAbilities_image_list = [sprite_collection["Attack"].image,
                          sprite_collection["Block"].image,
-                         sprite_collection["Charged_Attack"].image,
-                         sprite_collection["Counter_Attack"].image]
+                    sprite_collection["Charged_Attack"].image,
+                    sprite_collection["Counter_Attack"].image]
 
-gEnemies_Image_list = [sprite_collection["Slime"].image, 
-                       sprite_collection["Stone_Golem"].image, 
-                       sprite_collection["Diamond_Golem"].image,
-                       sprite_collection["Skeleton"].image,
-                       sprite_collection["Skeleton_Mage"].image,
-                       sprite_collection["Skeleton_Juggernaut"].image,
-                       sprite_collection["Temple_Guardian"].image, 
-                       sprite_collection["Fanatic_Cultist"].image,
-                       sprite_collection["Vampire_Bat"].image,
-                       sprite_collection["Feral_Monkey"].image,
-                       sprite_collection["King_Ape"].image,
-                       sprite_collection["Underminer"].image,
-                       sprite_collection["Necromancer"].image,
-                       sprite_collection["Cult_Leader"].image,
-                       sprite_collection["Emperor_Gorilla"].image]
+gEnemies_Image_list = [sprite_collection["Slime"].image, sprite_collection["Stone Golem"].image, 
+                       sprite_collection["Diamond Golem"].image, sprite_collection["Skeleton"].image,
+                       sprite_collection["Skeleton Mage"].image, sprite_collection["Skeleton Juggernaut"].image,
+                       sprite_collection["Temple Gaurdian"].image, sprite_collection["Fnatic Cultist"].image,
+                       sprite_collection["Vampire Bat"].image, sprite_collection["Feral Monkey"].image,
+                       sprite_collection["King Ape"].image, sprite_collection["Underminer"].image,
+                       sprite_collection["Necromancer"].image, sprite_collection["Cult Leader"].image,
+                       sprite_collection["Emperor Gorilla"].image]
+
+gEvent_Image_list = [sprite_collection["Boulder_Trap"].image, sprite_collection["Dart_Trap"],
+                     sprite_collection["Fountain_of_Healing"].image, sprite_collection["Pitfall_Trap"],
+                     sprite_collection["Secret_Room"].image, sprite_collection["Wounded_Adventurer"],
+                     sprite_collection["Heroes_Monument"].image]
 
 gFonts = {
     'small': pygame.font.Font('fonts/font.ttf', 24),
@@ -61,5 +59,6 @@ from src.states.game.RestState import RestState
 from src.states.game.MapState import MapState
 from src.states.game.CombatState import CombatState
 from src.states.game.GameOverState import GameOverState
+from src.states.game.RewardState import RewardState
 from src.StateMachine import StateMachine
 
