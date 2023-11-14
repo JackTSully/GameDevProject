@@ -53,7 +53,7 @@ class CombatState(BaseState):
                 if self.selected_card:
                     print(f"Clicked on the selected card: {self.selected_card}")
 
-        frame_size = (200, 200)
+        frame_size = (140,200)
 
         for i, ability_card in enumerate(self.player.ability_deck.cards):
             x_offset, y_offset = 100 + i * 150, 450

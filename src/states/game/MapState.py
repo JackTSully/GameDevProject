@@ -40,6 +40,9 @@ class MapState(BaseState):
                     #self.state_machine.Change('combat',[self.player])
                     self.floor.next_room()
         
+        
+        self.floor.update(dt,events)
+        
         self.timer = self.timer + dt
         
         
