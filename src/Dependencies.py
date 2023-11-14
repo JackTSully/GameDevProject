@@ -1,7 +1,7 @@
 import pygame
-from Util import SpriteManager, Animation
-import Util as Util
-from StateMachine import StateMachine
+from src.Util import SpriteManager, Animation
+import src.Util as Util
+from src.StateMachine import StateMachine
 
 pygame.init()
 
