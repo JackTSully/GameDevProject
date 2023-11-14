@@ -11,13 +11,18 @@ class Room():
     def get_room_id(self):
         return self.room_id
        
-    def get_prev_rooms(self):
+    def get_prev_room(self):
         return self.prev_room
     
-    def choose_event():
+    def set_prev_room(self, prev_room):
+        self.prev_room = prev_room
+    
+    def choose_event(self):
         #shows 5 cards and player discards 2
         #choose event randomly from the 3 cards left
         pass
+    
+        
     
     def update(self, dt, events):
         pass
