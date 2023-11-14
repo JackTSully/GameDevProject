@@ -118,10 +118,10 @@ class Floor():
                 #print(index)
         
                 item_index = card.card_id 
-                item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
-                frame_image = gFrames_image_list[2]
+                item_image = gsEnemies_Image_list[item_index-1] #-1 since the item index starts from 1 (line above)
+                frame_image = gFrames_image_list[3]
                 position = (x_offset, y_offset)
-                final_card = self.player.player_item_deck.render(frame_image, item_image) 
+                final_card = self.curr_room.event_deck.render(frame_image, item_image) 
                 screen.blit(final_card, position)
         
                 if index == i:
