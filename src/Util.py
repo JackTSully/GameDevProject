@@ -100,6 +100,7 @@ class SpriteManager:
                 "./sprite/Abilities.json",
                 "./sprite/Enemies.json",
                 "./sprite/Enemies_icon.json"
+                "./sprite/Event.json"
             ]
         )
 
