@@ -10,6 +10,9 @@ class Card():
     
     def get_name(self):
         return self.name
+    
+    def check_for_input(self):
+        pass
         
 
 
