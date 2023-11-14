@@ -116,21 +116,3 @@ E_ABILITY_SHIFTING_GROUND = 11
 E_ABILITY_RAISE_THE_DEAD = 12
 E_ABILITY_SACRIFICE = 13
 E_ABILITY_ROYAL_SMASH = 14
-
-ITEM_EFFECT_ATTRIBUTES = [
-    {"effect_id": EFFECT_TYPE_HEAL, "name": "Healing Flask", "description": "Heals +5 HP"},
-    {"effect_id": EFFECT_TYPE_DECREASE_ATK, "name": "Potion of Stupidity", "description": "Decreases ATK by 5 (Selected Enemy)"},
-    {"effect_id": EFFECT_TYPE_DISABLE_SKILL, "name": "Potion of Relaxation", "description": "Disables enemy's skill (Selected Enemy)"},
-    {"effect_id": EFFECT_TYPE_INVULNERABLE, "name": "Shield", "description": "Invulnerable to the next attack"},
-    {"effect_id": EFFECT_TYPE_INCREASE_AP, "name": "Potion of Swiftness", "description": "Increases AP by 1"},
-    {"effect_id": EFFECT_TYPE_INCREASE_ATK, "name": "Potion of Prowess", "description": "Increases ATK by 5 for the duration of the fight"},
-    {"effect_id": EFFECT_TYPE_DUPLICATE_CARDS, "name": "Replicator", "description": "Duplicates selected cards on-hand"},
-    {"effect_id": EFFECT_TYPE_ADDITIONAL_ROLL, "name": "Double Roll", "description": "Gain an additional roll"},
-]
-
-ABILITY_EFFECT_ATTRIBUTES = [
-     {"effect_id": EFFECT_TYPE_ATTACK, "name": "Attack", "description": "Deal DMG (D20) to the selected enemy"},
-    {"effect_id": EFFECT_TYPE_CHARGED, "name": "Charged Attack", "description": "Charge your attack to deal an instance of increased DMG (2D20) next turn"},
-    {"effect_id": EFFECT_TYPE_COUNTER, "name": "Counter Attack", "description": "Blocks 2 DMG recieved and deal DMG (D20) to the attacking enemy for their whole turn."},
-    {"effect_id": EFFECT_TYPE_BLOCK, "name": "Block", "description": "Blocks 5 DMG from the enemy's attack in their next turn."},
-]
