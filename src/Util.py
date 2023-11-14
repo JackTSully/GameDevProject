@@ -97,7 +97,8 @@ class SpriteManager:
             [
                 "./sprite/Item.json",
                 "./sprite/Frames.json",
-                "./sprite/Abilities.json"
+                "./sprite/Abilities.json",
+                "./sprite/Enemies.json"
             ]
         )
 
