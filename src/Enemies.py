@@ -19,8 +19,8 @@ class Enemies():
     def attack(self, monster, DN):
         pass
 
-    def heal_self(self, amount):
-        self.cur_health += amount
+    def take_damage(self, amount):
+        self.cur_health -= amount
     
     def setXY(self, x: int = None, y: int = None):
         if x != None:

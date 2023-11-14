@@ -93,3 +93,5 @@ class RestState(BaseState):
             final_card = self.player.render(screen, frame_image, item_image, position) 
             screen.blit(final_card, position)
             x_offset += 200
+
+        

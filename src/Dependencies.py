@@ -27,6 +27,15 @@ gAbilities_image_list = [sprite_collection["Attack"].image,
                     sprite_collection["Charged_Attack"].image,
                     sprite_collection["Counter_Attack"].image]
 
+gEnemies_Image_list = [sprite_collection["Slime"].image, sprite_collection["Stone Golem"].image, 
+                       sprite_collection["Diamond Golem"].image, sprite_collection["Skeleton"].image,
+                       sprite_collection["Skeleton Mage"].image, sprite_collection["Skeleton Juggernaut"].image,
+                       sprite_collection["Temple Gaurdian"].image, sprite_collection["Fnatic Cultist"].image,
+                       sprite_collection["Vampire bat"].image, sprite_collection["Feral Monkey"].image,
+                       sprite_collection["King Ape"].image, sprite_collection["Underminer"].image,
+                       sprite_collection["Necromancer"].image, sprite_collection["Cult Leader"].image,
+                       sprite_collection["Emperor Gorilla"].image]
+
 gFonts = {
     'small': pygame.font.Font('fonts/font.ttf', 24),
     'medium': pygame.font.Font('fonts/font.ttf', 48),
