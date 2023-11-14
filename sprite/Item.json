@@ -1,0 +1,65 @@
+{
+    "spriteSheetURL": "./graphics/Card/Items/item_spritesheet.png",
+    "type":"none",
+    "size":[32,32],
+    "sprites":[
+        {
+            "name":"Flask_of_Healing",
+            "x":0,
+            "y":0,
+            "scalefactor":3,
+            "colorKey":-1
+	   },
+        {
+            "name":"Potion_of_Prowess",
+            "x":0,
+            "y":32,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Potion_of_Relaxation",
+            "x":0,
+            "y":64,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Potion_of_Stupidity",
+            "x":0,
+            "y":97.5,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Potion_of_Swiftness",
+            "x":0,
+            "y":128,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Replicator",
+            "x":0,
+            "y":160,
+            "scalefactor":3,
+            "colorkey": -1
+        },
+        {
+            "name":"Double Roll",
+            "x":0,
+            "y": 190,
+            "scalefactor":3,
+            "colorkey": -1
+        },
+        {
+            "name":"Shield",
+            "x":0,
+            "y": 225,
+            "scalefactor":3,
+            "colorkey": -1
+        }
+]
+}
+
+

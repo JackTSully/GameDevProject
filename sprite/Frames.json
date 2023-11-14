@@ -1,0 +1,37 @@
+{
+    "spriteSheetURL": "./graphics/Card/Frames/frames_spritesheet.png",
+    "type":"none",
+    "size":[48,69.75],
+    "sprites":[
+        {
+            "name":"Abilities_Frames",
+            "x":0,
+            "y":0,
+            "scalefactor":3,
+            "colorKey":-1
+	   },
+        {
+            "name":"Boss_Frames",
+            "x":0,
+            "y":69.75,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Enemies_Frames",
+            "x":0,
+            "y":139.5,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Item_Frames",
+            "x":0,
+            "y":209.25,
+            "scalefactor":3,
+            "colorKey":-1
+        }
+]
+}
+
+
