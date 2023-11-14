@@ -133,6 +133,7 @@ class Floor():
             x_offset = 100 #reset the position for the second line of cards
             y_offset = HEIGHT - 225
         
+            i=0
             for card in self.curr_room.event_deck.cards:
         
                 item_index = card.card_id 

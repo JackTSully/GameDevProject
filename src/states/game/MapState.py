@@ -43,26 +43,7 @@ class MapState(BaseState):
                 if event.key == pygame.K_RETURN:
                     #self.state_machine.Change('combat',[self.player])
                     self.floor.next_room()
-
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # 1 corresponds to the left mouse button
-
-                for i, card in enumerate(self.map.curr_room.event_deck.cards):
-                    x_offset, y_offset = 100 + i * 200, 450
-                    frame_size = (200, 200)
-                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
-
-                    if card_rect.collidepoint(self.cursor_position):
-                        self.event_card_index = i
-                        self.selected_card = card
-                        self.player.player_item_deck.remove_card(self.event_card_index)
-                        break
-                else:
-                    self.item_card_index = None
-
-
-        self.cursor_position = pygame.mouse.get_pos()
-        
-        
+ 
         self.floor.update(dt,events)
         
         self.timer = self.timer + dt
