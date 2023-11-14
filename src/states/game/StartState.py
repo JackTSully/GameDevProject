@@ -29,10 +29,10 @@ class StartState(BaseState):
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))
 
-        t_title = gFonts['dungeon'].render("Deck and Dungeons", False, (34, 34, 34))
+        t_title = gFonts['dungeon'].render("Decks and Dungeons", False, (34, 34, 34))
         rect = t_title.get_rect(center=(WIDTH / 2 + 6, HEIGHT / 2 - 90))
         screen.blit(t_title, rect)
-        t_title = gFonts['dungeon'].render("Deck and Dungeons", False, (175, 53, 42))
+        t_title = gFonts['dungeon'].render("Decks and Dungeons", False, (175, 53, 42))
         rect = t_title.get_rect(center=(WIDTH / 2 , HEIGHT / 2 - 96))
         screen.blit(t_title, rect)
 
