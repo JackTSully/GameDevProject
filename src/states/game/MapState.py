@@ -39,7 +39,7 @@ class MapState(BaseState):
                 if event.key == pygame.K_RETURN:
                     #self.state_machine.Change('combat',[self.player])
                     self.floor.next_room()
-                    print(self.floor.get_curr_room().get_room_id())
+                    #print(self.floor.get_curr_room().get_room_id())
         
         self.timer = self.timer + dt
         
@@ -73,7 +73,7 @@ class MapState(BaseState):
         
         self.floor.render(screen)
         
-        
-        t_press_enter = gFonts['minecraft'].render("Placeholder State", False, (255, 255, 255))
+        text = "Floor "+str(self.floor.get_floor_lvl())+", "+self.floor.get_floor_name()              
+        t_press_enter = gFonts['minecraft'].render(text, False, (255, 255, 255))
         rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
         screen.blit(t_press_enter, rect)

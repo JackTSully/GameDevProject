@@ -4,9 +4,9 @@ from src.constants import *
 from src.Room import Room
 
 class Floor():
-    def __init__(self, level, event_deck):
+    def __init__(self, level, name, event_deck):
         self.floor_lvl = level
-        #self.name = to be written in constants.py
+        self.name = name
         #self.description = to be written in constants.py
         self.event_deck = event_deck # no deck class yet
         
@@ -31,6 +31,12 @@ class Floor():
             prev_room = room
         
         self.curr_room = self.rooms['start']
+        
+    def get_floor_lvl(self):
+        return self.floor_lvl
+    
+    def get_floor_name(self):
+        return self.name
         
     
     def get_rooms(self):
