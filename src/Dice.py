@@ -6,7 +6,7 @@ pygame.init()
 
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Dice Roller")
+pygame.display.set_caption("Dice")
 
 white = (255, 255, 255)
 black = (0, 0, 0)
@@ -22,5 +22,5 @@ def draw_text(text, color, x, y):
     text_rect = text_surface.get_rect(center=(x, y))
     screen.blit(text_surface, text_rect)
 
-d20 = roll_dice()
+d20 = roll_dice(20)
 print(d20)

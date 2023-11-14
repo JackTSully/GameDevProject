@@ -1,21 +1,24 @@
 import pygame, random, sys, os
 from constants import *
 from Dependencies import *
+from Enemies import *
+from Player import *
+
 
 def apply_effect(self, effect):
         if effect["effect_id"] == EFFECT_TYPE_HEAL:
-             self.health += 5
+             player.heal_self(5)
         elif effect["effect_id"] == EFFECT_TYPE_DECREASE_ATK:
-             self.atk -= 5
+             pass
         elif effect["effect_id"] == EFFECT_TYPE_DISABLE_SKILL:
-            pass
+             pass
         elif effect["effect_id"] == EFFECT_TYPE_INVULNERABLE:
-            pass
+             pass
         elif effect["effect_id"] == EFFECT_TYPE_INCREASE_AP:
-             self.ap += 1
+             pass
         elif effect["effect_id"] == EFFECT_TYPE_INCREASE_ATK:
-             self.atk += 5
+             pass
         elif effect["effect_id"] == EFFECT_TYPE_DUPLICATE_CARDS:
-            pass
+             pass
         elif effect["effect_id"] == EFFECT_TYPE_ADDITIONAL_ROLL:
-            pass
+             pass

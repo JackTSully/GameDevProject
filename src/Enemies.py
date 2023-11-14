@@ -10,6 +10,7 @@ class Enemies():
         self.attack_dice = attack_dice
         self.attack_bonus = attack_bonus
         self.e_ability_id = e_ability_id
+        self.damage = attack_bonus + attack_dice
 
         self.x = None
         self.y = None
@@ -24,6 +25,9 @@ class Enemies():
 
     def take_damage(self, amount):
         self.cur_health -= amount
+
+    def debuff(self, amount):
+        self.attack_bonus -= amount
     
     def setXY(self, x: int = None, y: int = None):
         if x != None:
