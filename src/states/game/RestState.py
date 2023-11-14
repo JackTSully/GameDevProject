@@ -115,12 +115,12 @@ class RestState(BaseState):
 
         
         if self.timer < self.time_interval:
-            t_press_enter = gFonts['minecraft'].render("Rest Area, Floor 1", False, (255, 255, 255))
+            t_press_enter = gFonts['minecraft'].render("Rest Area, Floor 1", False, (175, 53, 42))
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 
         if self.timer > self.time_interval:
-            t_press_enter = gFonts['minecraft'].render("Discard 2 Cards", False, (255, 255, 255))
+            t_press_enter = gFonts['minecraft'].render("Discard 2 Cards", False, (175, 53, 42))
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 

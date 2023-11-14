@@ -112,20 +112,11 @@ class Floor():
             x_offset = 100 #reset the position for the second line of cards
             y_offset = 450 
         
-            i=0
             for card in self.curr_room.event_deck.cards:
-                index = self.curr_room.event_deck.curr_card_index
-                #print(index)
-        
                 item_index = card.card_id 
                 item_image = gsEnemies_Image_list[item_index-1] #-1 since the item index starts from 1 (line above)
                 frame_image = gFrames_image_list[3]
                 position = (x_offset, y_offset)
                 final_card = self.curr_room.event_deck.render(frame_image, item_image) 
                 screen.blit(final_card, position)
-        
-                if index == i:
-                    pygame.draw.rect(screen, 'red', pygame.Rect(x_offset, y_offset,50,50))
-                x_offset += 200   
-                i+=1
     

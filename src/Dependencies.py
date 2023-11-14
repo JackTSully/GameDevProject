@@ -20,7 +20,9 @@ gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
 gFrames_image_list = [sprite_collection["Abilities_Frames"].image,
                       sprite_collection["Boss_Frames"].image,
                     sprite_collection["Enemies_Frames"].image,
-                    sprite_collection["Item_Frames"].image]
+                    sprite_collection["Item_Frames"].image,
+                    sprite_collection["Back_Abilities_Frames"].image,
+                    sprite_collection["Back_Item_Frames"].image]
 
 gAbilities_image_list = [sprite_collection["Attack"].image,
                          sprite_collection["Block"].image,
@@ -61,9 +63,9 @@ gsEnemies_Image_list = [sprite_collection["sSlime"].image,
                         sprite_collection["Boulder_Trap"].image, 
                         sprite_collection["Dart_Trap"].image,
                         sprite_collection["Fountain_of_Healing"].image,
-                          sprite_collection["Pitfall_Trap"].image,
+                        sprite_collection["Pitfall_Trap"].image,
                         sprite_collection["Secret_Room"].image,
-                          sprite_collection["Wounded_Adventurer"].image,
+                        sprite_collection["Wounded_Adventurer"].image,
                         sprite_collection["Heroes_Monument"].image]
 
 
@@ -76,7 +78,8 @@ gFonts = {
     'zelda': pygame.font.Font('fonts/zelda.otf', 128),
     'gothic_medium': pygame.font.Font('fonts/GothicPixels.ttf', 48),
     'gothic_large': pygame.font.Font('fonts/GothicPixels.ttf', 96),
-    'minecraft': pygame.font.Font('fonts/Minecraft.ttf', 96),
+    'minecraft': pygame.font.Font('fonts/The dark.ttf', 96),
+    'minecraft_small': pygame.font.Font('fonts/The dark.ttf', 40), 
     'dungeon': pygame.font.Font('fonts/DUNGRG__.TTF', 200),
 
 }
