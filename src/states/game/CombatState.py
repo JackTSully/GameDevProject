@@ -20,12 +20,14 @@ class CombatState(BaseState):
         self.player = None
         self.floor = None
 
+        self.cursor_position = (0, 0)
+        self.selected_card = None 
+
     def Enter(self,params):
         self.player = params[0]
         self.player.setXY(WIDTH/11,None )
 
-        self.cursor_position = (0, 0)
-        self.selected_card = None 
+
         #self.floor = params[1]
 
 
@@ -45,13 +47,10 @@ class CombatState(BaseState):
                 if event.key == pygame.K_RETURN:
                     self.state_machine.Change('combat',[self.player])
 
-                if event.key == pygame.K_SPACE:
-                    index = self.player.curr_card_index
-                    #self.player.player_item_deck.remove_card(index)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if self.selected_card:
-                    print(f"Clicked on the selected card: {self.selected_card}")
+                    print(f"Clicked on the selected card: {self.selected_card.card_id}")
 
         frame_size = (200, 200)
 
