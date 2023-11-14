@@ -8,6 +8,7 @@ class Deck():
         self.deck_id = deck_id
         self.type = deck_type
         self.cards = cards
+        self.curr_card_index = 0
         
     
     def print_cards(self):
@@ -24,11 +25,22 @@ class Deck():
     def get_cards(self):
         return self.cards
     
+    def next_card(self):
+        if self.curr_card_index+1 != len(self.cards):
+            self.curr_card_index += 1
+    
+    def prev_card(self):
+        if self.curr_card_index != 0:
+            self.curr_card_index -= 1
+    
     def shuffle_deck(self):
         random.shuffle(self.cards)
     
     def add_cards(self, cards: list):
         self.cards.extend(cards)
+    
+    def remove_card(self, card_index):
+        del self.cards[card_index]
     
     def merge_with(self, deck):
         #self.type = [self.type, deck.get_deck_type())
@@ -45,6 +57,13 @@ class Deck():
             
     
     
-    def render(self):
-        for card in self.cards:
-            print(f"Card ID: {card.card_id}, Name: {card.name}, Description: {card.description}")
+    def render(self,frame_image, item_image):
+        final_surface = pygame.Surface((frame_image.get_width(), frame_image.get_height())) #Create a surface (rectangle) same size as the frame_image (Just to combine the item and the frame as one)
+        final_surface.blit(frame_image, (0, 0))  #put frame on to the surface at pos (0,0)
+
+        item_x = max(0, (frame_image.get_width() - item_image.get_width()) // 2) #pos of item on surface
+        item_y = max(0, (frame_image.get_height() - item_image.get_height()) //6)
+
+        final_surface.blit(item_image,(item_x, item_y)) #put item on to the surface
+
+        return final_surface
