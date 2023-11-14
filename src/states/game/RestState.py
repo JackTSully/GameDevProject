@@ -18,9 +18,15 @@ class RestState(BaseState):
         
         self.player = Player(30, 3, 0)
         self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
-
-        floor1_event_deck = None #placeholder
         
+        event_card_list = [EventCard(**item) for item in event_attributes]
+        event_deck = Deck(1,'event',event_card_list*2)
+        
+        enemy_card_list = [EnemyCard(**item) for item in enemy_attributes]
+        floor1_enemy_deck = Deck(1,'enemy',enemy_card_list[0:3]*2)
+        #floor1_monster_deck = Deck(1,'monster', floor1_enemy_card_list)
+        floor1_enemy_deck.merge_with(event_deck)
+        floor1_event_deck = floor1_enemy_deck
         floors = {
         "mines": Floor(1, "The Mines", floor1_event_deck),
         }
@@ -62,12 +68,13 @@ class RestState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    self.state_machine.Change('map',[self.player,self.curr_floor])
+                    #self.state_machine.Change('map',[self.player,self.curr_floor])
+                    pass
                     
                 if event.key == pygame.K_RIGHT:
                     self.player.player_item_deck.next_card()
                     index = self.player.player_item_deck.curr_card_index
-                    print(self.player.player_item_deck.cards[index])
+                    
                 if event.key == pygame.K_LEFT:
                     self.player.player_item_deck.prev_card()
                 
@@ -91,7 +98,7 @@ class RestState(BaseState):
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 
-        if self.timer > self.time_interval and self.timer < self.time_interval*2:
+        if self.timer > self.time_interval:
             t_press_enter = gFonts['minecraft'].render("Discard 2 Cards", False, (255, 255, 255))
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
@@ -114,6 +121,5 @@ class RestState(BaseState):
             
             if index == i:
                 pygame.draw.rect(screen, 'red', pygame.Rect(x_offset, y_offset,50,50))
-                print(x_offset,y_offset)
             x_offset += 200   
             i+=1

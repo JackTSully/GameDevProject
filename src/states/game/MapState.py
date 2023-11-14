@@ -39,7 +39,6 @@ class MapState(BaseState):
                 if event.key == pygame.K_RETURN:
                     #self.state_machine.Change('combat',[self.player])
                     self.floor.next_room()
-                    #print(self.floor.get_curr_room().get_room_id())
         
         self.timer = self.timer + dt
         
@@ -49,27 +48,7 @@ class MapState(BaseState):
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))
         
-        #for room in self.floor.get_rooms():
-        '''
-        #start room
-        pygame.draw.rect(screen, 'red', pygame.Rect((1/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
 
-        
-        #3 rooms
-        pygame.draw.rect(screen, 'red', pygame.Rect((2/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
-        pygame.draw.rect(screen, 'red', pygame.Rect(WIDTH/2 - 30, HEIGHT/2 - 30, 60, 60))
-        pygame.draw.rect(screen, 'red', pygame.Rect((4/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
-
-        
-        #boss room
-        pygame.draw.rect(screen, 'red', pygame.Rect((5/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
-
-        #lines
-        pygame.draw.line(screen, 'white', ((1/3)*(WIDTH/2)+30, HEIGHT/2), ((2/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)
-        pygame.draw.line(screen, 'white', ((2/3)*(WIDTH/2)+30, HEIGHT/2), ((WIDTH/2)-30, HEIGHT/2), width= 5)
-        pygame.draw.line(screen, 'white', ((WIDTH/2)+30, HEIGHT/2), ((4/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)
-        pygame.draw.line(screen, 'white', ((4/3)*(WIDTH/2)+30, HEIGHT/2), ((5/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)
-        '''
         
         self.floor.render(screen)
         

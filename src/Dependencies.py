@@ -19,13 +19,13 @@ gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
 
 gFrames_image_list = [sprite_collection["Abilities_Frames"].image,
                       sprite_collection["Boss_Frames"].image,
-                      sprite_collection["Enemies_Frames"].image,
-                      sprite_collection["Item_Frames"].image]
+                    sprite_collection["Enemies_Frames"].image,
+                    sprite_collection["Item_Frames"].image]
 
 gAbilities_image_list = [sprite_collection["Attack"].image,
                          sprite_collection["Block"].image,
-                         sprite_collection["Charged_Attack"].image,
-                         sprite_collection["Counter_Attack"].image]
+                    sprite_collection["Charged_Attack"].image,
+                    sprite_collection["Counter_Attack"].image]
 
 gEnemies_Image_list = [sprite_collection["Slime"].image, 
                        sprite_collection["Stone_Golem"].image, 
@@ -58,6 +58,12 @@ gsEnemies_Image_list = [sprite_collection["sSlime"].image,
                        sprite_collection["sNecromancer"].image,
                        sprite_collection["sCult_Leader"].image,
                        sprite_collection["sEmperor_Gorilla"].image]
+
+gEvent_Image_list = [sprite_collection["Boulder_Trap"].image, sprite_collection["Dart_Trap"],
+                     sprite_collection["Fountain_of_Healing"].image, sprite_collection["Pitfall_Trap"],
+                     sprite_collection["Secret_Room"].image, sprite_collection["Wounded_Adventurer"],
+                     sprite_collection["Heroes_Monument"].image]
+
 
 gFonts = {
     'small': pygame.font.Font('fonts/font.ttf', 24),
