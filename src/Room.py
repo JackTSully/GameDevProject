@@ -1,8 +1,9 @@
 #import pygame
 #from src.Dependencies import *
+from src.Deck import Deck
 
 class Room():
-    def __init__(self, room_id, floor, prev_room=None, event_deck=None):
+    def __init__(self, room_id, floor, prev_room=None, event_deck : Deck = None):
         self.room_id = room_id
         self.prev_room = prev_room
         self.event_deck = event_deck

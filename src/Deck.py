@@ -53,6 +53,7 @@ class Deck():
         for i in range(amount):
             drawn_card = random.choice(self.cards)
             card_list.append(drawn_card)
+            self.cards.remove(drawn_card)
         return card_list
     
             
