@@ -3,6 +3,7 @@ import pygame, sys
 from src.Dependencies import *
 from src.constants import *
 from src.StateMachine import StateMachine
+from src.Card import ItemCard, AbilityCard, EventCard, EnemyCard
 from src.Player import Player
 from src.Floor import *
 
@@ -13,7 +14,7 @@ class MapState(BaseState):
         self.bg_image = pygame.image.load("graphics/dungeon_wall_bg.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
         
-        self.time_interval = 3
+        self.time_interval = 1.5
         self.timer = 0
 
         self.player = None
@@ -46,7 +47,12 @@ class MapState(BaseState):
  
         self.floor.update(dt,events)
         
-        self.timer = self.timer + dt
+        if self.floor.curr_room.event_deck != None:
+            if len(self.floor.curr_room.event_deck.cards) == 1:
+                self.timer = self.timer + dt
+            
+                if self.timer > self.time_interval and type(self.floor.curr_room.event_deck.cards[0]) == EnemyCard:
+                    self.state_machine.Change('combat',[self.player,self.floor])
         
         
 
