@@ -66,6 +66,5 @@ from src.states.game.RestState import RestState
 from src.states.game.MapState import MapState
 from src.states.game.CombatState import CombatState
 from src.states.game.GameOverState import GameOverState
-from src.states.game.RewardState import RewardState
 from src.StateMachine import StateMachine
 
