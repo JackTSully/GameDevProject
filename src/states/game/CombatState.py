@@ -6,6 +6,8 @@ from src.StateMachine import StateMachine
 from src.Player import Player
 from src.Card import *
 from src.Deck import *
+from src.Effect import *
+from src.Dice import *
 
 class CombatState(BaseState):
     def __init__(self, state_machine):
@@ -27,9 +29,6 @@ class CombatState(BaseState):
         self.show_ability_cards = False
         self.show_item_cards = False
 
-        self.show_ability_timer = 0
-        self.show_item_timer = 0 
-
     def Enter(self,params):
         self.player = params[0]
         self.player.setXY(WIDTH/11,None )
@@ -43,6 +42,7 @@ class CombatState(BaseState):
 
 
     def update(self, dt, events):
+
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -53,38 +53,72 @@ class CombatState(BaseState):
                     sys.exit()
                 if event.key == pygame.K_RETURN:
                     self.state_machine.Change('combat',[self.player])
-                if event.key == pygame.K_i:
+
+                if event.key == pygame.K_UP:
                     self.show_ability_cards = False
                     self.show_item_cards =True
-                if event.key == pygame.K_o:
+
+                if event.key == pygame.K_DOWN:
                     self.show_ability_cards = True
                     self.show_item_cards = False
+                
                 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if self.selected_card:
                     print(f"Clicked on the selected card: {self.selected_card.card_id}")
-                    self.show_ability_cards = False
-                    self.show_item_cards = False
+                    if self.selected_card.effect_id == 1001: #Heal
+                        self.player.heal_self(5)
+                    elif self.selected_card.effect_id == 1002: # dec_atk
+                        self.enemies.got_debuff(5)
+                    elif self.selected_card.effect_id == 1003: #dis_skill
+                        self.enemies.disabled_skill()
+                    elif self.selected_card.effect_id == 1004: #inv
+                        pass
+                    elif self.selected_card.effect_id == 1005: #inc_ap
+                        self.player.increase_ap(1)
+                    elif self.selected_card.effect_id == 1006: #inc_atk
+                        self.player.increase_atk(5)
+                    elif self.selected_card.effect_id == 1007: #dup_card
+                        pass
+                    elif self.selected_card.effect_id == 1008: #add_roll
+                        pass
+                    elif self.selected_card.effect_id == 2001: #attack
+                        self.enemies.take_damage(d20)
+                    elif self.selected_card.effect_id == 2002: #charged
+                        self.enemies.take_damage(d20*2)
+                    elif self.selected_card.effect_id == 2003: #counter
+                        pass
+                    elif self.selected_card.effect_id == 2004: #block
+                        self.enemies.decrease_atk(5)
 
-        frame_size = (200, 200)
+                    
+
+        frame_size = (140, 200)
         self.selected_card = None
 
-        for i, ability_card in enumerate(self.player.ability_deck.cards):
-            x_offset, y_offset = 100 + i * 150, 450
-            card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+        if self.show_ability_cards:
 
-            if card_rect.collidepoint(self.cursor_position):
-                self.selected_card = ability_card if not self.show_ability_cards else None
-                self.show_ability_cards = not self.show_ability_cards
-                break
-        else:
-            for i, item_card in enumerate(self.player.player_item_deck.cards):
-                x_offset, y_offset = 700 + i * 150, 450
+            for i, ability_card in enumerate(self.player.ability_deck.cards):
+                x_offset, y_offset = 100 + i * 150, 450
                 card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
 
                 if card_rect.collidepoint(self.cursor_position):
-                    self.selected_card = item_card if not self.show_item_cards else None
-                    self.show_item_cards = not self.show_item_cards
+                    if self.show_ability_cards:
+                        self.selected_card = ability_card  
+                    else: 
+                        None
+                    break
+        if self.show_item_cards:
+
+            for i, item_card in enumerate(self.player.player_item_deck.cards):
+                x_offset, y_offset = 100 + i * 150, 450
+                card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+
+                if card_rect.collidepoint(self.cursor_position):
+                    if self.show_item_cards:
+                        self.selected_card = item_card
+                    else:
+                        None
                     break
             else:
                 self.selected_card = None
@@ -96,6 +130,7 @@ class CombatState(BaseState):
 
 
     def render(self, screen):
+        
         screen.blit(self.bg_image, (0, 0)) 
 
         player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.player.max_health}", False, (175, 53, 42))
@@ -121,13 +156,7 @@ class CombatState(BaseState):
                 screen.blit(final_card, position)
                 x_offset += 150
 
-        elif not self.show_ability_cards and self.show_item_cards:
-            x_offset, y_offset = 100, 450
-            back_of_abilities = gFrames_image_list[4]
-            screen.blit(back_of_abilities, (x_offset, y_offset))
-
         if self.show_item_cards:
-            
             x_offset, y_offset = 100, 450
             for item_card in self.player.player_item_deck.cards:
                 item_index = item_card.card_id

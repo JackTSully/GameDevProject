@@ -1,8 +1,8 @@
 import pygame, random, sys, os
-from constants import *
-from Dependencies import *
-from Enemies import *
-from Player import *
+from src.constants import *
+from src.Dependencies import *
+from src.Enemies import *
+from src.Player import *
 
 
 def apply_effect(self, effect):
@@ -22,3 +22,25 @@ def apply_effect(self, effect):
              pass
         elif effect["effect_id"] == EFFECT_TYPE_ADDITIONAL_ROLL:
              pass
+        
+        elif effect["effect_id"] == EFFECT_TYPE_ATTACK:
+             self.enemies.got_debuff(5)
+        elif effect["effect_id"] == EFFECT_TYPE_CHARGED:
+             self.enemies.disabled_skill()
+        elif effect["effect_id"] == EFFECT_TYPE_COUNTER:
+             pass
+        elif effect["effect_id"] == EFFECT_TYPE_BLOCK:
+             self.enemies.got_debuff(5)
+        elif effect["effect_id"] == EFFECT_TYPE_DRAW:
+             self.player.increase_atk(5)
+        elif effect["effect_id"] == EFFECT_TYPE_EXCHANGE:
+             pass
+        elif effect["effect_id"] == EFFECT_TYPE_CHECK_10:
+             pass
+        elif effect["effect_id"] == EFFECT_TYPE_CHECK_13:
+             pass
+        elif effect["effect_id"] == EFFECT_TYPE_CHECK_10_10:
+             pass
+
+
+        
