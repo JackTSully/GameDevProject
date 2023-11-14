@@ -19,6 +19,9 @@ class Enemies():
     def attack(self, monster, DN):
         pass
 
+    def attack(self, player):
+        player.take_damage(self.damage)
+
     def take_damage(self, amount):
         self.cur_health -= amount
     
