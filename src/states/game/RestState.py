@@ -5,6 +5,8 @@ from src.constants import *
 from src.StateMachine import StateMachine
 from src.Player import Player
 from src.Floor import Floor
+from src.Card import ItemCard, AbilityCard, EventCard, EnemyCard
+from src.Deck import Deck
 
 class RestState(BaseState):
     def __init__(self, state_machine):
@@ -20,16 +22,31 @@ class RestState(BaseState):
         floor1_event_deck = None #placeholder
         
         floors = {
-        "mines": Floor(1, floor1_event_deck),
+        "mines": Floor(1, "The Mines", floor1_event_deck),
         }
         
         self.floors = floors
         self.curr_floor = self.floors['mines']
         
         
+        
+        
 
     def Enter(self,params):
-        pass
+        
+        item_card_list = [ItemCard(**item) for item in item_attributes]
+        item_deck = Deck(1,'item',item_card_list*2)
+        item_deck.shuffle_deck()
+        
+        #item_deck.print_cards()
+        
+        drawn_cards = item_deck.draw_card(3)
+        #print(drawn_cards)
+        self.player.player_item_deck.add_cards(drawn_cards)
+        
+        #print(self.player.player_item_deck.print_cards())
+        
+        
 
     def Exit(self):
         pass
@@ -64,4 +81,15 @@ class RestState(BaseState):
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 
-        self.player.render(screen)
+        #self.player.render(screen)
+        x_offset = 100 #reset the position for the second line of cards
+        y_offset = 450 
+        
+        for item_card in self.player.player_item_deck.cards:
+            item_index = item_card.card_id 
+            item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
+            frame_image = gFrames_image_list[2]
+            position = (x_offset, y_offset)
+            final_card = self.player.render(screen, frame_image, item_image, position) 
+            screen.blit(final_card, position)
+            x_offset += 200
