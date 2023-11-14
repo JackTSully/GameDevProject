@@ -30,7 +30,22 @@
             "y":209.25,
             "scalefactor":3,
             "colorKey":-1
+        },
+        {
+            "name":"Back_Abilities_Frames",
+            "x":0,
+            "y":279,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Back_Item_Frames",
+            "x":0,
+            "y":348.75,
+            "scalefactor":3,
+            "colorKey":-1
         }
+
 ]
 }
 

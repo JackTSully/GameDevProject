@@ -20,7 +20,9 @@ gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
 gFrames_image_list = [sprite_collection["Abilities_Frames"].image,
                       sprite_collection["Boss_Frames"].image,
                     sprite_collection["Enemies_Frames"].image,
-                    sprite_collection["Item_Frames"].image]
+                    sprite_collection["Item_Frames"].image,
+                    sprite_collection["Back_Abilities_Frames"].image,
+                    sprite_collection["Back_Item_Frames"].image]
 
 gAbilities_image_list = [sprite_collection["Attack"].image,
                          sprite_collection["Block"].image,
