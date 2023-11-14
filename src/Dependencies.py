@@ -58,9 +58,12 @@ gsEnemies_Image_list = [sprite_collection["sSlime"].image,
                         sprite_collection["sNecromancer"].image,
                         sprite_collection["sCult_Leader"].image,
                         sprite_collection["sEmperor_Gorilla"].image,
-                        sprite_collection["Boulder_Trap"].image, sprite_collection["Dart_Trap"],
-                        sprite_collection["Fountain_of_Healing"].image, sprite_collection["Pitfall_Trap"],
-                        sprite_collection["Secret_Room"].image, sprite_collection["Wounded_Adventurer"],
+                        sprite_collection["Boulder_Trap"].image, 
+                        sprite_collection["Dart_Trap"].image,
+                        sprite_collection["Fountain_of_Healing"].image,
+                          sprite_collection["Pitfall_Trap"].image,
+                        sprite_collection["Secret_Room"].image,
+                          sprite_collection["Wounded_Adventurer"].image,
                         sprite_collection["Heroes_Monument"].image]
 
 

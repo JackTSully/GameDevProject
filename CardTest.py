@@ -4,7 +4,7 @@ from src.Dependencies import *
 
 pygame.init()
 
-screen_width, screen_height = 1280, 900
+screen_width, screen_height = 2000, 1200
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Card Test")
 
@@ -149,9 +149,9 @@ while running:
     x_offset = 100 #initial position for the fist line of cards
     y_offset = 200
 
-    for enemy_card in enemy_deck:
-        ability_index = enemy_deck.index(enemy_card) #find the index of the ability card
-        item_image = gAbilities_image_list[ability_index - enemy_card[0]] 
+    for cards in floor_deck:
+        ability_index = enemy_deck.index(cards) #find the index of the ability card
+        item_image = gsEnemies_Image_list[ability_index] 
         frame_image = gFrames_image_list[1]
         position = (x_offset, y_offset)
         final_card = player.render(frame_image, item_image, position) #put in the frame you want, the item you want to merge and the on-screen pos

@@ -16,7 +16,7 @@ class RestState(BaseState):
         self.time_interval = 3
         self.timer = 0
         
-        self.player = Player(30, 3, 0)
+        self.player = Player(30, 3, 0, 20)
         self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
         
         event_card_list = [EventCard(**item) for item in event_attributes]
@@ -34,7 +34,8 @@ class RestState(BaseState):
         self.floors = floors
         self.curr_floor = self.floors['mines']
         
-        
+        self.cursor_position = (0, 0)
+        self.selected_card = None 
         
         
 
@@ -71,18 +72,38 @@ class RestState(BaseState):
                     #self.state_machine.Change('map',[self.player,self.curr_floor])
                     pass
                     
-                if event.key == pygame.K_RIGHT:
-                    self.player.player_item_deck.next_card()
-                    index = self.player.player_item_deck.curr_card_index
+                #if event.key == pygame.K_RIGHT:
+                    #self.player.player_item_deck.next_card()
+                    #index = self.player.player_item_deck.curr_card_index
                     
-                if event.key == pygame.K_LEFT:
-                    self.player.player_item_deck.prev_card()
+                #if event.key == pygame.K_LEFT:
+                    #self.player.player_item_deck.prev_card()
                 
-                if event.key == pygame.K_SPACE:
-                    index = self.player.player_item_deck.curr_card_index
-                    self.player.player_item_deck.remove_card(index)
+                #if event.key == pygame.K_SPACE:
+                    #index = self.player.player_item_deck.curr_card_index
+                    #self.player.player_item_deck.remove_card(index)
+
             if len(self.player.player_item_deck.cards) == 3:
-                self.state_machine.Change('map',[self.player,self.curr_floor])
+                self.state_machine.Change('combat',[self.player,self.curr_floor])
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # 1 corresponds to the left mouse button
+
+                for i, item_card in enumerate(self.player.player_item_deck.cards):
+                    x_offset, y_offset = 100 + i * 200, 450
+                    frame_size = (200, 200)
+                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+
+                    if card_rect.collidepoint(self.cursor_position):
+                        self.item_card_index = i
+                        self.selected_card = item_card
+                        self.player.player_item_deck.remove_card(self.item_card_index)
+                        break
+                else:
+                    self.item_card_index = None
+
+
+        self.cursor_position = pygame.mouse.get_pos()
+           
         
         self.timer = self.timer + dt
 
@@ -107,19 +128,13 @@ class RestState(BaseState):
         x_offset = 100 #reset the position for the second line of cards
         y_offset = 450 
         
-        i=0
         for item_card in self.player.player_item_deck.cards:
-            index = self.player.player_item_deck.curr_card_index
-            #print(index)
-            
+
             item_index = item_card.card_id 
             item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
             frame_image = gFrames_image_list[3]
             position = (x_offset, y_offset)
             final_card = self.player.player_item_deck.render(frame_image, item_image) 
             screen.blit(final_card, position)
+            x_offset += 200
             
-            if index == i:
-                pygame.draw.rect(screen, 'red', pygame.Rect(x_offset, y_offset,50,50))
-            x_offset += 200   
-            i+=1
