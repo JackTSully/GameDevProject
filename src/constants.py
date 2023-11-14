@@ -44,7 +44,7 @@ item_attributes = [
     {"card_id": 5, "name": "Potion of Swiftness", "description": "+1 AP", "effect_id": 1005, "action_cost": 0, "turn_cost": 1},
     {"card_id": 6, "name": "Potion of Prowess", "description": "+ 5 ATK for the duration of the fight", "effect_id": 1006, "action_cost": 1, "turn_cost": 1},
     {"card_id": 7, "name": "Replicator", "description": "Duplicates selected cards on-hand", "effect_id": 1007, "action_cost": 1, "turn_cost": 1},
-    {"card_id": 8, "name": "Double Roll", "description": "Gain an additional roll", "effect_id": 1007, "action_cost": 1, "turn_cost": 0},
+    {"card_id": 8, "name": "Double Roll", "description": "Gain an additional roll", "effect_id": 1008, "action_cost": 1, "turn_cost": 0},
 ]
 
 ability_attributes = [
@@ -81,3 +81,4 @@ enemy_attributes = [
                     {"card_id": 32, "name": "Cult Leader", "description": "Sacrifice(P): every attacking turn, roll another D6 “Blood die”, add the value to the ATK and deduct it from their HP", "max_health": 100, "attack_dice": 6, "attack_bonus": 1, "e_ability_id": 13},
                     {"card_id": 33, "name": "Emperor Gorilla", "description": "Royal Smash(A): -2 AP for 2 turns for the Player, CD 4 turns", "max_health": 65, "attack_dice": 12, "attack_bonus": 0, "e_ability_id": 14},
 ]
+

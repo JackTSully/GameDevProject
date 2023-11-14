@@ -11,11 +11,11 @@ sprite_collection = SpriteManager().spriteCollection
 gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
                      sprite_collection["Potion_of_Stupidity"].image,
                      sprite_collection["Potion_of_Relaxation"].image,
-                     sprite_collection["Shield"].image,
                      sprite_collection["Potion_of_Swiftness"].image,
                      sprite_collection["Potion_of_Prowess"].image,
                      sprite_collection["Replicator"].image,
-                     sprite_collection["Double Roll"].image,]
+                     sprite_collection["Double Roll"].image,
+                     sprite_collection["Shield"].image]
 
 gFrames_image_list = [sprite_collection["Abilities_Frames"].image,
                       sprite_collection["Boss_Frames"].image,
