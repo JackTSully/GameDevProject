@@ -15,7 +15,6 @@ class Enemies():
         self.x = None
         self.y = None
         self.cur_health = self.max_health
-        #ablity_deck = Deck("ability")
 
     def attack(self, monster, DN):
         pass
@@ -26,9 +25,18 @@ class Enemies():
     def take_damage(self, amount):
         self.cur_health -= amount
 
-    def debuff(self, amount):
-        self.attack_bonus -= amount
+    def got_debuff(self, amount):
+        self.damage -= amount
+
+    def increase_atk(self, amount):
+        self.damage += amount
     
+    def debuff_player(self, player, amount):
+        player.damage -= amount
+
+    def disabled_skill(self):
+        self.e_ability_id = 0
+
     def setXY(self, x: int = None, y: int = None):
         if x != None:
             self.x = x

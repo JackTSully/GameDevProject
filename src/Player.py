@@ -5,7 +5,7 @@ from src.Deck import Deck
 from src.Card import AbilityCard
 
 class Player():
-    def __init__(self,max_health, action_points, attack_power):
+    def __init__(self,max_health, action_points, attack_power, attack_dice):
         self.x = None
         self.y = None
 
@@ -14,7 +14,9 @@ class Player():
         
         self.action_points = action_points
         self.attack_power = attack_power
-        
+        self.attack_dice = attack_dice
+        self.damage = attack_power + attack_dice
+
         self.max_health = max_health
         self.cur_health = self.max_health
         #ablity_deck = Deck("ability")
@@ -29,7 +31,19 @@ class Player():
         self.cur_health += amount
     
     def take_damage(self, damage):
-        self.cur_health -= damage  
+        self.cur_health -= damage
+
+    def got_debuff(self, amount):
+        self.damage -= amount
+
+    def increase_atk(self,amount):
+        self.damage += amount
+
+    def increase_ap(self, amount):
+        self.action_points += amount
+
+    def decrease_ap(self, amount):
+        self.action_points -= amount
 
     def setXY(self, x: int = None, y: int = None):
         if x != None:
@@ -41,7 +55,15 @@ class Player():
         if self.cur_health > self.max_health:
             self.cur_health = self.max_health
     
-    def render(self, screen):
+    def render(self, screen, frame_image, item_image, position):
         screen.blit(self.sprite,(self.x,self.y))
         
-        
+        final_surface = pygame.Surface((frame_image.get_width(), frame_image.get_height())) #Create a surface (rectangle) same size as the frame_image (Just to combine the item and the frame as one)
+        final_surface.blit(frame_image, (0, 0))  #put frame on to the surface at pos (0,0)
+
+        item_x = max(0, (frame_image.get_width() - item_image.get_width()) // 2) #pos of item on surface
+        item_y = max(0, (frame_image.get_height() - item_image.get_height()) //6)
+
+        final_surface.blit(item_image,(item_x, item_y)) #put item on to the surface
+
+        return final_surface

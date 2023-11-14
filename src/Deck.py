@@ -46,17 +46,13 @@ class Deck():
         #self.type = [self.type, deck.get_deck_type())
         self.type = 'mixed'
         self.cards.extend(deck.get_cards())
-        
     
     def draw_card(self, amount):
         card_list = []
         for i in range(amount):
             drawn_card = random.choice(self.cards)
             card_list.append(drawn_card)
-            self.cards.remove(drawn_card)
-        return card_list
-    
-            
+        return card_list   
     
     
     def render(self,frame_image, item_image):

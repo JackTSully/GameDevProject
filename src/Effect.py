@@ -7,17 +7,17 @@ from Player import *
 
 def apply_effect(self, effect):
         if effect["effect_id"] == EFFECT_TYPE_HEAL:
-             player.heal_self(5)
+             self.player.heal_self(5)
         elif effect["effect_id"] == EFFECT_TYPE_DECREASE_ATK:
-             pass
+             self.enemies.got_debuff(5)
         elif effect["effect_id"] == EFFECT_TYPE_DISABLE_SKILL:
-             pass
+             self.enemies.disabled_skill()
         elif effect["effect_id"] == EFFECT_TYPE_INVULNERABLE:
              pass
         elif effect["effect_id"] == EFFECT_TYPE_INCREASE_AP:
-             pass
+             self.player.increase_ap(1)
         elif effect["effect_id"] == EFFECT_TYPE_INCREASE_ATK:
-             pass
+             self.player.increase_atk(5)
         elif effect["effect_id"] == EFFECT_TYPE_DUPLICATE_CARDS:
              pass
         elif effect["effect_id"] == EFFECT_TYPE_ADDITIONAL_ROLL:

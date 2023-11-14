@@ -42,6 +42,18 @@ class CombatState(BaseState):
                     sys.exit()
                 if event.key == pygame.K_RETURN:
                     self.state_machine.Change('combat',[self.player])
+
+                if event.key == pygame.K_RIGHT:
+                    self.player.next_card()
+                    index = self.player.curr_card_index
+
+                if event.key == pygame.K_LEFT:
+                    self.player.prev_card()
+                
+                if event.key == pygame.K_SPACE:
+                    index = self.player.curr_card_index
+                    #self.player.player_item_deck.remove_card(index)
+                    
         
         self.timer = self.timer + dt
 
@@ -69,21 +81,20 @@ class CombatState(BaseState):
             position = (x_offset, y_offset)
             final_card = self.player.player_item_deck.render(frame_image, ability_image) 
             screen.blit(final_card, position)
-            x_offset += 150
             
         for item_card in self.player.player_item_deck.cards:
             index = self.player.player_item_deck.curr_card_index
             #print(index)
-            
             item_index = item_card.card_id 
             item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
             frame_image = gFrames_image_list[3]
             position = (x_offset, y_offset)
             final_card = self.player.player_item_deck.render(frame_image, item_image) 
             screen.blit(final_card, position)
-            
+
             if index == i:
                 pygame.draw.rect(screen, 'red', pygame.Rect(x_offset, y_offset,50,50))
                 print(x_offset,y_offset)
             x_offset += 150   
             i+=1
+            

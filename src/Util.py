@@ -99,7 +99,7 @@ class SpriteManager:
                 "./sprite/Frames.json",
                 "./sprite/Abilities.json",
                 "./sprite/Enemies.json",
-                "./sprite/Enemies_icon.json"
+                "./sprite/Enemies_icon.json",
                 "./sprite/Event.json"
             ]
         )
