@@ -46,6 +46,7 @@ class Deck():
         #self.type = [self.type, deck.get_deck_type())
         self.type = 'mixed'
         self.cards.extend(deck.get_cards())
+        
     
     def draw_card(self, amount):
         card_list = []
