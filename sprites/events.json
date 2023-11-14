@@ -1,0 +1,56 @@
+{
+    "spriteSheetURL": "./graphics/event/spritesheet_compact.png",
+    "type":"none",
+    "size":[32,32],
+    "sprites":[
+        {
+            "name":"Boulder_Trap",
+            "x":0,
+            "y":0,
+            "scalefactor":3,
+            "colorKey":-1
+	   },
+        {
+            "name":"Dart_Trap",
+            "x":0,
+            "y":32,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Fountain_of_Healing",
+            "x":0,
+            "y":64,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Pitfall_Trap",
+            "x":0,
+            "y":96,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Secret_Room",
+            "x":0,
+            "y":128,
+            "scalefactor":3,
+            "colorKey":-1
+        },
+        {
+            "name":"Wounded_Adventurer",
+            "x":0,
+            "y":160,
+            "scalefactor":3,
+            "colorkey": -1
+        },
+        {
+            "name":"Heroes_Monument",
+            "x":0,
+            "y":192,
+            "scalefactor":3,
+            "colorkey": -1
+        }
+]
+}
