@@ -13,8 +13,6 @@ class RestState(BaseState):
         super(RestState, self).__init__(state_machine)
         self.bg_image = pygame.image.load("graphics/dungeon_campfire.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
-        self.time_interval = 3
-        self.timer = 0
         
         self.player = Player(30, 3, 0, 20)
         self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
@@ -40,6 +38,8 @@ class RestState(BaseState):
         
 
     def Enter(self,params):
+        self.time_interval = 3
+        self.timer = 0
         
         self.player.reset_atk_power()
         item_card_list = [ItemCard(**item) for item in item_attributes]

@@ -6,15 +6,14 @@ from src.StateMachine import StateMachine
 from src.Card import ItemCard, AbilityCard, EventCard, EnemyCard
 from src.Player import Player
 from src.Floor import *
+from src.Dice import roll_dice
 
 class EventState(BaseState):
     def __init__(self, state_machine):
         super(EventState, self).__init__(state_machine)
         self.bg_image = pygame.image.load("graphics/dungeon_wall_bg.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
-        
-        self.time_interval = 1.5
-        self.timer = 0
+    
         
         self.player = None
         self.floor = None
@@ -25,6 +24,9 @@ class EventState(BaseState):
         self.card15 = False
 
     def Enter(self,params):
+        self.time_interval = 3
+        self.timer = 0
+        
         self.player : Player= params[0]
         self.floor : Floor = params[1]
         self.event_card = params[2]
@@ -52,15 +54,36 @@ class EventState(BaseState):
         
         elif card_id == 16: #Pitfall Trap
             #Athletic Check (10) Fail: Take D4 Damage Pass: Get Item Card
-            pass
+            roll = roll_dice(20)
+            if roll < 10:
+                dmg = roll_dice(4)
+                self.player.take_damage(dmg)
+            else:
+                drawn_card = self.floor.floor_item_deck.draw_card(1)
+                self.player.player_item_deck.add_cards(drawn_card)
         
         elif card_id == 17: #Dart Trap
             #Athletic Check (13) Fail: Take D6 Damage Pass: Get Item Card
-            pass
+            roll = roll_dice(20)
+            if roll < 13:
+                dmg = roll_dice(6)
+                self.player.take_damage(dmg)
+            else:
+                drawn_card = self.floor.floor_item_deck.draw_card(1)
+                self.player.player_item_deck.add_cards(drawn_cards)
         
         elif card_id == 18: #Boulder Trap
             #Athletic Check (10/10) Fail: Take D8 Damage Pass: Get 2x Item Card
-            pass
+            roll1 = roll_dice(20)
+            roll2 = roll_dice(20)
+            if roll1 < 10 and roll2 < 10:
+                dmg = roll_dice(8)
+                self.player.take_damage(dmg)
+            elif roll1 >= 10 and roll2 < 10:
+                pass
+            elif roll1 >= 10 and roll2 > 10:
+                drawn_cards = self.floor.floor_item_deck.draw_card(2)
+                self.player.player_item_deck.add_cards(drawn_cards)
 
 
     def Exit(self):
@@ -79,9 +102,13 @@ class EventState(BaseState):
                 if event.key == pygame.K_y:
                     drawn_cards = self.floor.floor_item_deck.draw_card(1)
                     self.player.player_item_deck.add_cards(drawn_cards)
-                    self.state_machine.Change('map',[self.player,self.curr_floor])
+                    self.state_machine.Change('map',[self.player,self.floor])
                 if event.key == pygame.K_n:
-                    self.state_machine.Change('map',[self.player,self.curr_floor])
+                    self.state_machine.Change('map',[self.player,self.floor])
+                    
+        self.timer = self.timer + dt
+        if self.timer > self.time_interval:
+            self.state_machine.Change('map',[self.player,self.floor])
         
         
         

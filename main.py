@@ -1,10 +1,10 @@
 import pygame, math, random, sys, os
 from src.constants import *
 
-#pygame.mixer.pre_init(44100, -16, 2, 4096)
+pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
-#music_channel = pygame.mixer.Channel(0)
-#music_channel.set_volume(0.2)
+music_channel = pygame.mixer.Channel(0)
+music_channel.set_volume(0.2)
 
 from src.Dependencies import *
 
@@ -35,7 +35,7 @@ class GameMain:
 
 
     def PlayGame(self):
-        #gSounds['music'].play(-1)
+        gSounds['bg_music'].play(-1)
         clock = pygame.time.Clock()
 
         self.g_state_manager.Change("start")

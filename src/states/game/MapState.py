@@ -14,8 +14,6 @@ class MapState(BaseState):
         self.bg_image = pygame.image.load("graphics/dungeon_wall_bg.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
         
-        self.time_interval = 1.5
-        self.timer = 0
 
         self.player = None
         self.floor = None
@@ -24,8 +22,12 @@ class MapState(BaseState):
         self.selected_card = None 
 
     def Enter(self,params):
-        self.player = params[0]
-        self.floor = params[1]
+        self.time_interval = 1.5
+        self.timer = 0
+        
+        self.player :Player = params[0]
+        self.floor : Floor = params[1]
+        self.floor.next_room()
 
 
     def Exit(self):
@@ -52,6 +54,7 @@ class MapState(BaseState):
                 self.timer = self.timer + dt
             
                 if self.timer > self.time_interval and type(self.floor.curr_room.event_deck.cards[0]) == EnemyCard:
+                    
                     self.state_machine.Change('combat',[self.player,self.floor,self.floor.curr_room.event_deck.cards[0]])
                 elif self.timer > self.time_interval and type(self.floor.curr_room.event_deck.cards[0]) == EventCard:
                     self.state_machine.Change('event',[self.player,self.floor,self.floor.curr_room.event_deck.cards[0]])
