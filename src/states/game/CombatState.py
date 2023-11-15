@@ -20,7 +20,7 @@ class CombatState(BaseState):
         self.turn = 1
         self.enemy_rounds = 0
         self.player_rounds = 0
-        self.attack_delay = 1500
+        self.attack_delay = 500
         self.attack_timer = None
         self.damage_text = None
 
@@ -38,6 +38,7 @@ class CombatState(BaseState):
 
     def Enter(self,params):
         self.player = params[0]
+        self.floor = params[1]
         self.player.setXY(WIDTH/11,None)
         self.enemies = Enemies(params[2].card_id,params[2].name,params[2].description,params[2].max_health,params[2].attack_dice,
                                params[2].attack_bonus, params[2].e_ability_id)
@@ -52,6 +53,9 @@ class CombatState(BaseState):
 
     def update(self, dt, events):
 
+        if self.enemies.cur_health <= 0:
+            self.state_machine.Change('map',[self.player, self.floor])
+
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -61,7 +65,7 @@ class CombatState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    self.state_machine.Change('combat',[self.player])
+                    self.state_machine.Change('map',[self.player,self.floor])
 
                 if event.key == pygame.K_UP:
                     self.show_ability_cards = False
@@ -72,71 +76,79 @@ class CombatState(BaseState):
                     self.show_item_cards = False
                 
                 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.turn % 2 != 0:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.turn == 1:
                 if self.selected_card:
                     print(f"Clicked on the selected card: {self.selected_card.card_id}")
                     if self.selected_card.effect_id == 1001: #Heal
-                        pygame.time.delay(self.attack_delay)
                         self.player.heal_self(5)
                         self.player.action_points -= 1
+
                     elif self.selected_card.effect_id == 1002: # dec_atk
-                        pygame.time.delay(self.attack_delay)
                         self.enemies.got_debuff(5)
                         self.player.action_points -= 1
+
                     elif self.selected_card.effect_id == 1003: #dis_skill
-                        pygame.time.delay(self.attack_delay)
                         self.enemies.disabled_skill()
                         self.player.action_points -= 1
+
                     elif self.selected_card.effect_id == 1004: #inv
-                        pass
                         self.player.action_points -= 1
+
                     elif self.selected_card.effect_id == 1005: #inc_ap
                         self.player.increase_ap(1)
+
                     elif self.selected_card.effect_id == 1006: #inc_atk
-                        pygame.time.delay(self.attack_delay)
                         self.player.increase_atk(5)
                         self.player.action_points -= 1
+
                     elif self.selected_card.effect_id == 1007: #dup_card
-                        pygame.time.delay(self.attack_delay)
-                        pass
                         self.player.action_points -= 1
+
                     elif self.selected_card.effect_id == 1008: #add_roll
-                        pygame.time.delay(self.attack_delay)
-                        pass
                         self.player.action_points -= 1
                     elif self.selected_card.effect_id == 2001: #attack
                         pygame.time.delay(self.attack_delay) 
                         self.enemies.take_damage(d20)
                         self.player.action_points -= 1
-                    elif self.selected_card.effect_id == 2002: #charged
+                        self.selected_card = None
+                        self.player.turn = 2
+
+                    elif self.selected_card.effect_id == 2002: #charge
                         pygame.time.delay(self.attack_delay) 
                         self.enemies.take_damage(d20*2)
                         self.player.action_points -= 2
+                        self.selected_card = None
+                        self.turn = 2
+
                     elif self.selected_card.effect_id == 2003: #counter
                         pygame.time.delay(self.attack_delay)
                         pass
                         self.player.action_points -= 1
+                        self.selected_card = None
+                        self.turn = 2
+                        
                     elif self.selected_card.effect_id == 2004: #block
+                        
                         pygame.time.delay(self.attack_delay)
                         self.enemies.got_debuff(5)
                         self.player.action_points -= 1
+                        self.turn = 2
+                
 
-        if self.turn % 2 != 0:
-            self.player_rounds += 1
-            if self.player.action_points <= 0:
-                self.turn += 1         
-                self.player.action_points = 3
-        else:
-                if self.enemy_rounds == 3:
-                    pygame.time.delay(self.attack_delay)
-                    self.turn += 1
-                    self.player.got_debuff(5) 
-                else:
-                    self.turn += 1
-                    pygame.time.delay(self.attack_delay)
-                    damage = d8
-                    self.player.take_damage(damage)
-                    self.enemy_rounds += 1
+        if self.turn == 1 and self.player.action_points <= 0:
+            self.turn = 2         
+            self.player.action_points = 3
+        elif self.turn == 2:
+            if self.enemy_rounds == 3:
+                pygame.time.delay(self.attack_delay)
+                self.player.got_debuff(5) 
+                self.turn = 1
+            else:
+                damage = d20
+                pygame.time.delay(self.attack_delay)
+                self.player.take_damage(damage)
+                self.enemy_rounds += 1
+                self.turn = 1
 
         frame_size = (140, 200)
         self.selected_card = None
@@ -221,7 +233,7 @@ class CombatState(BaseState):
             x_offset, y_offset = 100, 450
             for item_card in self.player.player_item_deck.cards:
                 item_index = item_card.card_id
-                item_image = gItems_image_list[item_index - 1]  # -1 since the item index starts from 1
+                item_image = gItems_image_list[item_index-1]  # -1 since the item index starts from 1
                 frame_image = gFrames_image_list[3]
                 position = (x_offset, y_offset)
                 final_card = self.player.player_item_deck.render(frame_image, item_image)
