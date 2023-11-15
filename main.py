@@ -48,7 +48,6 @@ class GameMain:
 
             events = pygame.event.get()
 
-
             self.g_state_manager.update(dt, events)
 
             self.screen.fill((0, 0, 0))
