@@ -28,10 +28,10 @@ class Player():
         pass
 
     def heal_self(self, amount):
-        self.cur_health += amount
+        self.curr_health += amount
     
     def take_damage(self, damage):
-        self.cur_health -= damage
+        self.curr_health -= damage
 
     def got_debuff(self, amount):
         self.damage -= amount
