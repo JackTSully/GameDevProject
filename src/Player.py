@@ -55,8 +55,8 @@ class Player():
             self.y = y
 
     def update(self, dt, events):
-        if self.cur_health > self.max_health:
-            self.cur_health = self.max_health\
+        if self.curr_health > self.max_health:
+            self.curr_health = self.max_health\
     
     def display_HP(self,screen):
         player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.curr_health}", False, (175, 53, 42))
