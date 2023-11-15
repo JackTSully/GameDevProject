@@ -7,6 +7,7 @@ class Enemies():
         self.name = name
         self.description = description
         self.max_health = max_health
+        self.cur_health = self.max_health
         self.attack_dice = attack_dice
         self.attack_bonus = attack_bonus
         self.e_ability_id = e_ability_id
@@ -16,6 +17,9 @@ class Enemies():
         self.y = None
         self.cur_health = self.max_health
 
+        self.sprite = gsEnemies_Image_list[card_id-12]
+        self.sprite = pygame.transform.scale(self.sprite, (250,250))
+
     def attack(self, monster, DN):
         pass
 
@@ -24,6 +28,8 @@ class Enemies():
 
     def take_damage(self, amount):
         self.cur_health -= amount
+        if self.cur_health < 0:
+            self.cur_health = 0 
 
     def got_debuff(self, amount):
         self.damage -= amount
