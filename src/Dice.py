@@ -23,4 +23,7 @@ def draw_text(text, color, x, y):
     screen.blit(text_surface, text_rect)
 
 d20 = roll_dice(20)
+d8 = roll_dice(8)
+d6 = roll_dice(6)
+d4 = roll_dice(4)
 print(d20)
