@@ -134,7 +134,7 @@ class CombatState(BaseState):
                 else:
                     self.turn += 1
                     pygame.time.delay(self.attack_delay)
-                    damage = d(8)
+                    damage = d8
                     self.player.take_damage(damage)
                     self.enemy_rounds += 1
 
