@@ -53,12 +53,15 @@ class MapState(BaseState):
             
                 if self.timer > self.time_interval and type(self.floor.curr_room.event_deck.cards[0]) == EnemyCard:
                     self.state_machine.Change('combat',[self.player,self.floor,self.floor.curr_room.event_deck.cards[0]])
-        
+                elif self.timer > self.time_interval and type(self.floor.curr_room.event_deck.cards[0]) == EventCard:
+                    self.state_machine.Change('event',[self.player,self.floor,self.floor.curr_room.event_deck.cards[0]])
+
         
 
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))
+        self.player.display_HP(screen)
         
 
         

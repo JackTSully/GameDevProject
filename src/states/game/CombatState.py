@@ -179,7 +179,8 @@ class CombatState(BaseState):
         
         screen.blit(self.bg_image, (0, 0)) 
 
-        player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.player.cur_health}", False, (175, 53, 42))
+
+        player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.player.curr_health}", False, (175, 53, 42))
         hp_rect = player_hp_text.get_rect(topleft=(20, 20))
         screen.blit(player_hp_text, hp_rect)
         player_ap_text = gFonts['minecraft_small'].render(f"AP: {self.player.action_points}", False, (255, 255, 255))

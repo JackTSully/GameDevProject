@@ -10,6 +10,7 @@ class Floor():
         self.name = name
         #self.description = to be written in constants.py
         self.event_deck = event_deck
+        self.floor_item_deck = None
         
         self.cursor_position = (0, 0)
         self.pause = False
@@ -68,7 +69,9 @@ class Floor():
             if self.rooms[room].get_prev_room() == self.curr_room:
                 self.curr_room = self.rooms[room]
                 break
-                
+    
+    def set_floor_item_deck(self, item_deck : Deck):
+        self.floor_item_deck = item_deck
     
             
     

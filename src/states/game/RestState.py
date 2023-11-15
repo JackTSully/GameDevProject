@@ -23,7 +23,7 @@ class RestState(BaseState):
         event_deck = Deck(1,'event',event_card_list*2)
         
         enemy_card_list = [EnemyCard(**item) for item in enemy_attributes]
-        floor1_enemy_deck = Deck(1,'enemy',enemy_card_list[0:3]*2)
+        floor1_enemy_deck = Deck(1,'enemy',enemy_card_list[0:3]*3)
         #floor1_monster_deck = Deck(1,'monster', floor1_enemy_card_list)
         floor1_enemy_deck.merge_with(event_deck)
         floor1_event_deck = floor1_enemy_deck
@@ -41,13 +41,14 @@ class RestState(BaseState):
 
     def Enter(self,params):
         
+        self.player.reset_atk_power()
         item_card_list = [ItemCard(**item) for item in item_attributes]
-        item_deck = Deck(1,'item',item_card_list*2)
-        item_deck.shuffle_deck()
+        floor_item_deck = Deck(1,'item',item_card_list*3)
+        floor_item_deck.shuffle_deck()
+        self.curr_floor.set_floor_item_deck(floor_item_deck)
         
-        #item_deck.print_cards()
         
-        drawn_cards = item_deck.draw_card(5)
+        drawn_cards = floor_item_deck.draw_card(5)
         #print(drawn_cards)
         self.player.player_item_deck.add_cards(drawn_cards)
         
@@ -112,7 +113,7 @@ class RestState(BaseState):
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0)) 
-
+        self.player.display_HP(screen)
         
         if self.timer < self.time_interval:
             t_press_enter = gFonts['minecraft'].render("Rest Area, Floor 1", False, (175, 53, 42))

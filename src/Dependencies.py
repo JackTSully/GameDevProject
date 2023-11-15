@@ -82,6 +82,7 @@ gFonts = {
     'gothic_large': pygame.font.Font('fonts/GothicPixels.ttf', 96),
     'minecraft': pygame.font.Font('fonts/Minecraft.ttf', 96),
     'minecraft_small': pygame.font.Font('fonts/Minecraft.ttf', 50),
+    'minecraft_tiny': pygame.font.Font('fonts/Minecraft.ttf', 30),
     'dungeon': pygame.font.Font('fonts/DUNGRG__.TTF', 200),
 
 }
@@ -89,6 +90,7 @@ gFonts = {
 from src.states.game.StartState import StartState
 from src.states.game.RestState import RestState
 from src.states.game.MapState import MapState
+from src.states.game.EventState import EventState
 from src.states.game.CombatState import CombatState
 from src.states.game.GameOverState import GameOverState
 from src.StateMachine import StateMachine

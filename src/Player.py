@@ -18,7 +18,7 @@ class Player():
         self.damage = attack_power + attack_dice
 
         self.max_health = max_health
-        self.cur_health = self.max_health
+        self.curr_health = self.max_health
         #ablity_deck = Deck("ability")
         self.sprite = pygame.image.load("graphics/char/paladin.png")
         self.sprite = pygame.transform.scale(self.sprite, (165,315))
@@ -44,6 +44,9 @@ class Player():
 
     def decrease_ap(self, amount):
         self.action_points -= amount
+    
+    def reset_atk_power(self):
+        self.attack_power = 0
 
     def setXY(self, x: int = None, y: int = None):
         if x != None:
@@ -52,8 +55,13 @@ class Player():
             self.y = y
 
     def update(self, dt, events):
-        if self.cur_health > self.max_health:
-            self.cur_health = self.max_health
+        if self.curr_health > self.max_health:
+            self.curr_health = self.max_health\
+    
+    def display_HP(self,screen):
+        player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.curr_health}", False, (175, 53, 42))
+        hp_rect = player_hp_text.get_rect(topleft=(20, 20))
+        screen.blit(player_hp_text, hp_rect)
     
     def render(self, screen):
         screen.blit(self.sprite,(self.x,self.y))
