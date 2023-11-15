@@ -58,8 +58,8 @@ event_attributes = [
     {"card_id": 12, "name": "Secret Room", "description": "Draw 3 Item Cards", "effect_id": 3001},
     {"card_id": 13, "name": "Fountain of Healing", "description": "Heal to full HP", "effect_id": 3002},
     {"card_id": 14, "name": "Hero's monument", "description": "ATK +3 for the whole floor", "effect_id": 3003},
-    {"card_id": 15, "name": "Wounded Adventurer", "description": "Choice: Exchange a Healing Flask for another random item", "effect_id": 3004},
-    {"card_id": 16, "name": "Pitfull Trap", "description": "Athletic Check (10) Fail: Take D4 Damage Pass: Get Item Card", "effect_id": 3005},
+    {"card_id": 15, "name": "Wounded Adventurer", "description": "Choice: Exchange a Healing Flask for another random item. (Y/N)", "effect_id": 3004},
+    {"card_id": 16, "name": "Pitfall Trap", "description": "Athletic Check (10) Fail: Take D4 Damage Pass: Get Item Card", "effect_id": 3005},
     {"card_id": 17, "name": "Dart Trap", "description": "Athletic Check (13) Fail: Take D6 Damage Pass: Get Item Card", "effect_id": 3006},
     {"card_id": 18, "name": "Boulder Trap", "description": "Athletic Check (10/10) Fail: Take D8 Damage Pass: Get 2x Item Card", "effect_id": 3007},
 ]

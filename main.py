@@ -23,7 +23,8 @@ class GameMain:
         states = {
             'start': StartState(self.g_state_manager),
             'rest': RestState(self.g_state_manager),
-            'map': MapState(self.g_state_manager), #Placeholder
+            'map': MapState(self.g_state_manager),
+            'event': EventState(self.g_state_manager),
             'combat': CombatState(self.g_state_manager),
             'game_over': GameOverState(self.g_state_manager)
         }
@@ -39,12 +40,14 @@ class GameMain:
 
         self.g_state_manager.Change("start")
         
+        
 
         while True:
             pygame.display.set_caption("D&D running with {:d} FPS".format(int(clock.get_fps())))
             dt = clock.tick(self.max_frame_rate) / 1000.0
 
             events = pygame.event.get()
+
 
             self.g_state_manager.update(dt, events)
 
