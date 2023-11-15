@@ -70,7 +70,9 @@ gsEnemies_Image_list = [
                         sprite_collection["Emperor_Gorilla"].image
                       ]
 
-
+gSounds = {
+    'bg_music':pygame.mixer.Sound('sounds/main_menu_theme.mp3')
+}
 
 gFonts = {
     'small': pygame.font.Font('fonts/font.ttf', 24),
