@@ -24,8 +24,9 @@ class EventState(BaseState):
         self.card15 = False
 
     def Enter(self,params):
-        self.time_interval = 3
+        self.time_interval = 5
         self.timer = 0
+        self.first = True
         
         self.player : Player= params[0]
         self.floor : Floor = params[1]
@@ -52,38 +53,7 @@ class EventState(BaseState):
                 if card.name == "Healing Flask":
                     self.card15 = True
         
-        elif card_id == 16: #Pitfall Trap
-            #Athletic Check (10) Fail: Take D4 Damage Pass: Get Item Card
-            roll = roll_dice(20)
-            if roll < 10:
-                dmg = roll_dice(4)
-                self.player.take_damage(dmg)
-            else:
-                drawn_card = self.floor.floor_item_deck.draw_card(1)
-                self.player.player_item_deck.add_cards(drawn_card)
         
-        elif card_id == 17: #Dart Trap
-            #Athletic Check (13) Fail: Take D6 Damage Pass: Get Item Card
-            roll = roll_dice(20)
-            if roll < 13:
-                dmg = roll_dice(6)
-                self.player.take_damage(dmg)
-            else:
-                drawn_card = self.floor.floor_item_deck.draw_card(1)
-                self.player.player_item_deck.add_cards(drawn_cards)
-        
-        elif card_id == 18: #Boulder Trap
-            #Athletic Check (10/10) Fail: Take D8 Damage Pass: Get 2x Item Card
-            roll1 = roll_dice(20)
-            roll2 = roll_dice(20)
-            if roll1 < 10 and roll2 < 10:
-                dmg = roll_dice(8)
-                self.player.take_damage(dmg)
-            elif roll1 >= 10 and roll2 < 10:
-                pass
-            elif roll1 >= 10 and roll2 > 10:
-                drawn_cards = self.floor.floor_item_deck.draw_card(2)
-                self.player.player_item_deck.add_cards(drawn_cards)
 
 
     def Exit(self):
@@ -138,4 +108,66 @@ class EventState(BaseState):
         text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
         rect = text.get_rect(center=(WIDTH/2, HEIGHT/2))
         screen.blit(text, rect)
-
+        
+        card_id = self.event_card.card_id
+        if card_id == 16: #Pitfall Trap
+            #Athletic Check (10) Fail: Take D4 Damage Pass: Get Item Card
+            if self.first:
+                self.roll = roll_dice(20)
+                if self.roll < 10:
+                    dmg = roll_dice(4)
+                    self.player.take_damage(dmg)
+                else:
+                    drawn_card = self.floor.floor_item_deck.draw_card(1)
+                    self.player.player_item_deck.add_cards(drawn_card)
+                self.first = False
+            if self.roll < 10:
+                txt = "you rolled a "+str(self.roll)+" you failed"
+            else:
+                txt = "you rolled a "+str(self.roll)+" you won!"
+            text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + HEIGHT/4))
+            screen.blit(text, rect)
+        
+        elif card_id == 17: #Dart Trap
+            #Athletic Check (13) Fail: Take D6 Damage Pass: Get Item Card
+            if self.first:
+                self.roll = roll_dice(20)
+                if self.roll < 13:
+                    dmg = roll_dice(6)
+                    self.player.take_damage(dmg)
+                else:
+                    drawn_card = self.floor.floor_item_deck.draw_card(1)
+                    self.player.player_item_deck.add_cards(drawn_cards)
+                self.first = False
+            if self.roll < 13:
+                txt = "you rolled a "+str(self.roll)+" you failed"
+            else:
+                txt = "you rolled a "+str(self.roll)+" you won!"
+            text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + HEIGHT/4))
+            screen.blit(text, rect)
+            
+        elif card_id == 18: #Boulder Trap
+            #Athletic Check (10/10) Fail: Take D8 Damage Pass: Get 2x Item Card
+            if self.first:
+                self.roll1 = roll_dice(20)
+                self.roll2 = roll_dice(20)
+                if self.roll1 < 10 and self.roll2 < 10:
+                    dmg = roll_dice(8)
+                    self.player.take_damage(dmg)
+                elif self.roll1 >= 10 and self.roll2 < 10:
+                    pass
+                elif self.roll1 >= 10 and self.roll2 > 10:
+                    drawn_cards = self.floor.floor_item_deck.draw_card(2)
+                    self.player.player_item_deck.add_cards(drawn_cards)
+                self.first = False
+            if self.roll1 < 10 and self.roll2 < 10:
+                txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you failed big!"
+            elif self.roll1 >= 10 and self.roll2 < 10:
+                txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you were spared!"
+            elif self.roll1 >= 10 and self.roll2 > 10:
+                txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you won!"
+            text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + HEIGHT/4))
+            screen.blit(text, rect)
