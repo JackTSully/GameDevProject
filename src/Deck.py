@@ -41,6 +41,9 @@ class Deck():
     
     def remove_card(self, card_index):
         del self.cards[card_index]
+        
+    def get_card(self, card_index) -> Card:
+        return self.cards[card_index]
     
     def merge_with(self, deck):
         #self.type = [self.type, deck.get_deck_type())

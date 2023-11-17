@@ -16,11 +16,12 @@ gPlayer_animation_list = { "idle": sprite_collection["character_idle"].animation
 gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
                      sprite_collection["Potion_of_Stupidity"].image,
                      sprite_collection["Potion_of_Relaxation"].image,
+                     sprite_collection["Shield"].image,
                      sprite_collection["Potion_of_Swiftness"].image,
                      sprite_collection["Potion_of_Prowess"].image,
                      sprite_collection["Replicator"].image,
-                     sprite_collection["Double Roll"].image,
-                     sprite_collection["Shield"].image]
+                     sprite_collection["Double Roll"].image
+                     ]
 
 gFrames_image_list = [sprite_collection["Abilities_Frames"].image,
                       sprite_collection["Boss_Frames"].image,
@@ -90,6 +91,7 @@ gFonts = {
     'minecraft': pygame.font.Font('fonts/Minecraft.ttf', 96),
     'minecraft_small': pygame.font.Font('fonts/Minecraft.ttf', 50),
     'minecraft_tiny': pygame.font.Font('fonts/Minecraft.ttf', 30),
+    'minecraft_card': pygame.font.Font('fonts/Minecraft.ttf', 18),
     'dungeon': pygame.font.Font('fonts/DUNGRG__.TTF', 200),
 
 }

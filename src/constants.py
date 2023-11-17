@@ -3,45 +3,12 @@ import math
 WIDTH = 1280
 HEIGHT = 720
 
-TILE_SIZE = 48
-
-PLAYER_WALK_SPEED = 180
-
-NUMBER_OF_MONSTER=10
-
-MAP_WIDTH = WIDTH // TILE_SIZE - 2
-MAP_HEIGHT = int(math.floor(HEIGHT/TILE_SIZE)) - 2
-
-
-MAP_RENDER_OFFSET_X = (WIDTH - (MAP_WIDTH * TILE_SIZE)) / 2
-MAP_RENDER_OFFSET_Y = (HEIGHT - (MAP_HEIGHT *TILE_SIZE)) / 2
-
-TILE_TOP_LEFT_CORNER = 4
-TILE_TOP_RIGHT_CORNER = 5
-TILE_BOTTOM_LEFT_CORNER = 23
-TILE_BOTTOM_RIGHT_CORNER = 24
-
-TILE_FLOORS = [
-    7, 8, 9, 10, 11, 12, 13,
-    26, 27, 28, 29, 30, 31, 32,
-    45, 46, 47, 48, 49, 50, 51,
-    64, 65, 66, 67, 68, 69, 70,
-    88, 89, 107, 108
-]
-
-TILE_EMPTY = 19
-
-TILE_TOP_WALLS = [58, 59, 60]
-TILE_BOTTOM_WALLS = [79, 80, 81]
-TILE_LEFT_WALLS = [77, 96, 115]
-TILE_RIGHT_WALLS = [78, 97, 116]
-
 item_attributes = [
     {"card_id": 1, "name": "Healing Flask", "description": "+5 HP", "effect_id": 1001, "action_cost": 1, "turn_cost": 0},
     {"card_id": 2, "name": "Potion of Stupidity", "description": "-5 ATK (Selected Enemy)", "effect_id": 1002, "action_cost": 1, "turn_cost": 1},
     {"card_id": 3, "name": "Potion of Relaxation", "description": "Disables enemy's skill (Selected Enemy)", "effect_id": 1003, "action_cost": 1, "turn_cost": 1},
-    {"card_id": 5, "name": "Shield", "description": "Invulnerable to the next attack", "effect_id": 1004, "action_cost": 1, "turn_cost": 1},
-    {"card_id": 4, "name": "Potion of Swiftness", "description": "+1 AP", "effect_id": 1005, "action_cost": 0, "turn_cost": 1},
+    {"card_id": 4, "name": "Shield", "description": "Invulnerable to the next attack", "effect_id": 1004, "action_cost": 1, "turn_cost": 1},
+    {"card_id": 5, "name": "Potion of Swiftness", "description": "+1 AP", "effect_id": 1005, "action_cost": 0, "turn_cost": 1},
     {"card_id": 6, "name": "Potion of Prowess", "description": "+ 5 ATK for the duration of the fight", "effect_id": 1006, "action_cost": 1, "turn_cost": 1},
     {"card_id": 7, "name": "Replicator", "description": "Duplicates selected cards on-hand", "effect_id": 1007, "action_cost": 1, "turn_cost": 1},
     {"card_id": 8, "name": "Double Roll", "description": "Gain an additional roll", "effect_id": 1008, "action_cost": 1, "turn_cost": 0},

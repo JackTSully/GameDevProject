@@ -148,6 +148,14 @@ class Floor():
                 position = (x_offset, y_offset)
                 final_card = self.curr_room.event_deck.render(frame_image, item_image) 
                 screen.blit(final_card, position)
+                
+                card_name = card.name.split(" ")
+                y = 0
+                for string in card_name:
+                    text = gFonts['minecraft_card'].render(string, False, ('black'))
+                    rect = text.get_rect(center=(x_offset + 75 , y_offset + 142 + y))
+                    screen.blit(text, rect)
+                    y += 17
         
                 x_offset += 200   
                 i+=1
