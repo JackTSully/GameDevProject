@@ -1,5 +1,5 @@
 from src.states.BaseState import BaseState
-import pygame, sys
+import pygame, sys, copy
 from src.Dependencies import *
 from src.constants import *
 from src.StateMachine import StateMachine
@@ -17,7 +17,7 @@ class CombatState(BaseState):
         self.bg_image = pygame.image.load("graphics/stages/mines.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
-        self.turn = 1
+        self.turn = 0
         self.enemy_rounds = 0
         self.player_rounds = 0
         self.attack_delay = 500
@@ -34,6 +34,10 @@ class CombatState(BaseState):
 
         self.show_ability_cards = False
         self.show_item_cards = False
+        self.duplication_effect_active = False
+        self.double_roll_active = False
+        self.charged_attack_active = False
+        self.counter_attack_active = False
 
     def Enter(self,params):
         self.player = params[0]
@@ -78,86 +82,173 @@ class CombatState(BaseState):
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.turn == 1:
                 if self.selected_card:
                     print(f"Clicked on the selected card: {self.selected_card.card_id}")
+                    
+                    if self.selected_card:
+                        if self.duplication_effect_active:
+                            duplicated_card = copy.deepcopy(self.selected_card)
+                            self.player.player_item_deck.add_cards(duplicated_card)
+                    
                     if self.selected_card.effect_id == 1001: #Heal
-                        self.player.heal_self(5)
-                        self.player.action_points -= 1
+
+                        if self.duplication_effect_active:
+                            self.duplication_effect_active = False
+                        else:
+                            self.player.heal_self(5)
+                            self.player.action_points_offset -= 1
+                            self.player.player_item_deck.cards.remove(self.selected_card)
+
 
                     elif self.selected_card.effect_id == 1002: # dec_atk
-                        self.enemies.got_debuff(5)
-                        self.player.action_points -= 1
+
+                        if self.duplication_effect_active:
+                            self.duplication_effect_active = False
+                        else:
+                            self.enemies.got_debuff(5,2)
+                            self.player.action_points_offset -= 1
+                            self.player.player_item_deck.cards.remove(self.selected_card)
 
                     elif self.selected_card.effect_id == 1003: #dis_skill
-                        self.enemies.disabled_skill()
-                        self.player.action_points -= 1
+
+                        if self.duplication_effect_active:
+                            self.duplication_effect_active = False
+                        else:
+                            self.enemies.disabled_skill()
+                            self.player.action_points_offset -= 1
+                            self.player.player_item_deck.cards.remove(self.selected_card)                        
 
                     elif self.selected_card.effect_id == 1004: #inv
-                        self.player.action_points -= 1
+
+                        if self.duplication_effect_active:
+                            self.duplication_effect_active = False
+                        else:
+                            self.player.action_points_offset -= 1
+                            self.enemies.got_debuff(20, 2)
+                            self.player.player_item_deck.cards.remove(self.selected_card)                            
 
                     elif self.selected_card.effect_id == 1005: #inc_ap
-                        self.player.increase_ap(1)
+    
+                        if self.duplication_effect_active:
+                            self.duplication_effect_active = False
+                        else:
+                            self.player.increase_ap(1)
+                            self.player.player_item_deck.cards.remove(self.selected_card)
 
                     elif self.selected_card.effect_id == 1006: #inc_atk
-                        self.player.increase_atk(5)
-                        self.player.action_points -= 1
+                        
+                        if self.duplication_effect_active:
+                            self.duplication_effect_active = False
+
+                        else:
+                            self.player.increase_atk(5)
+                            self.player.action_points_offset -= 1
+                            self.player.player_item_deck.cards.remove(self.selected_card)
 
                     elif self.selected_card.effect_id == 1007: #dup_card
-                        self.player.action_points -= 1
+                        self.player.action_points_offset -= 1
+                        self.duplication_effect_active = True
+                        self.player.player_item_deck.cards.remove(self.selected_card)
 
                     elif self.selected_card.effect_id == 1008: #add_roll
-                        self.player.action_points -= 1
+                        if self.duplication_effect_active:
+                            self.duplication_effect_active = False
+                            self.selected_card = None
+                        else:
+                            self.player.action_points_offset -= 1
+                            self.player.player_item_deck.cards.remove(self.selected_card)
+                            self.double_roll_active = True
+
+
                     elif self.selected_card.effect_id == 2001: #attack
-                        pygame.time.delay(self.attack_delay) 
-                        self.enemies.take_damage(d20)
-                        self.player.action_points -= 1
-                        self.selected_card = None
-                        self.turn = 2
-                        print(self.turn)
+                        if not self.double_roll_active:
+                            pygame.time.delay(self.attack_delay) 
+                            self.enemies.take_damage(d20 + self.player.attack_power)
+                            self.player.action_points -= 1
+                            self.selected_card = None
+                            self.turn = 2
+                            print(self.turn)
+                        else:
+                            self.enemies.take_damage(total_roll)
+                            self.player.action_points -= 1
+                            self.selected_card = None
+                            self.turn = 2
+                            print(self.turn)
+
 
                     elif self.selected_card.effect_id == 2002: #charge
-                        pygame.time.delay(self.attack_delay) 
-                        self.enemies.take_damage(d20*2)
-                        self.player.action_points -= 2
-                        self.selected_card = None
-                        self.turn = 2
+                        self.charged_attack_active = True
+                        if self.charged_attack_active:
+                            print(f"Roll 1: {roll1}")
+                            pygame.time.delay(self.attack_delay) 
+                            self.player.action_points -= 2
+                            self.selected_card = None
+                            self.turn = 2
+                            self.charged_attack_active = False
+                        if not self.charged_attack_active:
+                            print(f"fRoll 2: {roll2}")
+                            print(f"Total Roll: {total_roll}")
+                            pygame.time.delay(self.attack_delay) 
+                            self.enemies.take_damage(total_roll + self.player.attack_power)
+                            self.selected_card = None
+                            self.turn = 2                            
 
                     elif self.selected_card.effect_id == 2003: #counter
-                        pygame.time.delay(self.attack_delay)
-                        pass
-                        self.player.action_points -= 1
-                        self.selected_card = None
-                        self.turn = 2
+                        self.counter_attack_active = True
+                        if self.counter_attack_active:
+                            pygame.time.delay(self.attack_delay)
+                            self.player.action_points -= 2
+                            self.enemies.got_debuff(2,2)
+                            self.selected_card = None
+                            self.counter_attack_active = False
+                            self.turn = 2
+                        elif self.turn == 1 and not self.counter_attack_active:
+                            self.enemies.take_damage(d20  + self.player.attack_power)
+                            print(f"Counter Attack: {d20}")
+
                         
                     elif self.selected_card.effect_id == 2004: #block
-                        
                         pygame.time.delay(self.attack_delay)
-                        self.enemies.got_debuff(5)
                         self.player.action_points -= 1
+                        self.enemies.got_debuff(5,2)
+                        self.selected_card = None
                         self.turn = 2
                     return
                 
 
+        if self.turn == 0:
+            self.turn = 1
+
+        if self.turn == 1:
+            self.player.action_points = 3 + self.player.action_points_offset
+
         if self.turn == 1 and self.player.action_points <= 0:
-            self.player.action_points = 3
             self.turn = 2
+            self.player.action_points_offset = 0
+
+
 
         elif self.turn == 2:
-
             if self.enemy_rounds == 3:
                 print(self.turn)
                 print(self.enemy_rounds)
                 pygame.time.delay(self.enemy_delay)
-                self.player.got_debuff(5) 
+                self.player.got_debuff(5, 1) 
                 self.turn = 1
                 self.enemy_rounds += 1
+                self.player.action_points_offset = 0
+                self.duplication_effect_active = False
+                self.enemies.debuff_turns = 0
                 
             else:
                 print(self.turn)
                 pygame.time.delay(self.enemy_delay)
-                damage = d20
-                self.player.take_damage(damage)
+                self.enemies.attack(self.player)
+                print(f"Enemies Attack Damage {self.enemies.total_damage}")
                 self.enemy_rounds += 1
                 self.turn = 1
                 print(self.enemy_rounds)
+                self.player.action_points_offset = 0
+                self.duplication_effect_active = False
+                self.enemies.debuff_turns = 0
 
         frame_size = (140, 200)
         self.selected_card = None
@@ -206,6 +297,9 @@ class CombatState(BaseState):
         screen.blit(player_hp_text, hp_rect)
         player_ap_text = gFonts['minecraft_small'].render(f"AP: {self.player.action_points}", False, (255, 255, 255))
         hp_rect = player_ap_text.get_rect(topleft=(20, 80))
+        screen.blit(player_ap_text, hp_rect)
+        player_ap_text = gFonts['minecraft_small'].render(f"ATK: {self.player.attack_power}", False, (255, 255, 255))
+        hp_rect = player_ap_text.get_rect(topleft=(20, 140))
         screen.blit(player_ap_text, hp_rect)
 
         turn_text = "Your turn" if self.turn % 2 != 0 else "Enemy's turn"

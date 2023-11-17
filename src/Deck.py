@@ -37,7 +37,10 @@ class Deck():
         random.shuffle(self.cards)
     
     def add_cards(self, cards: list):
-        self.cards.extend(cards)
+        if isinstance(cards, list):
+            self.cards.extend(cards)
+        else:
+            self.cards.append(cards)
     
     def remove_card(self, card_index):
         del self.cards[card_index]

@@ -13,10 +13,12 @@ class Player():
         self.ability_deck = Deck(1,'ability',[AbilityCard(**item) for item in ability_attributes])
         self.player_item_deck = Deck(1,'item',[])
         
-        self.action_points = action_points
         self.attack_power = attack_power
         self.attack_dice = attack_dice
         self.damage = attack_power + attack_dice
+        self.action_points_offset = 0
+        self.action_points = action_points + self.action_points_offset
+        self.debuff_turns = 0
 
         self.max_health = max_health
         self.curr_health = self.max_health
@@ -48,20 +50,31 @@ class Player():
     def take_damage(self, damage):
         self.curr_health -= damage
 
-    def got_debuff(self, amount):
+    def got_debuff(self, amount, duration):
+        print(f"Before Debuff - Damage: {self.damage}")
         self.damage -= amount
+        self.debuff_turns = duration
+        if self.damage <= 0:
+            self.damage = 0
+        print(f"After Debuff - Damage: {self.damage}")
 
     def increase_atk(self,amount):
-        self.damage += amount
+        self.attack_power += amount
 
     def increase_ap(self, amount):
-        self.action_points += amount
+        self.action_points_offset += amount
+        self.action_points += self.action_points_offset
+        self.action_points = 3
+
 
     def decrease_ap(self, amount):
         self.action_points -= amount
     
     def reset_atk_power(self):
         self.attack_power = 0
+
+    def restore(self):
+        self.debuff_turns = 0 
 
     def setXY(self, x: int = None, y: int = None):
         if x != None:
@@ -71,9 +84,14 @@ class Player():
 
     def update(self, dt, events):
 
+        self.action_points_offset = 0
+
         if self.curr_health > self.max_health:
             self.curr_health = self.max_health
             self.state_machine.update(dt, events)
+
+        if self.debuff_turns > 0:
+            self.restore()
         
         self.current_animation.update(dt)
 
@@ -82,12 +100,12 @@ class Player():
         player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.curr_health}", False, (175, 53, 42))
         hp_rect = player_hp_text.get_rect(topleft=(20, 20))
         screen.blit(player_hp_text, hp_rect)
-    
-    def render(self, screen):
-        self.render(self.sprite, (self.x, self.y))
 
-        #cur_frame = self.current_animation.image
-        #screen.blit(cur_frame, (self.x, self.y))
+        if self.debuff_turns > 0:
+            self.restore()
+
+    def render(self, screen):
+        screen.blit(self.sprite, (self.x, self.y))
         #print(cur_frame)
     
     def CreateAnimations(self):

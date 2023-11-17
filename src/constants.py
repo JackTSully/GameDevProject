@@ -32,21 +32,21 @@ event_attributes = [
 ]
 
 enemy_attributes = [
-                    {"card_id": 19, "name": "Slime", "description": "A small green creature", "max_health": 40, "attack_dice": 6, "attack_bonus": 0, "e_ability_id": 0},
-                    {"card_id": 20, "name": "Stone Golem", "description": "Harden(A): -2 incoming DMG for 1 turn, CD for 2 turns", "max_health": 50, "attack_dice": 6, "attack_bonus": 1, "e_ability_id": 1},
-                    {"card_id": 21, "name": "Diamond Golem", "description": "Blinding Shimmer(P): -1 Player AP", "max_health": 60, "attack_dice": 6, "attack_bonus": 0, "e_ability_id": 2},
+                    {"card_id": 19, "name": "Slime", "description": "A small green creature", "max_health": 40, "attack_dice": "d6", "attack_bonus": 0, "e_ability_id": 0},
+                    {"card_id": 20, "name": "Stone Golem", "description": "Harden(A): -2 incoming DMG for 1 turn, CD for 2 turns", "max_health": 50, "attack_dice": "d6", "attack_bonus": 1, "e_ability_id": 1},
+                    {"card_id": 21, "name": "Diamond Golem", "description": "Blinding Shimmer(P): -1 Player AP", "max_health": 60, "attack_dice": "d6", "attack_bonus": 0, "e_ability_id": 2},
                     {"card_id": 22, "name": "Skeleton", "description": "Woke from the grave", "max_health": 50, "attack_dice": 6, "attack_bonus": 0, "e_ability_id": 3},
-                    {"card_id": 23, "name": "Skeleton Mage", "description": "Fireball(A): D4 DoT for 3 turns, CD for 4 turns", "max_health": 30, "attack_dice": 6, "attack_bonus": 1, "e_ability_id": 4},
-                    {"card_id": 24, "name": "Skeleton Juggernuat", "description": "Detonate(P): Explodes for 8 DMG in D4+2 turns", "max_health": 60, "attack_dice": 8, "attack_bonus": 0, "e_ability_id": 5},
-                    {"card_id": 25, "name": "Temple Guardian", "description": "Charge(A): Skip 1 turn then attack with 2D6s, CD for 1 turn", "max_health": 50, "attack_dice": 6, "attack_bonus": -1, "e_ability_id": 6},
-                    {"card_id": 26, "name": "Fanatic Cultist", "description": "Prayer(P): +1 ATK every turn", "max_health": 45, "attack_dice": 6-1, "attack_bonus": -1, "e_ability_id": 7},
-                    {"card_id": 27, "name": "Vampire Bat", "description": "Lifesteal(P): steals 1 HP everytime it attacks", "max_health": 40, "attack_dice": 6, "attack_bonus": 0, "e_ability_id": 8},
-                    {"card_id": 28, "name": "Feral Monkey", "description": "Manic Burst(A): +2 ATK for 2 turns, CD for 3 turns", "max_health": 50, "attack_dice": 6, "attack_bonus": 2, "e_ability_id": 9},
+                    {"card_id": 23, "name": "Skeleton Mage", "description": "Fireball(A): D4 DoT for 3 turns, CD for 4 turns", "max_health": 30, "attack_dice": "d6", "attack_bonus": 1, "e_ability_id": 4},
+                    {"card_id": 24, "name": "Skeleton Juggernuat", "description": "Detonate(P): Explodes for 8 DMG in D4+2 turns", "max_health": 60, "attack_dice": "d8", "attack_bonus": 0, "e_ability_id": 5},
+                    {"card_id": 25, "name": "Temple Guardian", "description": "Charge(A): Skip 1 turn then attack with 2D6s, CD for 1 turn", "max_health": 50, "attack_dice": "d6", "attack_bonus": -1, "e_ability_id": 6},
+                    {"card_id": 26, "name": "Fanatic Cultist", "description": "Prayer(P): +1 ATK every turn", "max_health": 45, "attack_dice": "d5", "attack_bonus": -1, "e_ability_id": 7},
+                    {"card_id": 27, "name": "Vampire Bat", "description": "Lifesteal(P): steals 1 HP everytime it attacks", "max_health": 40, "attack_dice": "d6", "attack_bonus": 0, "e_ability_id": 8},
+                    {"card_id": 28, "name": "Feral Monkey", "description": "Manic Burst(A): +2 ATK for 2 turns, CD for 3 turns", "max_health": 50, "attack_dice": "d6", "attack_bonus": 2, "e_ability_id": 9},
                     {"card_id": 29, "name": "King Ape", "description": "Eat Banana(A): +10 HP, CD for 2 turns", "max_health": 70, "attack_dice": 6, "attack_bonus": 4, "e_ability_id": 10},
-                    {"card_id": 30, "name": "Underminer", "description": "Shifting Grounds(P): -2 AP every odd numbered turn for the Player","max_health": 65, "attack_dice": 6, "attack_bonus": 1, "e_ability_id": 11},
-                    {"card_id": 31, "name": "Necromancer", "description": "Raise the Dead(A): Summon 10HP skeleton with D4 ATK, CD 3 turns", "max_health": 60, "attack_dice": 6, "attack_bonus": 0, "e_ability_id": 12},
-                    {"card_id": 32, "name": "Cult Leader", "description": "Sacrifice(P): every attacking turn, roll another D6 “Blood die”, add the value to the ATK and deduct it from their HP", "max_health": 100, "attack_dice": 6, "attack_bonus": 1, "e_ability_id": 13},
-                    {"card_id": 33, "name": "Emperor Gorilla", "description": "Royal Smash(A): -2 AP for 2 turns for the Player, CD 4 turns", "max_health": 65, "attack_dice": 12, "attack_bonus": 0, "e_ability_id": 14},
+                    {"card_id": 30, "name": "Underminer", "description": "Shifting Grounds(P): -2 AP every odd numbered turn for the Player","max_health": 65, "attack_dice": "d6", "attack_bonus": 1, "e_ability_id": 11},
+                    {"card_id": 31, "name": "Necromancer", "description": "Raise the Dead(A): Summon 10HP skeleton with D4 ATK, CD 3 turns", "max_health": 60, "attack_dice": "d6", "attack_bonus": 0, "e_ability_id": 12},
+                    {"card_id": 32, "name": "Cult Leader", "description": "Sacrifice(P): every attacking turn, roll another D6 “Blood die”, add the value to the ATK and deduct it from their HP", "max_health": 100, "attack_dice": "d6", "attack_bonus": 1, "e_ability_id": 13},
+                    {"card_id": 33, "name": "Emperor Gorilla", "description": "Royal Smash(A): -2 AP for 2 turns for the Player, CD 4 turns", "max_health": 65, "attack_dice": "d12", "attack_bonus": 0, "e_ability_id": 14},
 ]
 
 EFFECT_TYPE_HEAL = 1001

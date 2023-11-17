@@ -117,8 +117,6 @@ class RestState(BaseState):
             else:
                 self.item_card_index = None
                     
-
-        self.player.current_animation.update(dt)
         self.cursor_position = pygame.mouse.get_pos()
            
         
