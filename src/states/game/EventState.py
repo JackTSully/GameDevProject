@@ -35,6 +35,9 @@ class EventState(BaseState):
         
         self.drawn_cards = None
         
+        self.item_description = None
+        self.item_description_show_right = True
+        
         card_id = self.event_card.card_id
         if card_id == 12: #Secret Room
             #draw 3 cards
@@ -82,8 +85,32 @@ class EventState(BaseState):
                 if self.timer > self.time_interval:
                     if event.key == pygame.K_RETURN:
                         self.state_machine.Change('map',[self.player,self.floor])
+            
+            if self.drawn_cards != None:
+                for i, item_card in enumerate(self.drawn_cards):
+                    x_offset, y_offset = 100 + i * 200, 450
+                    frame_size = (140,200)
+                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+                
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                    
+                        if card_rect.collidepoint(self.cursor_position) and event.button == 3:
+                            self.item_card_index = i
+
+                            self.item_description = self.drawn_cards[self.item_card_index].description
+                            if self.item_card_index > 2:
+                                self.item_description_show_right = False
+
+                        
+                    if event.type == pygame.MOUSEMOTION:
+                        self.item_description = None
+                        self.item_description_show_right = True
+                else:
+                    self.item_card_index = None
                     
         self.timer = self.timer + dt
+        
+        self.cursor_position = pygame.mouse.get_pos()
         
         
         
@@ -199,4 +226,22 @@ class EventState(BaseState):
                 position = (x_offset, y_offset)
                 final_card = self.player.player_item_deck.render(frame_image, item_image) 
                 screen.blit(final_card, position)
+                
+                item_name = item_card.name.split(" ")
+                y = 0
+                for string in item_name:
+                    text = gFonts['minecraft_card'].render(string, False, ('black'))
+                    rect = text.get_rect(center=(x_offset + 75 , y_offset + 142 + y))
+                    screen.blit(text, rect)
+                    y += 17
+                
                 x_offset += 200
+                
+        if self.item_description != None:
+            description = gFonts['minecraft_tiny'].render(self.item_description, False, "yellow", "black")
+            
+            if self.item_description_show_right == True:
+                rect = description.get_rect(bottomleft=(pygame.mouse.get_pos()))
+            else:
+                rect = description.get_rect(bottomright=(pygame.mouse.get_pos()))
+            screen.blit(description, rect)

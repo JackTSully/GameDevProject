@@ -25,8 +25,9 @@ class MapState(BaseState):
         self.time_interval = 1.5
         self.timer = 0
         
-        self.player :Player = params[0]
+        self.player : Player = params[0]
         self.floor : Floor = params[1]
+        self.floor.Enter()
         self.floor.next_room()
 
 
