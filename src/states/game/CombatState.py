@@ -21,8 +21,7 @@ class CombatState(BaseState):
         self.enemy_rounds = 0
         self.player_rounds = 0
         self.attack_delay = 500
-        self.attack_timer = None
-        self.damage_text = None
+        self.enemy_delay = 1000
 
         self.time_interval = 3
         self.timer = 0
@@ -111,7 +110,8 @@ class CombatState(BaseState):
                         self.enemies.take_damage(d20)
                         self.player.action_points -= 1
                         self.selected_card = None
-                        self.player.turn = 2
+                        self.turn = 2
+                        print(self.turn)
 
                     elif self.selected_card.effect_id == 2002: #charge
                         pygame.time.delay(self.attack_delay) 
@@ -133,22 +133,31 @@ class CombatState(BaseState):
                         self.enemies.got_debuff(5)
                         self.player.action_points -= 1
                         self.turn = 2
+                    return
                 
 
         if self.turn == 1 and self.player.action_points <= 0:
-            self.turn = 2         
             self.player.action_points = 3
+            self.turn = 2
+
         elif self.turn == 2:
+
             if self.enemy_rounds == 3:
-                pygame.time.delay(self.attack_delay)
+                print(self.turn)
+                print(self.enemy_rounds)
+                pygame.time.delay(self.enemy_delay)
                 self.player.got_debuff(5) 
                 self.turn = 1
+                self.enemy_rounds += 1
+                
             else:
+                print(self.turn)
+                pygame.time.delay(self.enemy_delay)
                 damage = d20
-                pygame.time.delay(self.attack_delay)
                 self.player.take_damage(damage)
                 self.enemy_rounds += 1
                 self.turn = 1
+                print(self.enemy_rounds)
 
         frame_size = (140, 200)
         self.selected_card = None

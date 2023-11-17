@@ -7,6 +7,11 @@ pygame.init()
 
 sprite_collection = SpriteManager().spriteCollection
 
+gPlayer_animation_list = { "idle": sprite_collection["character_idle"].animation,
+                           "attack": sprite_collection["character_attack"].animation,
+                           "charged_attack": sprite_collection["character_charged_Attack"].animation
+
+}
 
 gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
                      sprite_collection["Potion_of_Stupidity"].image,

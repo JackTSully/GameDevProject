@@ -3,6 +3,7 @@ from src.Dependencies import *
 from src.constants import *
 from src.Deck import Deck
 from src.Card import AbilityCard
+from src.Animation import *
 
 class Player():
     def __init__(self,max_health, action_points, attack_power, attack_dice):
@@ -20,9 +21,23 @@ class Player():
         self.max_health = max_health
         self.curr_health = self.max_health
         #ablity_deck = Deck("ability")
+
+        #self.sprite = pygame.transform.scale(self.sprites, (165,315))
+
         self.sprite = pygame.image.load("graphics/char/paladin.png")
         self.sprite = pygame.transform.scale(self.sprite, (165,315))
-        
+        self.animation_state = "idle"
+        self.animation_list = gPlayer_animation_list
+        self.state_machine = None
+        self.curr_animation = None
+
+
+    def ChangeAnimation(self, name):
+        self.curr_animation = self.animation_list[name]
+
+    def ChangeState(self, name):
+        self.state_machine.Change(name)
+
 
     def attack(self, monster, DN):
         pass
@@ -55,14 +70,26 @@ class Player():
             self.y = y
 
     def update(self, dt, events):
+
         if self.curr_health > self.max_health:
-            self.curr_health = self.max_health\
-    
+            self.curr_health = self.max_health
+            self.state_machine.update(dt, events)
+        
+        self.current_animation.update(dt)
+
+        
     def display_HP(self,screen):
         player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.curr_health}", False, (175, 53, 42))
         hp_rect = player_hp_text.get_rect(topleft=(20, 20))
         screen.blit(player_hp_text, hp_rect)
     
     def render(self, screen):
-        screen.blit(self.sprite,(self.x,self.y))
+        self.render(self.sprite, (self.x, self.y))
+
+        #cur_frame = self.current_animation.image
+        #screen.blit(cur_frame, (self.x, self.y))
+        #print(cur_frame)
+    
+    def CreateAnimations(self):
+        self.animation_list = gPlayer_animation_list
         
