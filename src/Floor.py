@@ -50,6 +50,10 @@ class Floor():
             prev_room = room
         
         self.curr_room = self.rooms['start']
+    
+    def Enter(self):
+        self.item_description = None
+        self.item_description_show_right = True
         
     def get_floor_lvl(self):
         return self.floor_lvl
@@ -81,20 +85,30 @@ class Floor():
     
     def update(self, dt, events):
         for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # 1 corresponds to the left mouse button
-
-                for i, card in enumerate(self.curr_room.event_deck.cards):
-                    x_offset, y_offset = 100 + i * 200, 450
-                    frame_size = (140,200)
-                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
-
-                    if card_rect.collidepoint(self.cursor_position):
-                        self.card_index = i
-                        self.selected_card = card
-                        self.curr_room.event_deck.remove_card(self.card_index)
+            for i, item_card in enumerate(self.curr_room.event_deck.cards):
+                x_offset, y_offset = 100 + i * 200, 450
+                frame_size = (140,200)
+                card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
+                    if card_rect.collidepoint(self.cursor_position) and event.button == 1:
+                        self.item_card_index = i
+                        
+                        self.curr_room.event_deck.remove_card(self.item_card_index)
                         break
-                else:
-                    self.item_card_index = None
+                    elif card_rect.collidepoint(self.cursor_position) and event.button == 3:
+                        self.item_card_index = i
+
+                        self.item_description = self.curr_room.event_deck.get_card(self.item_card_index).description
+                        if self.item_card_index > 2:
+                            self.item_description_show_right = False
+
+                        
+                if event.type == pygame.MOUSEMOTION:
+                    self.item_description = None
+                    self.item_description_show_right = True
+            else:
+                self.item_card_index = None
             
         self.cursor_position = pygame.mouse.get_pos()
     
@@ -159,6 +173,11 @@ class Floor():
         
                 x_offset += 200   
                 i+=1
+            
+            if len(self.curr_room.event_deck.cards) > 3:
+                text = gFonts['minecraft_small'].render("Discard 2 from the Event Pool", False, ('white'))
+                rect = text.get_rect(bottomleft=(100 , HEIGHT - 225))
+                screen.blit(text, rect)
                 
             if len(self.curr_room.event_deck.cards) == 3:
                 for i in range(len(self.curr_room.event_deck.cards)-1):
@@ -170,5 +189,14 @@ class Floor():
                 text = gFonts['minecraft_small'].render(txt, False, (255, 255, 255))
                 rect = text.get_rect(center=(WIDTH/2, HEIGHT -225))
                 screen.blit(text, rect)
+            
+            if self.item_description != None:
+                description = gFonts['minecraft_tiny'].render(self.item_description, False, "yellow", "black")
+            
+                if self.item_description_show_right == True:
+                    rect = description.get_rect(bottomleft=(pygame.mouse.get_pos()))
+                else:
+                    rect = description.get_rect(bottomright=(pygame.mouse.get_pos()))
+                screen.blit(description, rect)
         
     

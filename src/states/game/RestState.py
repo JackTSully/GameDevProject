@@ -109,7 +109,7 @@ class RestState(BaseState):
                         self.item_description = self.player.player_item_deck.get_card(self.item_card_index).description
                         if self.item_card_index > 2:
                             self.item_description_show_right = False
-                            print("test")
+
                         
                 if event.type == pygame.MOUSEMOTION:
                     self.item_description = None
