@@ -39,7 +39,7 @@ class RestState(BaseState):
 
     def Enter(self,params):
         self.time_interval = 3
-        self.timer = 0
+        self.timer_text = 0
         
         self.player.reset_atk_power()
         item_card_list = [ItemCard(**item) for item in item_attributes]
@@ -53,6 +53,9 @@ class RestState(BaseState):
         self.player.player_item_deck.add_cards(drawn_cards)
         
         #print(self.player.player_item_deck.print_cards())
+        
+        self.item_description = None
+        self.item_description_show_right = True
         
         
 
@@ -87,26 +90,39 @@ class RestState(BaseState):
             if len(self.player.player_item_deck.cards) == 3:
                 self.state_machine.Change('map',[self.player,self.curr_floor])
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # 1 corresponds to the left mouse button
-
-                for i, item_card in enumerate(self.player.player_item_deck.cards):
-                    x_offset, y_offset = 100 + i * 200, 450
-                    frame_size = (140,200)
-                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
-
-                    if card_rect.collidepoint(self.cursor_position):
+            #if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
+            
+            for i, item_card in enumerate(self.player.player_item_deck.cards):
+                x_offset, y_offset = 100 + i * 200, 450
+                frame_size = (140,200)
+                card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
+                    if card_rect.collidepoint(self.cursor_position) and event.button == 1:
                         self.item_card_index = i
-                        self.selected_card = item_card
+                        
                         self.player.player_item_deck.remove_card(self.item_card_index)
                         break
-                else:
-                    self.item_card_index = None
+                    elif card_rect.collidepoint(self.cursor_position) and event.button == 3:
+                        self.item_card_index = i
+
+                        self.item_description = self.player.player_item_deck.get_card(self.item_card_index).description
+                        if self.item_card_index > 2:
+                            self.item_description_show_right = False
+                            print("test")
+                        
+                if event.type == pygame.MOUSEMOTION:
+                    self.item_description = None
+                    self.item_description_show_right = True
+            else:
+                self.item_card_index = None
+                    
 
 
         self.cursor_position = pygame.mouse.get_pos()
            
         
-        self.timer = self.timer + dt
+        self.timer_text = self.timer_text + dt
 
     def check_for_pos(self, position):
         pass
@@ -115,12 +131,12 @@ class RestState(BaseState):
         screen.blit(self.bg_image, (0, 0)) 
         self.player.display_HP(screen)
         
-        if self.timer < self.time_interval:
+        if self.timer_text < self.time_interval:
             t_press_enter = gFonts['minecraft'].render("Rest Area, Floor 1", False, (175, 53, 42))
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 
-        if self.timer > self.time_interval:
+        if self.timer_text > self.time_interval:
             t_press_enter = gFonts['minecraft'].render("Discard 2 Cards", False, (175, 53, 42))
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
@@ -131,11 +147,29 @@ class RestState(BaseState):
         
         for item_card in self.player.player_item_deck.cards:
 
-            item_index = item_card.card_id 
+            item_index = item_card.card_id
             item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
             frame_image = gFrames_image_list[3]
             position = (x_offset, y_offset)
             final_card = self.player.player_item_deck.render(frame_image, item_image) 
             screen.blit(final_card, position)
+            
+            item_name = item_card.name.split(" ")
+            y = 0
+            for string in item_name:
+                text = gFonts['minecraft_card'].render(string, False, ('black'))
+                rect = text.get_rect(center=(x_offset + 75 , y_offset + 142 + y))
+                screen.blit(text, rect)
+                y += 17
+            
             x_offset += 200
+        
+        if self.item_description != None:
+            description = gFonts['minecraft_tiny'].render(self.item_description, False, "yellow", "black")
+            
+            if self.item_description_show_right == True:
+                rect = description.get_rect(bottomleft=(pygame.mouse.get_pos()))
+            else:
+                rect = description.get_rect(bottomright=(pygame.mouse.get_pos()))
+            screen.blit(description, rect)
             

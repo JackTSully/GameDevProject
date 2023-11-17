@@ -22,6 +22,7 @@ class EventState(BaseState):
         self.selected_card = None 
         
         self.card15 = False
+        
 
     def Enter(self,params):
         self.time_interval = 5
@@ -32,11 +33,13 @@ class EventState(BaseState):
         self.floor : Floor = params[1]
         self.event_card = params[2]
         
+        self.drawn_cards = None
+        
         card_id = self.event_card.card_id
         if card_id == 12: #Secret Room
             #draw 3 cards
-            drawn_cards = self.floor.floor_item_deck.draw_card(3)
-            self.player.player_item_deck.add_cards(drawn_cards)
+            self.drawn_cards = self.floor.floor_item_deck.draw_card(3)
+            self.player.player_item_deck.add_cards(self.drawn_cards)
         
         elif card_id == 13: #Fountain of Healing
             #heal to full HP
@@ -70,15 +73,17 @@ class EventState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_y:
-                    drawn_cards = self.floor.floor_item_deck.draw_card(1)
-                    self.player.player_item_deck.add_cards(drawn_cards)
+                    self.drawn_cards = self.floor.floor_item_deck.draw_card(1)
+                    self.player.player_item_deck.add_cards(self.drawn_cards)
                     self.state_machine.Change('map',[self.player,self.floor])
                 if event.key == pygame.K_n:
                     self.state_machine.Change('map',[self.player,self.floor])
                     
+                if self.timer > self.time_interval:
+                    if event.key == pygame.K_RETURN:
+                        self.state_machine.Change('map',[self.player,self.floor])
+                    
         self.timer = self.timer + dt
-        if self.timer > self.time_interval:
-            self.state_machine.Change('map',[self.player,self.floor])
         
         
         
@@ -99,15 +104,21 @@ class EventState(BaseState):
         screen.blit(final_card, position)
         x_offset += 200
         
-        text = "Room event"          
-        t_press_enter = gFonts['minecraft_small'].render(text, False, (255, 255, 255))
-        rect = t_press_enter.get_rect(center=(WIDTH / 2, 50))
-        screen.blit(t_press_enter, rect)
+        txt = "Room event"          
+        text = gFonts['minecraft_small'].render(txt, False, (255, 255, 255))
+        rect = text.get_rect(center=(WIDTH / 2, 50))
+        screen.blit(text, rect)
         
         txt = self.event_card.description
         text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
         rect = text.get_rect(center=(WIDTH/2, HEIGHT/2))
         screen.blit(text, rect)
+        
+        if self.timer > self.time_interval:
+            txt = "Press Enter to continue"
+            text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2+120))
+            screen.blit(text, rect)           
         
         card_id = self.event_card.card_id
         if card_id == 16: #Pitfall Trap
@@ -118,15 +129,15 @@ class EventState(BaseState):
                     dmg = roll_dice(4)
                     self.player.take_damage(dmg)
                 else:
-                    drawn_card = self.floor.floor_item_deck.draw_card(1)
-                    self.player.player_item_deck.add_cards(drawn_card)
+                    self.drawn_cards = self.floor.floor_item_deck.draw_card(1)
+                    self.player.player_item_deck.add_cards(self.drawn_cards)
                 self.first = False
             if self.roll < 10:
                 txt = "you rolled a "+str(self.roll)+" you failed"
             else:
                 txt = "you rolled a "+str(self.roll)+" you won!"
             text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
-            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + HEIGHT/4))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + 30))
             screen.blit(text, rect)
         
         elif card_id == 17: #Dart Trap
@@ -137,15 +148,15 @@ class EventState(BaseState):
                     dmg = roll_dice(6)
                     self.player.take_damage(dmg)
                 else:
-                    drawn_card = self.floor.floor_item_deck.draw_card(1)
-                    self.player.player_item_deck.add_cards(drawn_cards)
+                    self.drawn_cards = self.floor.floor_item_deck.draw_card(1)
+                    self.player.player_item_deck.add_cards(self.drawn_cards)
                 self.first = False
             if self.roll < 13:
                 txt = "you rolled a "+str(self.roll)+" you failed"
             else:
                 txt = "you rolled a "+str(self.roll)+" you won!"
             text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
-            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + HEIGHT/4))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + 30))
             screen.blit(text, rect)
             
         elif card_id == 18: #Boulder Trap
@@ -158,16 +169,34 @@ class EventState(BaseState):
                     self.player.take_damage(dmg)
                 elif self.roll1 >= 10 and self.roll2 < 10:
                     pass
-                elif self.roll1 >= 10 and self.roll2 > 10:
-                    drawn_cards = self.floor.floor_item_deck.draw_card(2)
-                    self.player.player_item_deck.add_cards(drawn_cards)
+                elif self.roll1 >= 10 and self.roll2 >= 10:
+                    self.drawn_cards = self.floor.floor_item_deck.draw_card(2)
+                    self.player.player_item_deck.add_cards(self.drawn_cards)
                 self.first = False
+                 
             if self.roll1 < 10 and self.roll2 < 10:
                 txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you failed big!"
             elif self.roll1 >= 10 and self.roll2 < 10:
                 txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you were spared!"
-            elif self.roll1 >= 10 and self.roll2 > 10:
+            elif self.roll1 >= 10 and self.roll2 >= 10:
                 txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you won!"
             text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
-            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + HEIGHT/4))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + 30))
             screen.blit(text, rect)
+        
+        
+        
+        # Shows item cards drawn from event
+        if self.drawn_cards != None:       
+            x_offset = 100 #reset the position for the second line of cards
+            y_offset = HEIGHT-225
+                 
+            for item_card in self.drawn_cards:
+
+                item_index = item_card.card_id 
+                item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
+                frame_image = gFrames_image_list[3]
+                position = (x_offset, y_offset)
+                final_card = self.player.player_item_deck.render(frame_image, item_image) 
+                screen.blit(final_card, position)
+                x_offset += 200
