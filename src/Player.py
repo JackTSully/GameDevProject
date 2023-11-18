@@ -41,8 +41,9 @@ class Player():
         self.state_machine.Change(name)
 
 
-    def attack(self, monster, DN):
-        pass
+    def attack(self, enemy):
+        self.enemy.take_damage(roll_dice(self.attack_dice) + self.attack_power)
+        
 
     def heal_self(self, amount):
         self.curr_health += amount
@@ -51,12 +52,10 @@ class Player():
         self.curr_health -= damage
 
     def got_debuff(self, amount, duration):
-        print(f"Before Debuff - Damage: {self.damage}")
         self.damage -= amount
         self.debuff_turns = duration
         if self.damage <= 0:
             self.damage = 0
-        print(f"After Debuff - Damage: {self.damage}")
 
     def increase_atk(self,amount):
         self.attack_power += amount

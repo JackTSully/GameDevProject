@@ -1,8 +1,11 @@
 import pygame, random
+from src.constants import *
 from src.Dependencies import *
+from src.Dice import Dice
 
 class Enemies():
     def __init__(self, card_id, name, description, max_health, attack_dice, attack_bonus, e_ability_id):
+        dice_instance = Dice()
         self.card_id = card_id
         self.name = name
         self.description = description
@@ -13,20 +16,16 @@ class Enemies():
         self.e_ability_id = e_ability_id
         self.total_damage = 0
         self.debuff_turns = 0
-
+        self.rolled_damage = 0
         self.x = None
         self.y = None
         self.cur_health = self.max_health
-
+        self.attack_bonus = self.attack_bonus
+        
         self.sprite = gsEnemies_Image_list[card_id-12]
         self.sprite = pygame.transform.scale(self.sprite, (250,250))
 
-    def attack(self, player):
-        rolled_damage = self.roll_attack_dice()
-        self.total_damage = self.attack_bonus + rolled_damage
-        player.take_damage(self.total_damage)
-        print(f"Total E Damage: {self.total_damage}")
-        return self.total_damage
+
 
     def take_damage(self, amount):
         self.cur_health -= amount
@@ -37,12 +36,10 @@ class Enemies():
         self.debuff_turns = 0 
 
     def got_debuff(self, amount, duration):
-        print(f"Before Debuff - Total Damage: {self.total_damage}")
-        self.total_damage -= amount
+        self.attack_dice -= amount
         self.debuff_turns = duration
         if self.total_damage < 0:
             self.total_damage = 0
-        print(f"After Debuff - Total Damage: {self.total_damage}")
 
     def increase_atk(self, amount):
         self.damage += amount

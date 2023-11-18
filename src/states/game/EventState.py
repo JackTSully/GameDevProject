@@ -6,10 +6,11 @@ from src.StateMachine import StateMachine
 from src.Card import ItemCard, AbilityCard, EventCard, EnemyCard
 from src.Player import Player
 from src.Floor import *
-from src.Dice import roll_dice
+from src.Dice import *
 
 class EventState(BaseState):
     def __init__(self, state_machine):
+        self.dice_instance = Dice()
         super(EventState, self).__init__(state_machine)
         self.bg_image = pygame.image.load("graphics/dungeon_wall_bg.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
@@ -151,9 +152,9 @@ class EventState(BaseState):
         if card_id == 16: #Pitfall Trap
             #Athletic Check (10) Fail: Take D4 Damage Pass: Get Item Card
             if self.first:
-                self.roll = roll_dice(20)
+                self.roll = self.dice_instance.roll_dice(20)
                 if self.roll < 10:
-                    dmg = roll_dice(4)
+                    dmg = self.dice_instance.roll_dice(4)
                     self.player.take_damage(dmg)
                 else:
                     self.drawn_cards = self.floor.floor_item_deck.draw_card(1)
@@ -170,9 +171,9 @@ class EventState(BaseState):
         elif card_id == 17: #Dart Trap
             #Athletic Check (13) Fail: Take D6 Damage Pass: Get Item Card
             if self.first:
-                self.roll = roll_dice(20)
+                self.roll = self.dice_instance.roll_dice(20)
                 if self.roll < 13:
-                    dmg = roll_dice(6)
+                    dmg = self.dice_instance.roll_dice(6)
                     self.player.take_damage(dmg)
                 else:
                     self.drawn_cards = self.floor.floor_item_deck.draw_card(1)
@@ -189,10 +190,10 @@ class EventState(BaseState):
         elif card_id == 18: #Boulder Trap
             #Athletic Check (10/10) Fail: Take D8 Damage Pass: Get 2x Item Card
             if self.first:
-                self.roll1 = roll_dice(20)
-                self.roll2 = roll_dice(20)
+                self.roll1 = self.dice_instance.roll_dice(20)
+                self.roll2 = self.dice_instance.roll_dice(20)
                 if self.roll1 < 10 and self.roll2 < 10:
-                    dmg = roll_dice(8)
+                    dmg = self.dice_instanceroll_dice(8)
                     self.player.take_damage(dmg)
                 elif self.roll1 >= 10 and self.roll2 < 10:
                     pass
