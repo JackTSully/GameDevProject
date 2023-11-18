@@ -39,6 +39,13 @@ class Player():
 
     def ChangeState(self, name):
         self.state_machine.Change(name)
+        
+    def check_item_overcap(self):
+        
+        if len(self.player_item_deck.get_cards()) > 6:
+            return True
+        else:
+            return False
 
 
     def attack(self, enemy):

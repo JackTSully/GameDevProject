@@ -93,7 +93,7 @@ class RestState(BaseState):
             #if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
             
             for i, item_card in enumerate(self.player.player_item_deck.cards):
-                x_offset, y_offset = 100 + i * 200, 450
+                x_offset, y_offset = 100 + i * 200, HEIGHT-225
                 frame_size = (140,200)
                 card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
                 
