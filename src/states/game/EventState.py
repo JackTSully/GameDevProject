@@ -22,38 +22,38 @@ class EventState(BaseState):
         self.cursor_position = (0, 0)
         self.selected_card = None 
         
-        self.card15 = False
-        
 
     def Enter(self,params):
-        self.time_interval = 5
+        self.time_interval = 1
         self.timer = 0
         self.first = True
         
         self.player : Player= params[0]
         self.floor : Floor = params[1]
-        self.event_card = params[2]
+        if len(params) > 2:
+            self.event_card = params[2]
         
         self.drawn_cards = None
+        self.card15 = False
         
         self.item_description = None
         self.item_description_show_right = True
         
-        card_id = self.event_card.card_id
-        if card_id == 12: #Secret Room
+        self.card_id = self.event_card.card_id
+        if self.card_id == 12: #Secret Room
             #draw 3 cards
             self.drawn_cards = self.floor.floor_item_deck.draw_card(3)
             self.player.player_item_deck.add_cards(self.drawn_cards)
         
-        elif card_id == 13: #Fountain of Healing
+        elif self.card_id == 13: #Fountain of Healing
             #heal to full HP
             self.player.curr_health = self.player.max_health
             
-        elif card_id == 14: #Hero's monument
+        elif self.card_id == 14: #Hero's monument
             #ATK +3 for the whole floor
             self.player.attack_power += 3
         
-        elif card_id == 15: #Wounded Adventurer
+        elif self.card_id == 15: #Wounded Adventurer
             #Choice: Exchange a Healing Flask for another random item
             
             for card in self.player.player_item_deck.cards:
@@ -76,20 +76,29 @@ class EventState(BaseState):
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-                if event.key == pygame.K_y:
+                    
+                if event.key == pygame.K_y and self.card15:
                     self.drawn_cards = self.floor.floor_item_deck.draw_card(1)
                     self.player.player_item_deck.add_cards(self.drawn_cards)
-                    self.state_machine.Change('map',[self.player,self.floor])
-                if event.key == pygame.K_n:
+                    for i, card in enumerate(self.player.player_item_deck.cards):
+                
+                        if card.name == "Healing Flask":
+                            self.player.player_item_deck.remove_card(i)
+                
                     self.state_machine.Change('map',[self.player,self.floor])
                     
-                if self.timer > self.time_interval:
-                    if event.key == pygame.K_RETURN:
-                        self.state_machine.Change('map',[self.player,self.floor])
+                if event.key == pygame.K_n and self.card15:
+                    self.state_machine.Change('map',[self.player,self.floor])
+                
+                if event.key == pygame.K_i:
+                    self.state_machine.Change('player_info',[self.player,self.floor,'event'])
+                    
+                if event.key == pygame.K_RETURN:
+                    self.state_machine.Change('map',[self.player,self.floor])
             
             if self.drawn_cards != None:
                 for i, item_card in enumerate(self.drawn_cards):
-                    x_offset, y_offset = 100 + i * 200, 450
+                    x_offset, y_offset = 100 + i * 200, HEIGHT-225
                     frame_size = (140,200)
                     card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
                 
@@ -130,7 +139,6 @@ class EventState(BaseState):
         position = (x_offset, y_offset)
         final_card = self.player.player_item_deck.render(frame_image, event_image) 
         screen.blit(final_card, position)
-        x_offset += 200
         
         txt = "Room event"          
         text = gFonts['minecraft_small'].render(txt, False, (255, 255, 255))
@@ -148,8 +156,28 @@ class EventState(BaseState):
             rect = text.get_rect(center=(WIDTH/2, HEIGHT/2+120))
             screen.blit(text, rect)           
         
-        card_id = self.event_card.card_id
-        if card_id == 16: #Pitfall Trap
+        if self.card_id == 15:
+            x_offset = 100 
+            y_offset = HEIGHT-225
+            for card in self.player.player_item_deck.cards:
+                
+                if card.name == "Healing Flask":
+                    item_index = card.card_id 
+                    item_image = gItems_image_list[item_index-1] #-1 since the item index starts from 1 (line above)
+                    frame_image = gFrames_image_list[3]
+                    position = (x_offset, y_offset)
+                    final_card = self.player.player_item_deck.render(frame_image, item_image) 
+                    screen.blit(final_card, position)
+                    item_name = card.name.split(" ")
+                    y = 0
+                    for string in item_name:
+                        text = gFonts['minecraft_card'].render(string, False, ('black'))
+                        rect = text.get_rect(center=(x_offset + 75 , y_offset + 142 + y))
+                        screen.blit(text, rect)
+                        y += 17
+                    x_offset += 200
+                    
+        if self.card_id == 16: #Pitfall Trap
             #Athletic Check (10) Fail: Take D4 Damage Pass: Get Item Card
             if self.first:
                 self.roll = self.dice_instance.roll_dice(20)
@@ -168,7 +196,7 @@ class EventState(BaseState):
             rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + 30))
             screen.blit(text, rect)
         
-        elif card_id == 17: #Dart Trap
+        elif self.card_id == 17: #Dart Trap
             #Athletic Check (13) Fail: Take D6 Damage Pass: Get Item Card
             if self.first:
                 self.roll = self.dice_instance.roll_dice(20)
@@ -187,13 +215,13 @@ class EventState(BaseState):
             rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + 30))
             screen.blit(text, rect)
             
-        elif card_id == 18: #Boulder Trap
+        elif self.card_id == 18: #Boulder Trap
             #Athletic Check (10/10) Fail: Take D8 Damage Pass: Get 2x Item Card
             if self.first:
                 self.roll1 = self.dice_instance.roll_dice(20)
                 self.roll2 = self.dice_instance.roll_dice(20)
                 if self.roll1 < 10 and self.roll2 < 10:
-                    dmg = self.dice_instanceroll_dice(8)
+                    dmg = self.dice_instance.roll_dice(8)
                     self.player.take_damage(dmg)
                 elif self.roll1 >= 10 and self.roll2 < 10:
                     pass
@@ -206,8 +234,12 @@ class EventState(BaseState):
                 txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you failed big!"
             elif self.roll1 >= 10 and self.roll2 < 10:
                 txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you were spared!"
+            elif self.roll1 < 10 and self.roll2 >= 10:
+                txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you were spared!"
             elif self.roll1 >= 10 and self.roll2 >= 10:
                 txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" you won!"
+            else:
+                txt = "you rolled a "+str(self.roll1)+" and a "+str(self.roll2)+" error"
             text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
             rect = text.get_rect(center=(WIDTH/2, HEIGHT/2 + 30))
             screen.blit(text, rect)
