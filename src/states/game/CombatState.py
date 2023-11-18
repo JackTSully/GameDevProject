@@ -41,7 +41,7 @@ class CombatState(BaseState):
         self.duplication_effect_active = False
         self.double_roll_active = False
         self.charged_attack_active = False
-        self.counter_attack_active = False
+        self.enemies_attack = False
         self.invincible_active = False
 
     def Enter(self,params):
@@ -174,8 +174,8 @@ class CombatState(BaseState):
                             self.selected_card = None
                             self.turn = 2
                             print(self.turn)
-                        else:
-                            self.enemies.take_damage(total_roll)
+                        if self.double_roll_active:
+                            self.enemies.take_damage(self.rolled_damage*2 + self.player.attack_power)
                             self.player.action_points -= 1
                             self.selected_card = None
                             self.turn = 2
@@ -184,37 +184,53 @@ class CombatState(BaseState):
 
                     elif self.selected_card.effect_id == 2002: #charge
 
-                        self.charged_attack_active = True
+                        if not self.charged_attack_active:
+                            if not self.double_roll_active:
+                                self.roll1 = self.dice_instance.roll_dice(20) + self.player.attack_power
+                                print(f"Roll 1: {self.roll1}")
+                                pygame.time.delay(self.attack_delay) 
+                                self.player.action_points -= 2
+                                self.selected_card = None
+                                self.turn = 2
+                                self.charged_attack_active = False
+                            if self.double_roll_active:
+                                self.roll1 = self.dice_instance.roll_dice(20)*2 + self.player.attack_power
+                                print(f"Roll 1: {self.roll1}")
+                                pygame.time.delay(self.attack_delay) 
+                                self.player.action_points -= 2
+                                self.selected_card = None
+                                self.turn = 2
+                                self.charged_attack_active = False
+
 
                         if self.charged_attack_active:
-                            self.roll1 = self.dice_instance.roll_dice(20) + self.player.attack_power
-                            print(f"Roll 1: {self.roll1}")
-                            pygame.time.delay(self.attack_delay) 
-                            self.player.action_points -= 2
-                            self.selected_card = None
-                            self.turn = 2
-                            self.charged_attack_active = False
-
-                        if not self.charged_attack_active:
-                            self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
-                            self.total_roll = self.roll1 + self.roll2
-                            print(f"fRoll 2: {self.roll2}")
-                            print(f"Total Roll: {self.total_roll}")
-                            pygame.time.delay(self.attack_delay) 
-                            self.enemies.take_damage(self.total_roll)
-                            self.selected_card = None
-                            self.turn = 2                            
+                            if not self.double_roll_active:
+                                self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
+                                self.total_roll = self.roll1 + self.roll2
+                                print(f"fRoll 2: {self.roll2}")
+                                print(f"Total Roll: {self.total_roll}")
+                                pygame.time.delay(self.attack_delay) 
+                                self.enemies.take_damage(self.total_roll)
+                                self.selected_card = None
+                                self.turn = 2  
+                            if self.double_roll_active:
+                                self.roll2 = self.dice_instance.roll_dice(20)*2 + self.player.attack_power
+                                self.total_roll = self.roll1 + self.roll2
+                                print(f"fRoll 2: {self.roll2}")
+                                print(f"Total Roll: {self.total_roll}")
+                                pygame.time.delay(self.attack_delay) 
+                                self.enemies.take_damage(self.total_roll)
+                                self.selected_card = None
+                                self.turn = 2                                                          
 
                     elif self.selected_card.effect_id == 2003: #counter
-                            self.counter_attack_active = True
-                            pygame.time.delay(self.attack_delay)
-                            self.player.action_points -= 2
-                            self.enemies.got_debuff(2, 2)
-                            self.turn = 2
-                            self.selected_card = None
-                            self.counter_attack_active = False
-                            
-
+                            if not self.enemies_attack:
+                                pygame.time.delay(self.attack_delay)
+                                self.player.action_points -= 2
+                                self.enemies.got_debuff(2, 2)
+                                self.turn = 2
+                                self.selected_card = None
+                                self.counter_attack_active = False
                         
                     elif self.selected_card.effect_id == 2004: #block
                         pygame.time.delay(self.attack_delay)
@@ -224,6 +240,7 @@ class CombatState(BaseState):
                         print(f"After Enemy Debuff - Damage: {self.enemies.attack_dice}")
                         self.selected_card = None
                         self.turn = 2
+
                     return
                 
 
@@ -232,10 +249,7 @@ class CombatState(BaseState):
 
         if self.turn == 1:
             self.player.action_points = 3 + self.player.action_points_offset
-            if self.counter_attack_active:
-                self.rolled_damage = self.dice_instance.roll_dice(20)
-                self.enemies.take_damage(self.rolled_damage + self.player.attack_power)
-                print(f"Counter Attack: {self.rolled_damage + self.player.attack_power}")
+
 
 
         if self.turn == 1 and self.player.action_points <= 0:
@@ -259,8 +273,22 @@ class CombatState(BaseState):
             else:
                 if not self.invincible_active:
                     print(self.turn)
-                    self.attack_dice = max(self.enemies.attack_dice, 1)
-                    self.e_rolled_damage = self.dice_instance.roll_dice(self.attack_dice) + self.enemies.attack_bonus
+                    self.enemies_attack = True
+                    self.e_rolled_damage = self.dice_instance.roll_dice(self.enemies.attack_dice) + self.enemies.attack_bonus
+
+                    if self.enemies_attack:
+                        if not self.double_roll_active:
+                            counter_attack_damage = self.dice_instance.roll_dice(20) + self.player.attack_power 
+                            self.enemies.take_damage(counter_attack_damage)
+                            print(f"Counter Attack: {counter_attack_damage}")
+                            self.enemies_attack = False
+                        if self.double_roll_active:
+                            counter_attack_damage = self.dice_instance.roll_dice(20)*2 + self.player.attack_power 
+                            self.enemies.take_damage(counter_attack_damage)
+                            print(f"Counter Attack: {counter_attack_damage}")
+                            self.enemies_attack = False
+
+
                     pygame.time.delay(self.enemy_delay)
                     self.player.take_damage(self.e_rolled_damage)
                     print(f"Enemies Attack Damage {self.e_rolled_damage}")
@@ -271,8 +299,23 @@ class CombatState(BaseState):
                     self.duplication_effect_active = False
                     self.enemies.debuff_turns = 0
                     self.invincible_active = False
+
                 elif self.invincible_active:
                     print(self.turn)
+                    self.enemies_attack = True
+
+                    if self.enemies_attack:
+                        if not self.double_roll_active:
+                            counter_attack_damage = self.dice_instance.roll_dice(20) + self.player.attack_power 
+                            self.enemies.take_damage(counter_attack_damage)
+                            print(f"Counter Attack: {counter_attack_damage}")
+                            self.enemies_attack = False
+                        if self.double_roll_active:
+                            counter_attack_damage = self.dice_instance.roll_dice(20)*2 + self.player.attack_power 
+                            self.enemies.take_damage(counter_attack_damage)
+                            print(f"Counter Attack: {counter_attack_damage}")
+                            self.enemies_attack = False
+
                     self.e_rolled_damage = 0
                     pygame.time.delay(self.enemy_delay)
                     self.player.take_damage(self.e_rolled_damage)
