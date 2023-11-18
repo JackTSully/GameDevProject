@@ -203,7 +203,7 @@ class CombatState(BaseState):
                                 self.charged_attack_active = False
 
 
-                        if self.charged_attack_active:
+                        if self.charged_attack_active: 
                             if not self.double_roll_active:
                                 self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
                                 self.total_roll = self.roll1 + self.roll2
@@ -230,7 +230,7 @@ class CombatState(BaseState):
                                 self.enemies.got_debuff(2, 2)
                                 self.turn = 2
                                 self.selected_card = None
-                                self.counter_attack_active = False
+                                self.counter_attack_active = True
                         
                     elif self.selected_card.effect_id == 2004: #block
                         pygame.time.delay(self.attack_delay)
@@ -276,17 +276,19 @@ class CombatState(BaseState):
                     self.enemies_attack = True
                     self.e_rolled_damage = self.dice_instance.roll_dice(self.enemies.attack_dice) + self.enemies.attack_bonus
 
-                    if self.enemies_attack:
+                    if self.enemies_attack and self.counter_attack_active:
                         if not self.double_roll_active:
                             counter_attack_damage = self.dice_instance.roll_dice(20) + self.player.attack_power 
                             self.enemies.take_damage(counter_attack_damage)
                             print(f"Counter Attack: {counter_attack_damage}")
                             self.enemies_attack = False
+                            self.counter_attack_active = False
                         if self.double_roll_active:
                             counter_attack_damage = self.dice_instance.roll_dice(20)*2 + self.player.attack_power 
                             self.enemies.take_damage(counter_attack_damage)
                             print(f"Counter Attack: {counter_attack_damage}")
                             self.enemies_attack = False
+                            self.counter_attack_active = False
 
 
                     pygame.time.delay(self.enemy_delay)
