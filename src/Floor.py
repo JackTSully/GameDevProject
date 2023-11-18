@@ -86,7 +86,7 @@ class Floor():
     def update(self, dt, events):
         for event in events:
             for i, item_card in enumerate(self.curr_room.event_deck.cards):
-                x_offset, y_offset = 100 + i * 200, 450
+                x_offset, y_offset = 100 + i * 200, HEIGHT-225
                 frame_size = (140,200)
                 card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
                 

@@ -19,7 +19,6 @@ class MapState(BaseState):
         self.floor = None
 
         self.cursor_position = (0, 0)
-        self.selected_card = None 
 
     def Enter(self,params):
         self.time_interval = 1.5
@@ -28,7 +27,12 @@ class MapState(BaseState):
         self.player : Player = params[0]
         self.floor : Floor = params[1]
         self.floor.Enter()
-        self.floor.next_room()
+        
+        if  self.floor.curr_room.event_deck == None or len(self.floor.curr_room.event_deck.cards) == 1:
+            self.floor.next_room()
+
+        if self.player.check_item_overcap():
+            self.state_machine.Change('discard',[self.player,self.floor,'map'])
 
 
     def Exit(self):
@@ -47,6 +51,9 @@ class MapState(BaseState):
                 if event.key == pygame.K_RETURN:
                     #self.state_machine.Change('combat',[self.player])
                     self.floor.next_room()
+                
+                if event.key == pygame.K_i:
+                    self.state_machine.Change('player_info',[self.player,self.floor,'map'])
  
         self.floor.update(dt,events)
         
