@@ -139,6 +139,14 @@ class EventState(BaseState):
         position = (x_offset, y_offset)
         final_card = self.player.player_item_deck.render(frame_image, event_image) 
         screen.blit(final_card, position)
+        event_name = self.event_card.name.split(" ")
+        y = 0
+        for string in event_name:
+            text = gFonts['minecraft_card'].render(string, False, ('black'))
+            rect = text.get_rect(center=(x_offset + 75 , y_offset + 142 + y))
+            screen.blit(text, rect)
+            y += 17
+
         
         txt = "Room event"          
         text = gFonts['minecraft_small'].render(txt, False, (255, 255, 255))

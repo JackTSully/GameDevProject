@@ -3,9 +3,10 @@ from src.Dependencies import *
 from src.constants import *
 from src.Room import Room
 from src.Deck import Deck
+from src.Card import EnemyCard
 
 class Floor():
-    def __init__(self, level, name, event_deck: Deck):
+    def __init__(self, level, name, event_deck: Deck, boss: Deck):
         self.floor_lvl = level
         self.name = name
         #self.description = to be written in constants.py
@@ -29,13 +30,14 @@ class Floor():
         room1_deck = Deck('1', 'mixed', room1_cards)
         room2_deck = Deck('2', 'mixed', room2_cards)
         room3_deck = Deck('3', 'mixed', room3_cards)
+        boss_deck = boss
         
         rooms = {
             'start' : self.start_room,
             'room1' : Room(int(str(self.floor_lvl)+"1"), self.floor_lvl, self.start_room, room1_deck),
             'room2' : Room(int(str(self.floor_lvl)+"2"), self.floor_lvl, self.start_room, room2_deck),
             'room3' : Room(int(str(self.floor_lvl)+"3"), self.floor_lvl, self.start_room, room3_deck),
-            'boss'  : Room(int(str(self.floor_lvl)+"4"), self.floor_lvl, self.start_room, None),
+            'boss'  : Room(int(str(self.floor_lvl)+"4"), self.floor_lvl, self.start_room, boss_deck),
         }
         
         self.rooms = rooms
@@ -146,7 +148,7 @@ class Floor():
         pygame.draw.line(screen, 'white', ((WIDTH/2)+30, HEIGHT/2), ((4/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)
         pygame.draw.line(screen, 'white', ((4/3)*(WIDTH/2)+30, HEIGHT/2), ((5/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)
         
-        if self.curr_room != self.rooms['start'] and self.curr_room != self.rooms['boss']:
+        if self.curr_room != self.rooms['start']:
             x_offset = 100 #reset the position for the second line of cards
             y_offset = HEIGHT - 225
         
