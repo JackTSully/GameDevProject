@@ -88,7 +88,7 @@ class PlayerInfoState(BaseState):
         self.player.display_HP(screen)
         
         
-        text = "Player Info"          
+        text = "Card Inventory"          
         t_press_enter = gFonts['minecraft'].render(text, False, (255, 255, 255))
         rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
         screen.blit(t_press_enter, rect)

@@ -7,6 +7,7 @@ from src.Player import Player
 from src.Floor import Floor
 from src.Card import ItemCard, AbilityCard, EventCard, EnemyCard
 from src.Deck import Deck
+from src.Dungeon import Dungeon
 
 class RestState(BaseState):
     def __init__(self, state_machine):
@@ -16,21 +17,10 @@ class RestState(BaseState):
         
         self.player = Player(30, 3, 0, 20)
         self.player.setXY(WIDTH/3 - 50 ,HEIGHT/3)
+        self.dungeon = Dungeon()
+        self.floor = self.dungeon.get_curr_floor()
         
-        event_card_list = [EventCard(**item) for item in event_attributes]
-        event_deck = Deck(1,'event',event_card_list*2)
         
-        enemy_card_list = [EnemyCard(**item) for item in enemy_attributes]
-        floor1_enemy_deck = Deck(1,'enemy',enemy_card_list[0:3]*3)
-        #floor1_monster_deck = Deck(1,'monster', floor1_enemy_card_list)
-        floor1_enemy_deck.merge_with(event_deck)
-        floor1_event_deck = floor1_enemy_deck
-        floors = {
-        "mines": Floor(1, "The Mines", floor1_event_deck),
-        }
-        
-        self.floors = floors
-        self.curr_floor = self.floors['mines']
         
         self.cursor_position = (0, 0)
         self.selected_card = None 
@@ -40,22 +30,28 @@ class RestState(BaseState):
     def Enter(self,params):
         self.time_interval = 3
         self.timer_text = 0
-        
         self.player.reset_atk_power()
-        item_card_list = [ItemCard(**item) for item in item_attributes]
-        floor_item_deck = Deck(1,'item',item_card_list*3)
-        floor_item_deck.shuffle_deck()
-        self.curr_floor.set_floor_item_deck(floor_item_deck)
-        
-        
-        drawn_cards = floor_item_deck.draw_card(5)
-        #print(drawn_cards)
-        self.player.player_item_deck.add_cards(drawn_cards)
-        
-        #print(self.player.player_item_deck.print_cards())
-        
         self.item_description = None
         self.item_description_show_right = True
+        
+        if params == None: 
+            self.dungeon.Enter(params)
+            
+            drawn_cards = self.dungeon.get_drawn_cards()
+            
+            self.player.player_item_deck.add_cards(drawn_cards)
+            
+            #print(self.player.player_item_deck.print_cards())
+            
+            
+        else:
+            self.dungeon.next_floor()
+            self.dungeon.Enter(params)
+            
+            self.floor = self.dungeon.get_curr_floor()
+            #print(self.dungeon.get_curr_floor().get_floor_lvl())
+            #print(self.floor.get_floor_lvl())
+            
         
         
 
@@ -73,24 +69,17 @@ class RestState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    #self.state_machine.Change('map',[self.player,self.curr_floor])
-                    pass
-                    
-                #if event.key == pygame.K_RIGHT:
-                    #self.player.player_item_deck.next_card()
-                    #index = self.player.player_item_deck.curr_card_index
-                    
-                #if event.key == pygame.K_LEFT:
-                    #self.player.player_item_deck.prev_card()
+                    if self.floor.get_floor_lvl() == 1:
+                        if len(self.player.player_item_deck.cards) == 3:
+                            self.state_machine.Change('map',[self.player,self.floor])
+                    else:    
+                        print(print(self.floor.get_floor_lvl()))
+                        self.state_machine.Change('map',[self.player,self.floor])
                 
-                #if event.key == pygame.K_SPACE:
-                    #index = self.player.player_item_deck.curr_card_index
-                    #self.player.player_item_deck.remove_card(index)
+            '''if len(self.player.player_item_deck.cards) == 3 and self.floor.get_floor_lvl() == 1:
+                print(print(self.floor.get_floor_lvl()))
+                self.state_machine.Change('map',[self.player,self.floor])'''
 
-            if len(self.player.player_item_deck.cards) == 3:
-                self.state_machine.Change('map',[self.player,self.curr_floor])
-
-            #if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
             
             for i, item_card in enumerate(self.player.player_item_deck.cards):
                 x_offset, y_offset = 100 + i * 200, HEIGHT-225
@@ -98,7 +87,7 @@ class RestState(BaseState):
                 card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
-                    if card_rect.collidepoint(self.cursor_position) and event.button == 1:
+                    if card_rect.collidepoint(self.cursor_position) and event.button == 1 and len(self.player.player_item_deck.cards) != 3:
                         self.item_card_index = i
                         
                         self.player.player_item_deck.remove_card(self.item_card_index)
@@ -116,10 +105,9 @@ class RestState(BaseState):
                     self.item_description_show_right = True
             else:
                 self.item_card_index = None
+                
                     
         self.cursor_position = pygame.mouse.get_pos()
-           
-        
         self.timer_text = self.timer_text + dt
 
     def check_for_pos(self, position):
@@ -130,7 +118,8 @@ class RestState(BaseState):
         self.player.display_HP(screen)
         
         if self.timer_text < self.time_interval:
-            t_press_enter = gFonts['minecraft'].render("Rest Area, Floor 1", False, (175, 53, 42))
+            txt = "Rest Area, Floor "+ str(self.floor.get_floor_lvl())
+            t_press_enter = gFonts['minecraft'].render(txt, False, (175, 53, 42))
             rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
             screen.blit(t_press_enter, rect)
 
@@ -171,3 +160,8 @@ class RestState(BaseState):
                 rect = description.get_rect(bottomright=(pygame.mouse.get_pos()))
             screen.blit(description, rect)
             
+        if (self.floor.get_floor_lvl() == 1 and len(self.player.player_item_deck.cards) == 3) or not self.floor.get_floor_lvl() == 1:
+            txt = "Press Enter to continue"
+            text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2+120))
+            screen.blit(text, rect) 
