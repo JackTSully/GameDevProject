@@ -47,11 +47,6 @@ class Player():
         else:
             return False
 
-
-    def attack(self, enemy):
-        self.enemy.take_damage(roll_dice(self.attack_dice) + self.attack_power)
-        
-
     def heal_self(self, amount):
         self.curr_health += amount
     

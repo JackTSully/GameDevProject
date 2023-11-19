@@ -12,6 +12,7 @@ class Enemies():
         self.max_health = max_health
         self.cur_health = self.max_health
         self.attack_dice = attack_dice
+        self.ori_attack_dice = self.attack_dice
         self.attack_bonus = attack_bonus
         self.e_ability_id = e_ability_id
         self.total_damage = 0
@@ -21,6 +22,7 @@ class Enemies():
         self.y = None
         self.cur_health = self.max_health
         self.attack_bonus = self.attack_bonus
+        self.debuffed = False
         
         self.sprite = gsEnemies_Image_list[card_id-12]
         self.sprite = pygame.transform.scale(self.sprite, (250,250))
@@ -36,10 +38,21 @@ class Enemies():
         self.debuff_turns = 0 
 
     def got_debuff(self, amount, duration):
-        self.attack_dice -= amount
         self.debuff_turns = duration
-        if self.total_damage < 0:
-            self.total_damage = 0
+        if self.debuff_turns > 0:
+            self.debuffed = True
+            if self.debuffed:
+                self.attack_dice -= amount
+                self.debuffed = False
+        if self.attack_dice < 0:
+            self.attack_dice = 0
+        else:
+            self.debuffed = False
+
+    def reset_debuff(self):
+        if not self.debuffed:
+            self.attack_dice = self.ori_attack_dice
+            self.debuff_turns = 0
 
     def increase_atk(self, amount):
         self.damage += amount

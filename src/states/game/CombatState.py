@@ -125,11 +125,11 @@ class CombatState(BaseState):
                             self.duplication_effect_active = False
 
                         else:
-                            print(f"Before Enemy Debuff - Damage: {self.enemies.attack_dice}")
-                            self.enemies.got_debuff(5,2)
+                            print(f"Before Enemy Debuff - Attack Dice: {self.enemies.attack_dice}")
+                            self.enemies.got_debuff(5,1)
                             self.player.action_points_offset -= 1
                             self.player.player_item_deck.cards.remove(self.selected_card)
-                            print(f"After Enemy Debuff - Damage: {self.enemies.attack_dice}")
+                            print(f"After Enemy Debuff - Attack Dice: {self.enemies.attack_dice}")
 
                     elif self.selected_card.effect_id == 1003: #dis_skill
 
@@ -231,8 +231,10 @@ class CombatState(BaseState):
 
                             if not self.enemies_attack:
                                 pygame.time.delay(self.attack_delay)
+                                print(f"Before Enemy Debuff - Damage: {self.enemies.attack_dice}")
                                 self.player.action_points -= 2
-                                self.enemies.got_debuff(2, 2)
+                                self.enemies.got_debuff(2, 1)
+                                print(f"After Enemy Debuff - Damage: {self.enemies.attack_dice}")
                                 self.turn = 2
                                 self.selected_card = None
                                 self.counter_attack_active = True
@@ -244,7 +246,7 @@ class CombatState(BaseState):
                         pygame.time.delay(self.attack_delay)
                         print(f"Before Enemy Debuff - Damage: {self.enemies.attack_dice}")
                         self.player.action_points -= 1
-                        self.enemies.got_debuff(5,2)
+                        self.enemies.got_debuff(5,1)
                         print(f"After Enemy Debuff - Damage: {self.enemies.attack_dice}")
                         self.selected_card = None
                         self.turn = 2
@@ -261,6 +263,7 @@ class CombatState(BaseState):
             self.turn = 1
 
         if self.turn == 1:
+            self.enemies.reset_debuff()
             self.player.action_points = 3 + self.player.action_points_offset
             self.enemies_attack = False
 
@@ -294,15 +297,17 @@ class CombatState(BaseState):
             self.counter_cooldown -= 1
             self.turn = 2
             self.player.action_points_offset = 0
+            self.enemies.reset_debuff()
 
-
+        if self.enemies.attack_dice < 0:
+            self.enemies.attack_dice = 0
 
         elif self.turn == 2:
             if self.enemy_rounds == 3:
                 print(self.turn)
                 print(self.enemy_rounds)
                 pygame.time.delay(self.enemy_delay)
-                self.player.got_debuff(5, 1) 
+                self.player.got_debuff(2, 1) 
                 self.turn = 1
                 self.enemy_rounds += 1
                 self.player.action_points_offset = 0
@@ -332,8 +337,8 @@ class CombatState(BaseState):
 
 
                     pygame.time.delay(self.enemy_delay)
-                    self.player.take_damage(self.e_rolled_damage)
-                    print(f"Enemies Attack Damage {self.e_rolled_damage}")
+                    self.player.take_damage(self.e_rolled_damage + self.enemies.attack_bonus)
+                    print(f"Enemies Attack Damage {self.e_rolled_damage + self.enemies.attack_bonus}")
                     self.enemy_rounds += 1
                     self.turn = 1
                     print(self.enemy_rounds)
@@ -360,15 +365,18 @@ class CombatState(BaseState):
 
                     self.e_rolled_damage = 0
                     pygame.time.delay(self.enemy_delay)
-                    self.player.take_damage(self.e_rolled_damage)
-                    print(f"Enemies Attack Damage {self.e_rolled_damage}")
+                    self.player.take_damage(self.e_rolled_damage + self.enemies.attack_bonus)
+                    print(f"Enemies Attack Damage {self.e_rolled_damage + self.enemies.attack_bonus}")
                     self.enemy_rounds += 1
                     self.turn = 1
                     print(self.enemy_rounds)
                     self.player.action_points_offset = 0
                     self.duplication_effect_active = False
-                    self.enemies.debuff_turns = 0
                     self.invincible_active = False
+
+        if self.player.curr_health <= 0:
+            self.player.curr_health = self.player.max_health
+            self.state_machine.Change('map',[self.player,self.floor])
 
 
         frame_size = (140, 200)
