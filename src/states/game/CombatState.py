@@ -1,5 +1,5 @@
 from src.states.BaseState import BaseState
-import pygame, sys, copy
+import pygame, sys, copy, time
 from src.Dependencies import *
 from src.constants import *
 from src.StateMachine import StateMachine
@@ -25,6 +25,7 @@ class CombatState(BaseState):
         self.player_rounds = 0
         self.attack_delay = 500
         self.enemy_delay = 1000
+        self.rolled_damage = 0
 
         self.time_interval = 3
         self.timer = 0
@@ -41,8 +42,12 @@ class CombatState(BaseState):
         self.duplication_effect_active = False
         self.double_roll_active = False
         self.charged_attack_active = False
+        self.charged_cooldown = 0
+        self.counter_attack_active = False
+        self.counter_cooldown = 0
         self.enemies_attack = False
         self.invincible_active = False
+         
 
     def Enter(self,params):
         self.player = params[0]
@@ -109,6 +114,7 @@ class CombatState(BaseState):
 
                         if self.duplication_effect_active:
                             self.duplication_effect_active = False
+
                         else:
                             print(f"Before Enemy Debuff - Damage: {self.enemies.attack_dice}")
                             self.enemies.got_debuff(5,2)
@@ -126,6 +132,7 @@ class CombatState(BaseState):
                             self.player.player_item_deck.cards.remove(self.selected_card)                        
 
                     elif self.selected_card.effect_id == 1004: #inv
+
                         if self.duplication_effect_active:
                             self.duplication_effect_active = False
                         else:
@@ -167,6 +174,8 @@ class CombatState(BaseState):
 
 
                     elif self.selected_card.effect_id == 2001: #attack
+                        self.charged_cooldown -= 1
+                        self.counter_cooldown -= 1
                         if not self.double_roll_active:
                             pygame.time.delay(self.attack_delay) 
                             self.enemies.take_damage(self.rolled_damage + self.player.attack_power)
@@ -184,7 +193,8 @@ class CombatState(BaseState):
 
                     elif self.selected_card.effect_id == 2002: #charge
 
-                        if not self.charged_attack_active:
+                        if not self.charged_attack_active and self.charged_cooldown == 0:
+                            
                             if not self.double_roll_active:
                                 self.roll1 = self.dice_instance.roll_dice(20) + self.player.attack_power
                                 print(f"Roll 1: {self.roll1}")
@@ -192,38 +202,24 @@ class CombatState(BaseState):
                                 self.player.action_points -= 2
                                 self.selected_card = None
                                 self.turn = 2
-                                self.charged_attack_active = False
-                            if self.double_roll_active:
+                                self.charged_attack_active = True
+                                self.charged_cooldown = 2
+
+                            elif self.double_roll_active:
                                 self.roll1 = self.dice_instance.roll_dice(20)*2 + self.player.attack_power
                                 print(f"Roll 1: {self.roll1}")
                                 pygame.time.delay(self.attack_delay) 
                                 self.player.action_points -= 2
                                 self.selected_card = None
                                 self.turn = 2
-                                self.charged_attack_active = False
+                                self.charged_attack_active = True
+                                self.charged_cooldown = 2   
 
-
-                        if self.charged_attack_active: 
-                            if not self.double_roll_active:
-                                self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
-                                self.total_roll = self.roll1 + self.roll2
-                                print(f"fRoll 2: {self.roll2}")
-                                print(f"Total Roll: {self.total_roll}")
-                                pygame.time.delay(self.attack_delay) 
-                                self.enemies.take_damage(self.total_roll)
-                                self.selected_card = None
-                                self.turn = 2  
-                            if self.double_roll_active:
-                                self.roll2 = self.dice_instance.roll_dice(20)*2 + self.player.attack_power
-                                self.total_roll = self.roll1 + self.roll2
-                                print(f"fRoll 2: {self.roll2}")
-                                print(f"Total Roll: {self.total_roll}")
-                                pygame.time.delay(self.attack_delay) 
-                                self.enemies.take_damage(self.total_roll)
-                                self.selected_card = None
-                                self.turn = 2                                                          
 
                     elif self.selected_card.effect_id == 2003: #counter
+                        
+                        if not self.counter_attack_active and self.counter_cooldown == 0:
+
                             if not self.enemies_attack:
                                 pygame.time.delay(self.attack_delay)
                                 self.player.action_points -= 2
@@ -231,8 +227,11 @@ class CombatState(BaseState):
                                 self.turn = 2
                                 self.selected_card = None
                                 self.counter_attack_active = True
+                                self.counter_cooldown = 2  
                         
                     elif self.selected_card.effect_id == 2004: #block
+                        self.charged_cooldown -= 1
+                        self.counter_cooldown -= 1
                         pygame.time.delay(self.attack_delay)
                         print(f"Before Enemy Debuff - Damage: {self.enemies.attack_dice}")
                         self.player.action_points -= 1
@@ -242,17 +241,48 @@ class CombatState(BaseState):
                         self.turn = 2
 
                     return
-                
+
+
+        if self.charged_cooldown < 0:
+            self.charged_cooldown = 0
+        if self.counter_cooldown < 0:
+            self.counter_cooldown = 0                
 
         if self.turn == 0:
             self.turn = 1
 
         if self.turn == 1:
             self.player.action_points = 3 + self.player.action_points_offset
+            self.enemies_attack = False
+
+            if self.charged_attack_active: 
+                    if not self.double_roll_active:
+                        self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
+                        self.total_roll = self.roll1 + self.roll2
+                        print(f"fRoll 2: {self.roll2}")
+                        print(f"Total Roll: {self.total_roll}")
+                        pygame.time.delay(self.attack_delay) 
+                        self.enemies.take_damage(self.total_roll)
+                        self.selected_card = None
+                        self.turn = 2  
+                        self.charged_attack_active = False
+
+                    elif self.double_roll_active:
+                        self.roll2 = self.dice_instance.roll_dice(20)*2 + self.player.attack_power
+                        self.total_roll = self.roll1 + self.roll2
+                        print(f"fRoll 2: {self.roll2}")
+                        print(f"Total Roll: {self.total_roll}")
+                        pygame.time.delay(self.attack_delay) 
+                        self.enemies.take_damage(self.total_roll)
+                        self.selected_card = None
+                        self.turn = 2                                                          
+                        self.charged_attack_active = False
 
 
 
         if self.turn == 1 and self.player.action_points <= 0:
+            self.charged_cooldown -= 1
+            self.counter_cooldown -= 1
             self.turn = 2
             self.player.action_points_offset = 0
 
@@ -274,7 +304,7 @@ class CombatState(BaseState):
                 if not self.invincible_active:
                     print(self.turn)
                     self.enemies_attack = True
-                    self.e_rolled_damage = self.dice_instance.roll_dice(self.enemies.attack_dice) + self.enemies.attack_bonus
+                    self.e_rolled_damage = self.dice_instance.roll_dice(abs(self.enemies.attack_dice)) + self.enemies.attack_bonus
 
                     if self.enemies_attack and self.counter_attack_active:
                         if not self.double_roll_active:
@@ -283,6 +313,7 @@ class CombatState(BaseState):
                             print(f"Counter Attack: {counter_attack_damage}")
                             self.enemies_attack = False
                             self.counter_attack_active = False
+
                         if self.double_roll_active:
                             counter_attack_damage = self.dice_instance.roll_dice(20)*2 + self.player.attack_power 
                             self.enemies.take_damage(counter_attack_damage)
@@ -368,10 +399,10 @@ class CombatState(BaseState):
         self.timer = self.timer + dt
 
 
+
     def render(self, screen):
         
         screen.blit(self.bg_image, (0, 0)) 
-
 
         player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.player.curr_health}", False, (175, 53, 42))
         hp_rect = player_hp_text.get_rect(topleft=(20, 20))
@@ -399,19 +430,49 @@ class CombatState(BaseState):
 
         self.player.render(screen)
         x_offset = 100 #reset the position for the second line of cards
-        y_offset = 450 
+        y_offset = HEIGHT-225 
         
         self.enemies.render(screen)
 
         if self.show_ability_cards:
+
             for ability_card in self.player.ability_deck.cards:
                 ability_index = ability_card.card_id
-                ability_image = gAbilities_image_list[ability_index - 8]  # -1 since the item index starts from 1
+                ability_image = gAbilities_image_list[ability_index - 8] 
                 frame_image = gFrames_image_list[0]
                 position = (x_offset, y_offset)
+
+
+                charged_has_cooldown = ability_card == self.selected_card and self.charged_cooldown > 0
+                counter_has_cooldown = ability_card == self.selected_card and self.counter_cooldown > 0
+
                 final_card = self.player.player_item_deck.render(frame_image, ability_image)
                 screen.blit(final_card, position)
+
+                if charged_has_cooldown:
+           
+                    darkened_position = (250, y_offset)
+                    darkened_card = pygame.Surface((140, 200), pygame.SRCALPHA)
+                    darkened_card.fill((0, 0, 0, 128))
+                    screen.blit(darkened_card, darkened_position)
+
+                    cooldown_text = gFonts['minecraft_small'].render(f"{self.charged_cooldown}", False, (255, 255, 255))
+                    cooldown_rect = cooldown_text.get_rect(center=(250 + 140 // 2, y_offset + 200 // 2))
+                    screen.blit(cooldown_text, cooldown_rect)
+
+                if counter_has_cooldown:
+           
+                    darkened_position = (400, y_offset)
+                    darkened_card = pygame.Surface((140, 200), pygame.SRCALPHA)
+                    darkened_card.fill((0, 0, 0, 128))
+                    screen.blit(darkened_card, darkened_position)
+
+                    cooldown_text = gFonts['minecraft_small'].render(f"{self.counter_cooldown}", False, (255, 255, 255))
+                    cooldown_rect = cooldown_text.get_rect(center=(400 + 140 // 2, y_offset + 200 // 2))
+                    screen.blit(cooldown_text, cooldown_rect)
+
                 x_offset += 150
+
 
         if self.show_item_cards:
             x_offset, y_offset = 100, 450
