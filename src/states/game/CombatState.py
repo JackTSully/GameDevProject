@@ -69,6 +69,7 @@ class CombatState(BaseState):
         self.rolled_damage = self.dice_instance.roll_dice(20)
 
         if self.enemies.cur_health <= 0:
+            
             self.state_machine.Change('map',[self.player, self.floor])
 
         for event in events:
@@ -80,7 +81,13 @@ class CombatState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
+                          
+                    if self.floor.curr_room == self.floor.rooms["boss"]:
+                        self.state_machine.Change('rest',[self.player,self.floor])
+                        break
+                    
                     self.state_machine.Change('map',[self.player,self.floor])
+                    
 
                 if event.key == pygame.K_UP:
                     self.show_ability_cards = False
@@ -89,6 +96,8 @@ class CombatState(BaseState):
                 if event.key == pygame.K_DOWN:
                     self.show_ability_cards = True
                     self.show_item_cards = False
+        
+        
                 
                 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.turn == 1:
