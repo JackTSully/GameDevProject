@@ -15,10 +15,10 @@ item_attributes = [
 ]
 
 ability_attributes = [
-    {"card_id": 8, "name": "Attack", "description": "Deal DMG (D20) to the selected enemy", "effect_id": 2001, "action_cost": 1, "turn_cost": 1},
-    {"card_id": 9, "name": "Charged Attack", "description": "Charge your attack to deal an instance of increased DMG (2D20) next turn", "effect_id": 2002, "action_cost": 2, "turn_cost": 2},
-    {"card_id": 11, "name": "Counter Attack", "description": "Blocks 2 DMG recieved and deal DMG (D20) to the attacking enemy for their whole turn.", "effect_id": 2003, "action_cost": 2, "turn_cost": 1},
-    {"card_id": 10, "name": "Block", "description": "Blocks 5 DMG from the enemy's attack in their next turn.", "effect_id": 2004, "action_cost": 1, "turn_cost": 1},
+    {"card_id": 8, "name": "Attack 1AP", "description": "Deal DMG (D20) to the selected enemy", "effect_id": 2001, "action_cost": 1, "turn_cost": 1},
+    {"card_id": 9, "name": "Charged Attack 2AP", "description": "Charge your attack to deal an instance of increased DMG (2D20) next turn", "effect_id": 2002, "action_cost": 2, "turn_cost": 2},
+    {"card_id": 11, "name": "Counter Attack 2AP", "description": "Blocks 2 DMG recieved and deal DMG (D20) to the attacking enemy for their whole turn.", "effect_id": 2003, "action_cost": 2, "turn_cost": 1},
+    {"card_id": 10, "name": "Block 1AP", "description": "Blocks 5 DMG from the enemy's attack in their next turn.", "effect_id": 2004, "action_cost": 1, "turn_cost": 1},
 ]
 
 event_attributes = [

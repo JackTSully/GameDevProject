@@ -90,7 +90,7 @@ gFonts = {
     'gothic_large': pygame.font.Font('fonts/GothicPixels.ttf', 96),
     'minecraft': pygame.font.Font('fonts/Minecraft.ttf', 96),
     'minecraft_small': pygame.font.Font('fonts/Minecraft.ttf', 50),
-    'minecraft_tiny': pygame.font.Font('fonts/Minecraft.ttf', 30),
+    'minecraft_tiny': pygame.font.Font('fonts/Minecraft.ttf', 27),
     'minecraft_card': pygame.font.Font('fonts/Minecraft.ttf', 18),
     'dungeon': pygame.font.Font('fonts/DUNGRG__.TTF', 200),
 

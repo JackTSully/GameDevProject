@@ -47,6 +47,9 @@ class CombatState(BaseState):
         self.counter_cooldown = 0
         self.enemies_attack = False
         self.invincible_active = False
+        
+        self.item_description = None
+        self.item_description_show_right = True
          
 
     def Enter(self,params):
@@ -56,6 +59,9 @@ class CombatState(BaseState):
         self.enemies = Enemies(params[2].card_id,params[2].name,params[2].description,params[2].max_health,params[2].attack_dice,
                                params[2].attack_bonus, params[2].e_ability_id)
         self.enemies.setXY(WIDTH-300 ,HEIGHT/3)
+        
+        self.charged_cooldown = 0
+        self.counter_cooldown = 0
 
         #self.floor = params[1]
 
@@ -69,8 +75,10 @@ class CombatState(BaseState):
         self.rolled_damage = self.dice_instance.roll_dice(20)
 
         if self.enemies.cur_health <= 0:
-            
             self.state_machine.Change('map',[self.player, self.floor])
+            if self.floor.curr_room == self.floor.rooms["boss"]:
+                self.state_machine.Change('rest',[self.player,self.floor])
+
 
         for event in events:
             if event.type == pygame.QUIT:
@@ -96,11 +104,66 @@ class CombatState(BaseState):
                 if event.key == pygame.K_DOWN:
                     self.show_ability_cards = True
                     self.show_item_cards = False
+                    
+            frame_size = (140, 200)
+            self.selected_card = None
+
+            if self.show_ability_cards:
+
+                for i, ability_card in enumerate(self.player.ability_deck.cards):
+                    x_offset, y_offset = 100 + i * 150, HEIGHT-225 
+                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+
+                    if event.type == pygame.MOUSEBUTTONDOWN: 
+                        if card_rect.collidepoint(self.cursor_position) and event.button == 1:
+                            self.selected_card = ability_card 
+                            break
+                        elif card_rect.collidepoint(self.cursor_position) and event.button == 3:
+                            self.item_card_index = i
+
+                            self.item_description = self.player.ability_deck.get_card(self.item_card_index).description
+                            if self.item_card_index > 2:
+                                self.item_description_show_right = False
+
+                            
+                    if event.type == pygame.MOUSEMOTION:
+                        self.item_description = None
+                        self.item_description_show_right = True
+                else:
+                    self.item_card_index = None
+                    self.selected_card = None
+
+            if self.show_item_cards:
+
+                for i, item_card in enumerate(self.player.player_item_deck.cards):
+                    x_offset, y_offset = 100 + i * 150, HEIGHT-225 
+                    card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
+                        if card_rect.collidepoint(self.cursor_position) and event.button == 1:
+                            self.selected_card = item_card
+                            
+                            break
+                        elif card_rect.collidepoint(self.cursor_position) and event.button == 3:
+                            self.item_card_index = i
+
+                            self.item_description = self.player.player_item_deck.get_card(self.item_card_index).description
+                            if self.item_card_index > 2:
+                                self.item_description_show_right = False
+
+                            
+                    if event.type == pygame.MOUSEMOTION:
+                        self.item_description = None
+                        self.item_description_show_right = True
+                else:
+                    self.item_card_index = None
+                    self.selected_card = None
         
         
-                
+            
                 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.turn == 1:
+                print(event.type, self.turn, self.selected_card) 
                 if self.selected_card:
                     print(f"Clicked on the selected card: {self.selected_card.card_id}")
                     
@@ -252,6 +315,8 @@ class CombatState(BaseState):
                         self.turn = 2
 
                     return
+            
+             
 
 
         if self.charged_cooldown < 0:
@@ -379,36 +444,7 @@ class CombatState(BaseState):
             self.state_machine.Change('map',[self.player,self.floor])
 
 
-        frame_size = (140, 200)
-        self.selected_card = None
-
-        if self.show_ability_cards:
-
-            for i, ability_card in enumerate(self.player.ability_deck.cards):
-                x_offset, y_offset = 100 + i * 150, 450
-                card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
-
-                if card_rect.collidepoint(self.cursor_position):
-                    if self.show_ability_cards:
-                        self.selected_card = ability_card  
-                    else: 
-                        None
-                    break
-
-        if self.show_item_cards:
-
-            for i, item_card in enumerate(self.player.player_item_deck.cards):
-                x_offset, y_offset = 100 + i * 150, 450
-                card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
-
-                if card_rect.collidepoint(self.cursor_position):
-                    if self.show_item_cards:
-                        self.selected_card = item_card
-                    else:
-                        None
-                    break
-            else:
-                self.selected_card = None
+        
 
         self.cursor_position = pygame.mouse.get_pos()
                     
@@ -465,6 +501,16 @@ class CombatState(BaseState):
 
                 final_card = self.player.player_item_deck.render(frame_image, ability_image)
                 screen.blit(final_card, position)
+                
+                ability_name = ability_card.name.split(" ")
+                y = 0
+                
+                # Renders card names
+                for string in ability_name:
+                    text = gFonts['minecraft_card'].render(string, False, ('black'))
+                    rect = text.get_rect(center=(x_offset + 75 , y_offset + 142 + y))
+                    screen.blit(text, rect)
+                    y += 17
 
                 if charged_has_cooldown:
            
@@ -492,7 +538,7 @@ class CombatState(BaseState):
 
 
         if self.show_item_cards:
-            x_offset, y_offset = 100, 450
+            x_offset, y_offset = 100, HEIGHT-225 
             for item_card in self.player.player_item_deck.cards:
                 item_index = item_card.card_id
                 item_image = gItems_image_list[item_index-1]  # -1 since the item index starts from 1
@@ -500,10 +546,29 @@ class CombatState(BaseState):
                 position = (x_offset, y_offset)
                 final_card = self.player.player_item_deck.render(frame_image, item_image)
                 screen.blit(final_card, position)
+                
+                # Renders card names
+                item_name = item_card.name.split(" ")
+                y = 0
+                for string in item_name:
+                    text = gFonts['minecraft_card'].render(string, False, ('black'))
+                    rect = text.get_rect(center=(x_offset + 75 , y_offset + 142 + y))
+                    screen.blit(text, rect)
+                    y += 17
+                
                 x_offset += 150
+            
+        if self.item_description != None:
+            description = gFonts['minecraft_tiny'].render(self.item_description, False, "yellow", "black")
+            
+            if self.item_description_show_right == True:
+                rect = description.get_rect(bottomleft=(100, HEIGHT/2+120))
+            else:
+                rect = description.get_rect(bottomleft=(100, HEIGHT/2+120))
+            screen.blit(description, rect)
 
         elif not self.show_item_cards and not self.show_ability_cards:
-                x_offset, y_offset = 100, 450
+                x_offset, y_offset = 100, HEIGHT-225
                 back_of_item = gFrames_image_list[4]
                 screen.blit(back_of_item, (x_offset, y_offset))
 

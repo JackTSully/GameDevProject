@@ -72,7 +72,6 @@ class Deck():
         item_surface = pygame.Surface((frame_image.get_width(), frame_image.get_height()))
         item_surface.blit(card_image,(item_x, item_y)) #put item on to the surface
         item_surface.set_colorkey((0,0,0))
-        item_surface.set_colorkey((0,0,0))
         
         frame_surface.blit(item_surface,(0,0))
 

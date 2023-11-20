@@ -77,4 +77,5 @@ class Enemies():
             self.restore()
     
     def render(self, screen):
+        self.sprite.set_colorkey((0,0,0))
         screen.blit(self.sprite,(self.x,self.y))
