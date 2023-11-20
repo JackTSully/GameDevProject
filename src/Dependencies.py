@@ -13,6 +13,30 @@ gPlayer_animation_list = { "idle": sprite_collection["character_idle"].animation
 
 }
 
+gDice_image_list = [sprite_collection["Fake0"].image,
+                    sprite_collection["Fake1"].image,
+                    sprite_collection["Fake2"].image,
+                    sprite_collection["Fake3"].image,
+                    sprite_collection["Fake4"].image,
+                    sprite_collection["Fake5"].image,
+                    sprite_collection["D6"].image,
+                    sprite_collection["Fake6"].image,
+                    sprite_collection["D8"].image,
+                    sprite_collection["Fake7"].image,
+                    sprite_collection["Fake8"].image,
+                    sprite_collection["Fake9"].image,
+                    sprite_collection["D12"].image,
+                    sprite_collection["Fake10"].image,
+                    sprite_collection["Fake11"].image,
+                    sprite_collection["Fake12"].image,
+                    sprite_collection["Fake13"].image,
+                    sprite_collection["Fake14"].image,
+                    sprite_collection["Fake15"].image,
+                    sprite_collection["Fake16"].image,
+                    sprite_collection["D20"].image      
+                    
+]
+
 gItems_image_list = [sprite_collection["Flask_of_Healing"].image,
                      sprite_collection["Potion_of_Stupidity"].image,
                      sprite_collection["Potion_of_Relaxation"].image,

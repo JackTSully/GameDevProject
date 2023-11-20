@@ -101,7 +101,8 @@ class SpriteManager:
                 "./sprite/Enemies.json",
                 "./sprite/Enemies_icon.json",
                 "./sprite/Event.json",
-                "./sprite/CharAnimation.json"
+                "./sprite/CharAnimation.json",
+                "./sprite/Dice.json"
             ]
         )
 
