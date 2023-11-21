@@ -3,7 +3,6 @@ import pygame, sys
 
 from src.constants import *
 from src.Dependencies import *
-from game.StartState import *
 
 class StartState(BaseState):
     def __init__(self, state_machine):
@@ -26,13 +25,6 @@ class StartState(BaseState):
                     sys.exit()
                 if event.key == pygame.K_RETURN:
                     self.state_machine.Change('rest')
-
-        self.g_state_manager = StateMachine()
-
-        self.current_state = self.g_state_manager.get_state()
-        if self.current_state in ['start','rest','map','event']:
-            print("Playing bg music")
-            gSounds['bg_music'].play(0)
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))
