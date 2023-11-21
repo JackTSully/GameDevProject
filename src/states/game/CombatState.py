@@ -59,6 +59,8 @@ class CombatState(BaseState):
         
         self.item_description = None
         self.item_description_show_right = True
+        
+        self.revival_flag = False
          
 
     def Enter(self,params):
@@ -225,14 +227,14 @@ class CombatState(BaseState):
                             self.player.player_item_deck.cards.remove(self.selected_card)
                             print(f"After Enemy Debuff - Attack Dice: {self.enemies.attack_dice}")
 
-                    elif self.selected_card.effect_id == 1003: #dis_skill
+                    elif self.selected_card.effect_id == 1003: #revive_skill
 
                         if self.duplication_effect_active:
                             self.duplication_effect_active = False
                         else:
-                            self.enemies.disabled_skill()
+                            self.revival_flag = True 
                             self.player.action_points_offset -= 1
-                            self.player.player_item_deck.cards.remove(self.selected_card)                        
+                            self.player.player_item_deck.cards.remove(self.selected_card)                    
 
                     elif self.selected_card.effect_id == 1004: #inv
 
@@ -479,7 +481,15 @@ class CombatState(BaseState):
 
         if self.player.curr_health <= 0:
             #self.player.curr_health = self.player.max_health
-            self.state_machine.Change('game_over')
+            
+            if self.revival_flag:
+                
+                self.player.curr_health = 10
+                self.revival_flag = False
+            
+            else:
+            
+                self.state_machine.Change('game_over')
 
 
         

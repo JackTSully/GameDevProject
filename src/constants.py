@@ -5,8 +5,8 @@ HEIGHT = 720
 
 item_attributes = [
     {"card_id": 1, "name": "Healing Flask", "description": "+5 HP", "effect_id": 1001, "action_cost": 1, "turn_cost": 0},
-    {"card_id": 2, "name": "Potion of Stupidity", "description": "-5 ATK (Selected Enemy)", "effect_id": 1002, "action_cost": 1, "turn_cost": 1},
-    {"card_id": 3, "name": "Potion of Relaxation", "description": "Disables enemy's skill (Selected Enemy)", "effect_id": 1003, "action_cost": 1, "turn_cost": 1},
+    {"card_id": 2, "name": "Potion of Resistance", "description": "-5 incoming DMG for this turn", "effect_id": 1002, "action_cost": 1, "turn_cost": 1},
+    {"card_id": 3, "name": "Potion of Revival", "description": "After death, revives you back to 10 HP", "effect_id": 1003, "action_cost": 1, "turn_cost": 1},
     {"card_id": 4, "name": "Shield", "description": "Invulnerable to the next attack", "effect_id": 1004, "action_cost": 1, "turn_cost": 1},
     {"card_id": 5, "name": "Potion of Swiftness", "description": "+1 AP", "effect_id": 1005, "action_cost": 0, "turn_cost": 1},
     {"card_id": 6, "name": "Potion of Prowess", "description": "+ 5 ATK for the duration of the fight", "effect_id": 1006, "action_cost": 1, "turn_cost": 1},
