@@ -38,8 +38,8 @@ class GameMain:
 
     def PlayGame(self):
 
-        gSounds['bg_music'].play(0)
-        
+        gSounds['bg_music'].play(-1)
+
         clock = pygame.time.Clock()
 
         self.g_state_manager.Change("start")

@@ -99,7 +99,7 @@ class Floor():
                 if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
                     if card_rect.collidepoint(self.cursor_position) and event.button == 1 and len(self.curr_room.event_deck.cards) > 3:
                         self.item_card_index = i
-                        gSounds['item'].play(0) 
+                        gSounds['rip'].play(0) 
                         
                         self.curr_room.event_deck.remove_card(self.item_card_index)
                         break

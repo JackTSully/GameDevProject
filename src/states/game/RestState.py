@@ -8,6 +8,9 @@ from src.Floor import Floor
 from src.Card import ItemCard, AbilityCard, EventCard, EnemyCard
 from src.Deck import Deck
 from src.Dungeon import Dungeon
+pygame.mixer.pre_init(44100, -16, 2, 4096)
+music_channel = pygame.mixer.Channel(0)
+music_channel.set_volume(0.2)
 
 class RestState(BaseState):
     def __init__(self, state_machine):
@@ -94,7 +97,7 @@ class RestState(BaseState):
                 if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
                     if card_rect.collidepoint(self.cursor_position) and event.button == 1 and len(self.player.player_item_deck.cards) != 3 and self.floor.get_floor_lvl() == 1:
                         self.item_card_index = i
-                        
+                        gSounds['rip'].play(0)
                         self.player.player_item_deck.remove_card(self.item_card_index)
                         break
                     elif card_rect.collidepoint(self.cursor_position) and event.button == 3:
