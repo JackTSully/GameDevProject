@@ -131,16 +131,33 @@ class Floor():
             
         #start room
         pygame.draw.rect(screen, start_color, pygame.Rect((1/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
+        text = gFonts['minecraft_card'].render("REST", False, "white")
+        rect = text.get_rect(center=((1/3)*(WIDTH/2), HEIGHT/2))
+        screen.blit(text, rect) 
 
         
         #3 rooms
         pygame.draw.rect(screen, room1_color, pygame.Rect((2/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
+        text = gFonts['minecraft_tiny'].render("1", False, "white")
+        rect = text.get_rect(center=((2/3)*(WIDTH/2), HEIGHT/2))
+        screen.blit(text, rect)
+        
         pygame.draw.rect(screen, room2_color, pygame.Rect(WIDTH/2 - 30, HEIGHT/2 - 30, 60, 60))
+        text = gFonts['minecraft_tiny'].render("2", False, "white")
+        rect = text.get_rect(center=((WIDTH/2), HEIGHT/2))
+        screen.blit(text, rect)
+        
         pygame.draw.rect(screen, room3_color, pygame.Rect((4/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
+        text = gFonts['minecraft_tiny'].render("3", False, "white")
+        rect = text.get_rect(center=((4/3)*(WIDTH/2), HEIGHT/2))
+        screen.blit(text, rect)
 
         
         #boss room
         pygame.draw.rect(screen, boss_color, pygame.Rect((5/3)*(WIDTH/2) - 30, HEIGHT/2 - 30, 60, 60))
+        text = gFonts['minecraft_card'].render("BOSS", False, "white")
+        rect = text.get_rect(center=((5/3)*(WIDTH/2), HEIGHT/2))
+        screen.blit(text, rect)
 
         #lines
         pygame.draw.line(screen, 'white', ((1/3)*(WIDTH/2)+30, HEIGHT/2), ((2/3)*(WIDTH/2)-30, HEIGHT/2), width= 5)

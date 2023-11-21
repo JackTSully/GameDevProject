@@ -56,6 +56,8 @@ class Dungeon():
         self.curr_floor.set_floor_item_deck(floor_item_deck)
         if params == None:
             self.drawn_cards = floor_item_deck.draw_card(5)
+        else:
+            self.drawn_cards = floor_item_deck.draw_card(2)
     
     def get_drawn_cards(self):
         return self.drawn_cards

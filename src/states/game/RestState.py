@@ -49,8 +49,10 @@ class RestState(BaseState):
             self.dungeon.Enter(params)
             
             self.floor = self.dungeon.get_curr_floor()
-            #print(self.dungeon.get_curr_floor().get_floor_lvl())
-            #print(self.floor.get_floor_lvl())
+
+            drawn_cards = self.dungeon.get_drawn_cards()
+            self.player.player_item_deck.add_cards(drawn_cards)
+            self.player.heal_self(5)
             
         
         
@@ -60,6 +62,9 @@ class RestState(BaseState):
 
 
     def update(self, dt, events):
+        
+        self.player.update(dt, events)
+        
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -87,7 +92,7 @@ class RestState(BaseState):
                 card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
-                    if card_rect.collidepoint(self.cursor_position) and event.button == 1 and len(self.player.player_item_deck.cards) != 3:
+                    if card_rect.collidepoint(self.cursor_position) and event.button == 1 and len(self.player.player_item_deck.cards) != 3 and self.floor.get_floor_lvl() == 1:
                         self.item_card_index = i
                         
                         self.player.player_item_deck.remove_card(self.item_card_index)
@@ -117,17 +122,13 @@ class RestState(BaseState):
         screen.blit(self.bg_image, (0, 0)) 
         self.player.display_HP(screen)
         
-        if self.timer_text < self.time_interval:
-            txt = "Rest Area, Floor "+ str(self.floor.get_floor_lvl())
-            t_press_enter = gFonts['minecraft'].render(txt, False, (175, 53, 42))
-            rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
-            screen.blit(t_press_enter, rect)
 
-        if self.timer_text > self.time_interval:
-            t_press_enter = gFonts['minecraft'].render("Discard 2 Cards", False, (175, 53, 42))
-            rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
-            screen.blit(t_press_enter, rect)
+        txt = "Rest Area, Floor "+ str(self.floor.get_floor_lvl())
+        t_press_enter = gFonts['minecraft'].render(txt, False, (175, 53, 42))
+        rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 -192))
+        screen.blit(t_press_enter, rect)
 
+        
         self.player.render(screen)
         x_offset = 100 #reset the position for the second line of cards
         y_offset = HEIGHT-225
@@ -150,6 +151,17 @@ class RestState(BaseState):
                 y += 17
             
             x_offset += 200
+
+        if self.floor.get_floor_lvl() == 1 and len(self.player.player_item_deck.cards) != 3:
+            t_press_enter = gFonts['minecraft_tiny'].render("Discard 2 cards, keep 3", False, "white", (175, 53, 42))
+            rect = t_press_enter.get_rect(bottomleft=(100 , HEIGHT - 225))
+            screen.blit(t_press_enter, rect)
+        
+        if (self.floor.get_floor_lvl() == 1 and len(self.player.player_item_deck.cards) == 3) or not self.floor.get_floor_lvl() == 1:
+            txt = "Press Enter to continue"
+            text = gFonts['minecraft_tiny'].render(txt, False, "white", (175, 53, 42))
+            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2+120))
+            screen.blit(text, rect) 
         
         if self.item_description != None:
             description = gFonts['minecraft_tiny'].render(self.item_description, False, "yellow", "black")
@@ -160,8 +172,7 @@ class RestState(BaseState):
                 rect = description.get_rect(bottomright=(pygame.mouse.get_pos()))
             screen.blit(description, rect)
             
-        if (self.floor.get_floor_lvl() == 1 and len(self.player.player_item_deck.cards) == 3) or not self.floor.get_floor_lvl() == 1:
-            txt = "Press Enter to continue"
-            text = gFonts['minecraft_tiny'].render(txt, False, (255, 255, 255))
-            rect = text.get_rect(center=(WIDTH/2, HEIGHT/2+120))
-            screen.blit(text, rect) 
+        
+        
+
+

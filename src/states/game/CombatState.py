@@ -31,6 +31,9 @@ class CombatState(BaseState):
         self.time_interval = 3
         self.timer = 0
         
+        self.time_interval_next = 3
+        self.timer_next = 0
+        
         self.player = None
         self.floor = None
 
@@ -74,6 +77,12 @@ class CombatState(BaseState):
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
         #self.floor = params[1]
+        
+        
+        self.time_interval = 3
+        self.timer = 0
+        self.time_interval_next = 3
+        self.timer_next = 0
 
 
     def Exit(self):
@@ -85,10 +94,19 @@ class CombatState(BaseState):
         self.rolled_damage = self.dice_instance.roll_dice(20)
         self.e_rolled_damage = self.dice_instance.roll_dice(abs(self.enemies.attack_dice)) + self.enemies.attack_bonus
 
+        
         if self.enemies.cur_health <= 0:
-            self.state_machine.Change('map',[self.player, self.floor])
-            if self.floor.curr_room == self.floor.rooms["boss"]:
-                self.state_machine.Change('rest',[self.player,self.floor])
+            self.timer_next += dt
+            if self.timer_next > self.time_interval_next:
+                
+                if self.floor.curr_room == self.floor.rooms["boss"]:
+                    if self.floor.get_floor_lvl() == 4:
+                        self.state_machine.Change('win',[self.player,self.floor])
+                    else:    
+                        self.state_machine.Change('rest',[self.player,self.floor])
+                else:    
+                    self.state_machine.Change('map',[self.player, self.floor])
+                
 
 
         for event in events:
@@ -102,10 +120,12 @@ class CombatState(BaseState):
                 if event.key == pygame.K_RETURN:
                           
                     if self.floor.curr_room == self.floor.rooms["boss"]:
-                        self.state_machine.Change('rest',[self.player,self.floor])
-                        break
-                    
-                    self.state_machine.Change('map',[self.player,self.floor])
+                        if self.floor.get_floor_lvl() == 4:
+                            self.state_machine.Change('win',[self.player,self.floor])
+                        else:    
+                            self.state_machine.Change('rest',[self.player,self.floor])
+                    else:    
+                        self.state_machine.Change('map',[self.player, self.floor])
                     
 
                 if event.key == pygame.K_UP:
@@ -174,7 +194,7 @@ class CombatState(BaseState):
             
                 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.turn == 1:
-                print(event.type, self.turn, self.selected_card) 
+                #print(event.type, self.turn, self.selected_card) 
                 if self.selected_card:
                     print(f"Clicked on the selected card: {self.selected_card.card_id}")
                     
@@ -473,6 +493,11 @@ class CombatState(BaseState):
     def render(self, screen):
         
         screen.blit(self.bg_image, (0, 0)) 
+        
+        if self.enemies.cur_health <= 0:
+            victory_text = gFonts['minecraft_small'].render("VICTORY", False, "white", "green")
+            victory_rect = victory_text.get_rect(center=(WIDTH/2, HEIGHT/2))
+            screen.blit(victory_text, victory_rect)
 
         player_hp_text = gFonts['minecraft_small'].render(f"HP: {self.player.curr_health}", False, (175, 53, 42))
         hp_rect = player_hp_text.get_rect(topleft=(20, 20))
@@ -619,6 +644,9 @@ class CombatState(BaseState):
             screen.blit(E_Dice_image, (WIDTH - 200, 200))
 
             pygame.display.flip()
+
+        
+        
 
 
 

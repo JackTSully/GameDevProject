@@ -27,6 +27,7 @@ class GameMain:
             'event': EventState(self.g_state_manager),
             'combat': CombatState(self.g_state_manager),
             'game_over': GameOverState(self.g_state_manager),
+            'win': WinState(self.g_state_manager),
             'player_info': PlayerInfoState(self.g_state_manager),
             'discard' : DiscardState(self.g_state_manager)
         }

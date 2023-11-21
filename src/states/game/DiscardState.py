@@ -21,7 +21,7 @@ class DiscardState(BaseState):
         self.cursor_position = (0, 0)
 
     def Enter(self,params):
-        self.time_interval = 1
+        self.time_interval = 0.5
         self.timer = 0
         
         self.player : Player = params[0]

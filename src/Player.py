@@ -89,12 +89,12 @@ class Player():
 
         if self.curr_health > self.max_health:
             self.curr_health = self.max_health
-            self.state_machine.update(dt, events)
+            #self.state_machine.update(dt, events)
 
         if self.debuff_turns > 0:
             self.restore()
         
-        self.current_animation.update(dt)
+        #self.current_animation.update(dt)
 
         
     def display_HP(self,screen):

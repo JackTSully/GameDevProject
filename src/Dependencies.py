@@ -126,6 +126,7 @@ from src.states.game.MapState import MapState
 from src.states.game.EventState import EventState
 from src.states.game.CombatState import CombatState
 from src.states.game.GameOverState import GameOverState
+from src.states.game.WinState import WinState
 from src.states.game.PlayerInfoState import PlayerInfoState
 from src.states.game.DiscardState import DiscardState
 

@@ -40,6 +40,9 @@ class MapState(BaseState):
 
 
     def update(self, dt, events):
+        
+        self.player.update(dt, events)
+        
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
