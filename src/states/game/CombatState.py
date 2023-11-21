@@ -17,8 +17,8 @@ class CombatState(BaseState):
 
         self.dice_instance = Dice()
 
-        self.bg_image = pygame.image.load("graphics/stages/mines.png")
-        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
+        self.bg_image = None
+        
 
         self.turn = 0
         self.enemy_rounds = 0
@@ -68,6 +68,10 @@ class CombatState(BaseState):
         
         self.charged_cooldown = 0
         self.counter_cooldown = 0
+        
+        bg_image_path = floor_background[self.floor.get_floor_lvl()-1]
+        self.bg_image = pygame.image.load(bg_image_path)
+        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
         #self.floor = params[1]
 
@@ -386,7 +390,7 @@ class CombatState(BaseState):
             self.enemies.attack_dice = 0
 
         elif self.turn == 2:
-            if self.enemy_rounds == 3:
+            if 1 == 2: # was "self.enemy_rounds == 3"
                 pygame.time.delay(self.enemy_delay)
                 self.player.got_debuff(2, 1) 
                 self.turn = 1
@@ -454,8 +458,8 @@ class CombatState(BaseState):
                     self.invincible_active = False
 
         if self.player.curr_health <= 0:
-            self.player.curr_health = self.player.max_health
-            self.state_machine.Change('map',[self.player,self.floor])
+            #self.player.curr_health = self.player.max_health
+            self.state_machine.Change('game_over')
 
 
         

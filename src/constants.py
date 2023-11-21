@@ -49,6 +49,13 @@ enemy_attributes = [
                     {"card_id": 33, "name": "Emperor Gorilla", "description": "Royal Smash(A): -2 AP for 2 turns for the Player, CD 4 turns", "max_health": 65, "attack_dice": 12, "attack_bonus": 0, "e_ability_id": 14},
 ]
 
+floor_background = [
+    "graphics/stages/mines.png",
+    "graphics/stages/catacombs.png",
+    "graphics/stages/temple.png",
+    "graphics/stages/forest.png"
+]
+
 EFFECT_TYPE_HEAL = 1001
 EFFECT_TYPE_DECREASE_ATK = 1002
 EFFECT_TYPE_DISABLE_SKILL = 1003

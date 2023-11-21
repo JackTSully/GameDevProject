@@ -23,6 +23,7 @@ class Enemies():
         self.cur_health = self.max_health
         self.attack_bonus = self.attack_bonus
         self.debuffed = False
+        self.resistance = 0
         
         self.sprite = gsEnemies_Image_list[card_id-12]
         self.sprite = pygame.transform.scale(self.sprite, (250,250))
@@ -30,7 +31,10 @@ class Enemies():
 
 
     def take_damage(self, amount):
-        self.cur_health -= amount
+        dmg = amount - self.resistance
+        if dmg < 0:
+            dmg = 0
+        self.cur_health -= dmg
         if self.cur_health < 0:
             self.cur_health = 0
 
@@ -75,6 +79,18 @@ class Enemies():
 
         if self.debuff_turns > 0:
             self.restore()
+    
+    def use_skill(self, player):
+        if self.card_id == 10: # Slime
+            pass
+        elif self.card_id == 11: # Stone Golem
+            self.resistance += 2
+    
+    def reset_skill(self):
+        if self.card_id == 10: # Slime
+            pass
+        elif self.card_id == 11: # Stone Golem
+            self.resistance = 0
     
     def render(self, screen):
         self.sprite.set_colorkey((0,0,0))
