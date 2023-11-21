@@ -6,6 +6,10 @@ from src.StateMachine import StateMachine
 from src.Card import ItemCard, AbilityCard, EventCard, EnemyCard
 from src.Player import Player
 from src.Floor import *
+pygame.mixer.pre_init(44100, -16, 2, 4096)
+music_channel = pygame.mixer.Channel(0)
+music_channel.set_volume(0.2)
+
 
 class MapState(BaseState):
     def __init__(self, state_machine):

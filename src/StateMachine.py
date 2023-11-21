@@ -2,6 +2,7 @@ class StateMachine:
     def __init__(self, screen):
         self.screen = screen
         self.current = None
+        self.state_name = None
 
     def SetStates(self, states):
         self.states = states
@@ -24,3 +25,6 @@ class StateMachine:
     # for entity
     def ProcessAI(self, params, dt):
         self.current.ProcessAI(params, dt)
+
+    def get_state(self):
+        return self.state_name

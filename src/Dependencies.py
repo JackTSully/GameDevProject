@@ -101,7 +101,16 @@ gsEnemies_Image_list = [
                       ]
 
 gSounds = {
-    'bg_music':pygame.mixer.Sound('sounds/main_menu_theme.mp3')
+    'bg_music':pygame.mixer.Sound('sounds/main_menu_theme.mp3'),
+    'combat' :pygame.mixer.Sound('sounds/combat.mp3'),
+    'hit': pygame.mixer.Sound('sounds/attack.mp3'),
+    'item': pygame.mixer.Sound('sounds/item.mp3'),
+    'charged': pygame.mixer.Sound('sounds/charged_attack.mp3'),
+    'roar': pygame.mixer.Sound('sounds/charged_roar.mp3'),
+    'counter': pygame.mixer.Sound('sounds/counter.mp3'),
+    'victory': pygame.mixer.Sound('sounds/victory.mp3'),
+    'enemy': pygame.mixer.Sound('sounds/enemies_hit.mp3'),
+    'rip': pygame.mixer.Sound('sounds/rip.mp3'),
 }
 
 gFonts = {

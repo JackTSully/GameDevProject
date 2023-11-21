@@ -9,6 +9,9 @@ from src.Deck import *
 from src.Effect import *
 from src.Dice import *
 from src.Enemies import *
+pygame.mixer.pre_init(44100, -16, 2, 4096)
+music_channel = pygame.mixer.Channel(0)
+music_channel.set_volume(0.2)
 
 
 class CombatState(BaseState):
@@ -67,6 +70,7 @@ class CombatState(BaseState):
          
 
     def Enter(self,params):
+        self.turn = 0
         self.player = params[0]
         self.floor = params[1]
         self.player.setXY(WIDTH/11,None)
@@ -206,6 +210,7 @@ class CombatState(BaseState):
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.turn == 1:
                 #print(event.type, self.turn, self.selected_card) 
                 if self.selected_card and not self.player.action_points == 0:
+                    gSounds['item'].play(0) 
                     print(f"Clicked on the selected card: {self.selected_card.card_id}")
                     
                     if self.selected_card:
@@ -293,6 +298,7 @@ class CombatState(BaseState):
                             self.rolling = True
                             self.attacking = True
                             self.enemies.take_damage(self.rolled_damage + self.player.attack_power)
+                            gSounds['hit'].play(0)
                             self.player.action_points -= 1
                             self.selected_card = None
                             self.turn = 2
@@ -302,6 +308,7 @@ class CombatState(BaseState):
                             self.rolling = True
                             self.attacking = True
                             self.enemies.take_damage(self.rolled_damage*2 + self.player.attack_power)
+                            gSounds['hit'].play(0)
                             self.player.action_points -= 1
                             self.selected_card = None
                             self.turn = 2
@@ -315,6 +322,7 @@ class CombatState(BaseState):
                             if not self.double_roll_active:
                                 self.roll1 = self.rolled_damage + self.player.attack_power
                                 print(f"Roll 1: {self.roll1}")
+                                gSounds['roar'].play(0) 
                                 self.rolling = True
                                 self.player.action_points -= 2
                                 self.selected_card = None
@@ -328,6 +336,7 @@ class CombatState(BaseState):
                             elif self.double_roll_active:
                                 self.roll1 = self.rolled_damage*2 + self.player.attack_power
                                 print(f"Roll 1: {self.roll1}")
+                                gSounds['roar'].play(0) 
                                 self.rolling = True
                                 self.player.action_points -= 2
                                 self.selected_card = None
@@ -397,7 +406,8 @@ class CombatState(BaseState):
                         self.total_roll = self.roll1 + self.roll2
                         print(f"fRoll 2: {self.roll2}")
                         print(f"Total Roll: {self.total_roll}")
-                        pygame.time.delay(self.attack_delay) 
+                        gSounds['hit'].play(0) 
+                        pygame.time.delay(self.attack_delay)
                         self.enemies.take_damage(self.total_roll)
                         self.selected_card = None
                         self.turn = 1  
@@ -412,6 +422,7 @@ class CombatState(BaseState):
                         self.total_roll = self.roll1 + self.roll2
                         print(f"Roll 2: {self.roll2}")
                         print(f"Total Roll: {self.total_roll}")
+                        gSounds['hit'].play(0) 
                         pygame.time.delay(self.attack_delay) 
                         self.enemies.take_damage(self.total_roll)
                         self.selected_card = None
@@ -460,6 +471,8 @@ class CombatState(BaseState):
                     if self.enemies_attack and self.counter_attack_active:
                         if not self.double_roll_active:
                             self.rolling = True 
+                            gSounds['counter'].play(0)
+                            pygame.time.delay(self.attack_delay) 
                             self.enemies.take_damage(self.counter_attack_damage  + self.player.attack_power) 
                             print(f"Counter Attack: {self.counter_attack_damage  + self.player.attack_power}")
                             self.rolling = False 
@@ -467,6 +480,8 @@ class CombatState(BaseState):
 
                         if self.double_roll_active:
                             self.rolling = True 
+                            gSounds['counter'].play(0)
+                            pygame.time.delay(self.attack_delay) 
                             self.enemies.take_damage(self.counter_attack_damage  + self.player.attack_power) 
                             print(f"Counter Attack: {self.counter_attack_damage  + self.player.attack_power}")
                             self.rolling = False
@@ -475,6 +490,7 @@ class CombatState(BaseState):
 
                     pygame.time.delay(self.enemy_delay)
                     self.player.take_damage(self.e_rolled_damage + self.enemies.attack_bonus)
+                    gSounds['enemy'].play(0)
                     print(f"Enemies Attack Damage {self.e_rolled_damage + self.enemies.attack_bonus}")
                     self.enemy_rounds += 1
                     self.player.action_points_offset = 0
@@ -492,13 +508,15 @@ class CombatState(BaseState):
                     if self.enemies_attack and self.counter_attack_active:
                         if not self.double_roll_active:
                             self.rolling = True 
+                            gSounds['counter'].play(0)
                             self.enemies.take_damage(self.counter_attack_damage  + self.player.attack_power) 
                             print(f"Counter Attack: {self.counter_attack_damage  + self.player.attack_power}")
                             self.rolling = False 
                             self.enemies_attack = False
 
                         if self.double_roll_active:
-                            self.rolling = True 
+                            self.rolling = True
+                            gSounds['counter'].play(0) 
                             self.enemies.take_damage(self.counter_attack_damage  + self.player.attack_power) 
                             print(f"Counter Attack: {self.counter_attack_damage  + self.player.attack_power}")
                             self.rolling = False
@@ -507,8 +525,9 @@ class CombatState(BaseState):
                     self.e_rolled_damage = 0
                     self.e_rolling = True
                     pygame.time.delay(self.enemy_delay)
-                    self.player.take_damage(self.e_rolled_damage + self.enemies.attack_bonus)
-                    print(f"Enemies Attack Damage {self.e_rolled_damage + self.enemies.attack_bonus}")
+                    gSounds['enemy'].play(0) 
+                    self.player.take_damage(self.e_rolled_damage)
+                    print(f"Enemies Attack Damage {self.e_rolled_damage}")
                     self.enemy_rounds += 1
                     self.player.action_points_offset = 0
                     self.duplication_effect_active = False
@@ -551,7 +570,7 @@ class CombatState(BaseState):
         
         if self.enemies.cur_health <= 0:
             victory_text = gFonts['minecraft_small'].render("VICTORY", False, "white", "green")
-            victory_rect = victory_text.get_rect(center=(WIDTH/2, HEIGHT/2))
+            victory_rect = victory_text.get_rect(center=(WIDTH/2, HEIGHT/2)) 
             screen.blit(victory_text, victory_rect)
 
             victory_text = gFonts['minecraft_tiny'].render("YOU GOT A NEW ITEM!", False, "white")

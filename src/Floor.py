@@ -4,6 +4,10 @@ from src.constants import *
 from src.Room import Room
 from src.Deck import Deck
 from src.Card import EnemyCard
+pygame.mixer.pre_init(44100, -16, 2, 4096)
+music_channel = pygame.mixer.Channel(0)
+music_channel.set_volume(0.2)
+
 
 class Floor():
     def __init__(self, level, name, event_deck: Deck, boss: Deck):
@@ -95,6 +99,7 @@ class Floor():
                 if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
                     if card_rect.collidepoint(self.cursor_position) and event.button == 1:
                         self.item_card_index = i
+                        gSounds['item'].play(0) 
                         
                         self.curr_room.event_deck.remove_card(self.item_card_index)
                         break
