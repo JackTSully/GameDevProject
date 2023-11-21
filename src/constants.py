@@ -39,7 +39,7 @@ enemy_attributes = [
                     {"card_id": 23, "name": "Skeleton Mage", "description": "HP: 30, ATK: D6+2", "max_health": 30, "attack_dice": 6, "attack_bonus": 2, "e_ability_id": 4},
                     {"card_id": 24, "name": "Skeleton Warrior", "description": "HP: 60, ATK: D3+2", "max_health": 60, "attack_dice": 3, "attack_bonus": 2, "e_ability_id": 5},
                     {"card_id": 25, "name": "Temple Guardian", "description": "HP: 50, ATK: D6+1", "max_health": 50, "attack_dice": 6, "attack_bonus": 1, "e_ability_id": 6},
-                    {"card_id": 26, "name": "Fanatic Cultist", "description": "HP: 45, ATK: D4+1", "max_health": 45, "attack_dice": 4, "attack_bonus": 1, "e_ability_id": 7},
+                    {"card_id": 26, "name": "Fanatic Cultist", "description": "HP: 45, ATK: D6", "max_health": 45, "attack_dice": 6, "attack_bonus": 0, "e_ability_id": 7},
                     {"card_id": 27, "name": "Vampire Bat", "description": "HP: 40, ATK: D6", "max_health": 40, "attack_dice": 6, "attack_bonus": 0, "e_ability_id": 8},
                     {"card_id": 28, "name": "Feral Monkey", "description": "HP: 50, ATK: D6", "max_health": 50, "attack_dice": 6, "attack_bonus": 2, "e_ability_id": 9},
                     {"card_id": 29, "name": "King Ape", "description": "HP: 70, ATK: D6+1", "max_health": 70, "attack_dice": 6, "attack_bonus": 1, "e_ability_id": 10},
