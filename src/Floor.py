@@ -210,12 +210,20 @@ class Floor():
                 screen.blit(text, rect)
             
             if self.item_description != None:
-                description = gFonts['minecraft_tiny'].render(self.item_description, False, "yellow", "black")
-            
-                if self.item_description_show_right == True:
-                    rect = description.get_rect(bottomleft=(pygame.mouse.get_pos()))
-                else:
-                    rect = description.get_rect(bottomright=(pygame.mouse.get_pos()))
-                screen.blit(description, rect)
+
+                item_description = self.item_description.split("  ")
+                y = 0
+                for string in item_description:
+                
+                    description = gFonts['minecraft_tiny'].render(string, False, "yellow", "black")
+                    mouse_pos = pygame.mouse.get_pos()
+                    pos = [mouse_pos[0],mouse_pos[1]+y]
+                
+                    if self.item_description_show_right == True:
+                        rect = description.get_rect(bottomleft=(pos))
+                    else:
+                        rect = description.get_rect(bottomright=(pos))
+                    screen.blit(description, rect)
+                    y += 25
         
     
