@@ -117,6 +117,9 @@ class EventState(BaseState):
                         self.item_description_show_right = True
                 else:
                     self.item_card_index = None
+            
+        if self.player.curr_health <= 0:
+            self.state_machine.Change('game_over',[self.player,self.floor])
                     
         self.timer = self.timer + dt
         

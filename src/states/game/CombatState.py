@@ -131,7 +131,7 @@ class CombatState(BaseState):
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-                if event.key == pygame.K_RETURN:
+                if event.key == pygame.K_KP9:
                           
                     if self.floor.curr_room == self.floor.rooms["boss"]:
                         if self.floor.get_floor_lvl() == 4:
