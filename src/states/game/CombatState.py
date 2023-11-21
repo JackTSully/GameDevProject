@@ -25,6 +25,7 @@ class CombatState(BaseState):
         self.player_rounds = 0
         self.attack_delay = 500
         self.enemy_delay = 1000
+        self.rolling_delay = 3000
         self.rolled_damage = 0
         self.e_rolled_damage = 0
 
@@ -51,6 +52,8 @@ class CombatState(BaseState):
         self.counter_cooldown = 0
         self.enemies_attack = False
         self.invincible_active = False
+        self.rolling = False
+        self.e_rolling = False
 
         self.color_player = (0, 0, 0) 
         self.color_enemy = (0, 0, 0)
@@ -281,8 +284,8 @@ class CombatState(BaseState):
                     elif self.selected_card.effect_id == 2001: #attack
                         self.charged_cooldown -= 1
                         self.counter_cooldown -= 1
-                        if not self.double_roll_active:
-                            pygame.time.delay(self.attack_delay) 
+                        if not self.double_roll_active: 
+                            self.rolling = True
                             self.enemies.take_damage(self.rolled_damage + self.player.attack_power)
                             self.player.action_points -= 1
                             self.selected_card = None
@@ -290,6 +293,7 @@ class CombatState(BaseState):
                             
                             print(self.turn)
                         if self.double_roll_active:
+                            self.rolling = True
                             self.enemies.take_damage(self.rolled_damage*2 + self.player.attack_power)
                             self.player.action_points -= 1
                             self.selected_card = None
@@ -302,9 +306,9 @@ class CombatState(BaseState):
                         if not self.charged_attack_active and self.charged_cooldown == 0:
                             
                             if not self.double_roll_active:
-                                self.roll1 = self.dice_instance.roll_dice(20) + self.player.attack_power
+                                self.roll1 = self.rolled_damage + self.player.attack_power
                                 print(f"Roll 1: {self.roll1}")
-                                pygame.time.delay(self.attack_delay) 
+                                self.rolling = True
                                 self.player.action_points -= 2
                                 self.selected_card = None
                                 self.turn = 2
@@ -313,9 +317,9 @@ class CombatState(BaseState):
                                 self.P_roll += self.roll1
 
                             elif self.double_roll_active:
-                                self.roll1 = self.dice_instance.roll_dice(20)*2 + self.player.attack_power
+                                self.roll1 = self.rolled_damage*2 + self.player.attack_power
                                 print(f"Roll 1: {self.roll1}")
-                                pygame.time.delay(self.attack_delay) 
+                                self.rolling = True
                                 self.player.action_points -= 2
                                 self.selected_card = None
                                 self.turn = 2
@@ -373,27 +377,32 @@ class CombatState(BaseState):
             self.enemies.reset_debuff()
             self.player.action_points = 3 + self.player.action_points_offset
             self.enemies_attack = False
+            self.rolling = False
 
             if self.charged_attack_active: 
                     if not self.double_roll_active:
-                        self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
+                        self.roll2 = self.rolled_damage + self.player.attack_power
                         self.total_roll = self.roll1 + self.roll2
                         print(f"fRoll 2: {self.roll2}")
                         print(f"Total Roll: {self.total_roll}")
+                        self.rolling = True
                         pygame.time.delay(self.attack_delay) 
                         self.enemies.take_damage(self.total_roll)
                         self.selected_card = None
                         self.P_roll += self.roll2
                         self.turn = 2  
                         self.charged_attack_active = False
+                        self.rolling = False
 
                     elif self.double_roll_active:
-                        self.roll2 = self.dice_instance.roll_dice(20)*2 + self.player.attack_power
+                        self.roll2 = self.rolled_damage*2 + self.player.attack_power
                         self.total_roll = self.roll1 + self.roll2
                         print(f"fRoll 2: {self.roll2}")
                         print(f"Total Roll: {self.total_roll}")
+                        self.rolling = True
                         pygame.time.delay(self.attack_delay) 
                         self.enemies.take_damage(self.total_roll)
+                        self.rolling = False
                         self.selected_card = None
                         self.turn = 2                                                          
                         self.charged_attack_active = False
@@ -420,6 +429,7 @@ class CombatState(BaseState):
                 self.player.action_points_offset = 0
                 self.duplication_effect_active = False
                 self.enemies.debuff_turns = 0
+                self.e_rolling = True
                 
             else:
                 if not self.invincible_active:
@@ -452,6 +462,7 @@ class CombatState(BaseState):
                     self.duplication_effect_active = False
                     self.enemies.debuff_turns = 0
                     self.invincible_active = False
+                    self.e_rolling = False
 
                 elif self.invincible_active:
                     self.enemies_attack = True
@@ -628,32 +639,55 @@ class CombatState(BaseState):
         def render_dice_number(dice_image, number, color=(0, 0, 0)):
             font = pygame.font.Font(None, 52)
             text = font.render(str(number), True, color)
-            dice_image.blit(text, (dice_image.get_width() // 2 - text.get_width() // 2, dice_image.get_height() // 2 - text.get_height() // 2))
+            dice_image.blit(text, (dice_image.get_width() / 2 - text.get_width() / 2, dice_image.get_height() / 2 - text.get_height() / 2))
 
         E_Dice_type = self.enemies.attack_dice
         P_Dice_type = self.player.attack_dice
         E_Dice_image = gDice_image_list[E_Dice_type].copy()
         P_Dice_image = gDice_image_list[P_Dice_type].copy()
-        start_time = pygame.time.get_ticks()
-        rolling_time = 50
 
-        while pygame.time.get_ticks() - start_time < rolling_time:
-            P_Number_surface = pygame.Surface((P_Dice_image.get_width()+5, P_Dice_image.get_height()), pygame.SRCALPHA)
-            E_Number_surface = pygame.Surface((E_Dice_image.get_width(), E_Dice_image.get_height()), pygame.SRCALPHA)
+        if self.rolling:
+                P_Number_surface = pygame.Surface((P_Dice_image.get_width()+30, P_Dice_image.get_height()), pygame.SRCALPHA)
 
-            P_roll = self.rolled_damage
-            E_roll = self.e_rolled_damage
+                P_roll = self.rolled_damage
 
-            render_dice_number(P_Number_surface, P_roll, color=(0, 0 , 0))
-            render_dice_number(E_Number_surface, E_roll, color=(0,0,0))
+                render_dice_number(P_Number_surface, P_roll, color=(0, 0 , 0))
 
-            P_Dice_image.blit(P_Number_surface, (0, 0))
-            E_Dice_image.blit(E_Number_surface, (0, 0))
+                P_Dice_image.blit(P_Number_surface, (0, 0))
 
-            screen.blit(P_Dice_image, (20, 200))
-            screen.blit(E_Dice_image, (WIDTH - 200, 200))
+                screen.blit(P_Dice_image, (WIDTH/2 - 80, HEIGHT/2 - 60))
 
-            pygame.display.flip()
+                pygame.display.flip()
+
+        if self.rolling and self.charged_attack_active:
+                P_Number_surface = pygame.Surface((P_Dice_image.get_width()+30, P_Dice_image.get_height()), pygame.SRCALPHA)
+
+                P_roll = self.rolled_damage
+                E_roll = self.e_rolled_damage
+
+                render_dice_number(P_Number_surface, P_roll, color=(0, 0 , 0))
+
+                P_Dice_image.blit(P_Number_surface, (0, 0))
+
+                screen.blit(P_Dice_image, (WIDTH/2 - 80, HEIGHT/2 - 60))
+
+                pygame.display.flip()
+            
+        if self.e_rolling:
+                E_Number_surface = pygame.Surface((E_Dice_image.get_width()+30, E_Dice_image.get_height()), pygame.SRCALPHA)
+
+                E_roll = self.e_rolled_damage
+
+                render_dice_number(E_Number_surface, E_roll, color=(0, 0 , 0))
+
+                E_Dice_image.blit(E_Number_surface, (0, 0))
+
+                screen.blit(E_Dice_image, (WIDTH/2 - 80, HEIGHT/2 - 60))
+
+                pygame.display.flip()
+
+
+
 
         
         
