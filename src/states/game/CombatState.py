@@ -292,8 +292,7 @@ class CombatState(BaseState):
 
 
                     elif self.selected_card.effect_id == 2001 and self.player.action_points >= 1: #attack
-                        self.charged_cooldown -= 1
-                        self.counter_cooldown -= 1
+
                         if not self.double_roll_active: 
                             self.rolling = True
                             self.attacking = True
@@ -328,7 +327,7 @@ class CombatState(BaseState):
                                 self.selected_card = None
                                 self.turn = 2
                                 self.charged_attack_active = True
-                                self.charged_cooldown = 2
+                                self.charged_cooldown = 3
                                 self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
                                 self.charged_roll = True
                                 
@@ -342,7 +341,7 @@ class CombatState(BaseState):
                                 self.selected_card = None
                                 self.turn = 2
                                 self.charged_attack_active = True
-                                self.charged_cooldown = 2
+                                self.charged_cooldown = 3
                                 self.roll2 = self.dice_instance.roll_dice(20) + self.player.attack_power
                                 self.charged_roll = True
                                 
@@ -362,7 +361,7 @@ class CombatState(BaseState):
                                 self.counter_attack_damage = self.rolled_damage
                                 self.selected_card = None
                                 self.counter_attack_active = True
-                                self.counter_cooldown = 2  
+                                self.counter_cooldown = 3 
                         
                     elif self.selected_card.effect_id == 2004 and self.player.action_points >= 1: #block
                         self.charged_cooldown -= 1
@@ -396,12 +395,11 @@ class CombatState(BaseState):
         if self.turn == 1:
             self.player.action_points = 3 + self.player.action_points_offset
             self.enemies_attack = False
-            self.rolling = True
             self.enemies.reset_debuff()
 
             if self.charged_attack_active:
                     if not self.double_roll_active:
-                        
+                        self.rolling = True
                         pygame.time.delay(self.attack_delay)
                         self.total_roll = self.roll1 + self.roll2
                         print(f"fRoll 2: {self.roll2}")
@@ -417,7 +415,7 @@ class CombatState(BaseState):
                         
 
                     elif self.double_roll_active:
-                        
+                        self.rolling = True
                         pygame.time.delay(self.attack_delay)
                         self.total_roll = self.roll1 + self.roll2
                         print(f"Roll 2: {self.roll2}")
@@ -446,6 +444,8 @@ class CombatState(BaseState):
 
         elif self.turn == 2:
             self.charged_roll = False 
+            self.charged_cooldown -= 1
+            self.counter_cooldown -= 1
 
             if 1 == 2: # was "self.enemy_rounds == 3"
                 pygame.time.delay(self.enemy_delay)
