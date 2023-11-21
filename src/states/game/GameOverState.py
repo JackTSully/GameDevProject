@@ -22,7 +22,8 @@ class GameOverState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN:
-                    self.state_machine.Change('start')
+                    pygame.quit()
+                    sys.exit()
 
 
     def render(self, screen):

@@ -93,7 +93,7 @@ class Floor():
                 card_rect = pygame.Rect(x_offset, y_offset, frame_size[0], frame_size[1])
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:  # 1 corresponds to the left mouse button
-                    if card_rect.collidepoint(self.cursor_position) and event.button == 1:
+                    if card_rect.collidepoint(self.cursor_position) and event.button == 1 and len(self.curr_room.event_deck.cards) > 3:
                         self.item_card_index = i
                         
                         self.curr_room.event_deck.remove_card(self.item_card_index)
