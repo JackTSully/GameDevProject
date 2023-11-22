@@ -393,6 +393,7 @@ class CombatState(BaseState):
             self.turn = 1
 
         if self.turn == 1:
+            self.rolling = False #just for pushing
             self.player.action_points = 3 + self.player.action_points_offset
             self.enemies_attack = False
             self.enemies.reset_debuff()
@@ -711,7 +712,7 @@ class CombatState(BaseState):
         E_Dice_image = gDice_image_list[E_Dice_type].copy()
         P_Dice_image = gDice_image_list[P_Dice_type].copy()
 
-        if self.rolling and self.attacking:
+        if self.rolling and self.attacking and not self.charged_attack_active:
             
                 P_Number_surface = pygame.Surface((P_Dice_image.get_width()+30, P_Dice_image.get_height()), pygame.SRCALPHA)
 
